@@ -1,0 +1,537 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SmartGymSalesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AdditionLookup">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="addition_type" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="commission">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="new_customer_percentatge" Type="float" Nullable="false" />
+          <Property Name="old_customer_percentatge" Type="float" Nullable="false" />
+          <Property Name="target" Type="int" />
+          <Property Name="is_hidden" Type="bit" />
+        </EntityType>
+        <EntityType Name="customers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="added_By_id" Type="int" />
+          <Property Name="addition_type_id" Type="int" Nullable="false" />
+          <Property Name="mobile" Type="int" />
+          <Property Name="email" Type="nvarchar" MaxLength="100" />
+          <Property Name="discont_percentage" Type="int" />
+          <Property Name="is_called" Type="bit" Nullable="false" />
+          <Property Name="calles_count" Type="int" Nullable="false" />
+          <Property Name="is_active" Type="bit" Nullable="false" />
+          <Property Name="subscription_start_date" Type="datetime" />
+          <Property Name="subscription_end_date" Type="datetime" />
+          <Property Name="men_forign_Key" Type="int" />
+          <Property Name="women_forign_key" Type="int" />
+          <Property Name="creation_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="knowledgeLookup">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="type" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="possibleCustmers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="mobile" Type="int" />
+          <Property Name="email" Type="nvarchar" MaxLength="100" />
+          <Property Name="customer_id" Type="int" />
+          <Property Name="is_called" Type="bit" Nullable="false" />
+          <Property Name="calles_count" Type="int" Nullable="false" />
+          <Property Name="is_subscribed" Type="bit" Nullable="false" />
+          <Property Name="discont_percentage" Type="int" />
+          <Property Name="is_hidden" Type="bit" Nullable="false" />
+          <Property Name="knowledge_id" Type="int" Nullable="false" />
+          <Property Name="creaation_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="reviews">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="training" Type="int" Nullable="false" />
+          <Property Name="reciption" Type="int" Nullable="false" />
+          <Property Name="general" Type="int" Nullable="false" />
+          <Property Name="comment" Type="nvarchar" MaxLength="500" />
+          <Property Name="creation_date" Type="datetime" Nullable="false" />
+          <Property Name="parent_id" Type="int" Nullable="false" />
+          <Property Name="parent_id_type" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserRoles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="role_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="user_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_customers_AdditionLookup">
+          <End Role="AdditionLookup" Type="Self.AdditionLookup" Multiplicity="1" />
+          <End Role="customers" Type="Self.customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdditionLookup">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customers">
+              <PropertyRef Name="addition_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_possibleCustmers_knowledgeLookup">
+          <End Role="knowledgeLookup" Type="Self.knowledgeLookup" Multiplicity="1" />
+          <End Role="possibleCustmers" Type="Self.possibleCustmers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="knowledgeLookup">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="possibleCustmers">
+              <PropertyRef Name="knowledge_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRoles_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="role_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRoles_UserRoles">
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="1" />
+          <End Role="UserRoles1" Type="Self.UserRoles" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UserRoles">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserRoles1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRoles_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SmartGymSalesModelStoreContainer">
+          <EntitySet Name="AdditionLookup" EntityType="Self.AdditionLookup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="commission" EntityType="Self.commission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="customers" EntityType="Self.customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="knowledgeLookup" EntityType="Self.knowledgeLookup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="possibleCustmers" EntityType="Self.possibleCustmers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="reviews" EntityType="Self.reviews" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_customers_AdditionLookup" Association="Self.FK_customers_AdditionLookup">
+            <End Role="AdditionLookup" EntitySet="AdditionLookup" />
+            <End Role="customers" EntitySet="customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_possibleCustmers_knowledgeLookup" Association="Self.FK_possibleCustmers_knowledgeLookup">
+            <End Role="knowledgeLookup" EntitySet="knowledgeLookup" />
+            <End Role="possibleCustmers" EntitySet="possibleCustmers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_Roles" Association="Self.FK_UserRoles_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_UserRoles" Association="Self.FK_UserRoles_UserRoles">
+            <End Role="UserRoles" EntitySet="UserRoles" />
+            <End Role="UserRoles1" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_Users" Association="Self.FK_UserRoles_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SmartGymSalesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AdditionLookup">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="addition_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="customers" Relationship="Self.FK_customers_AdditionLookup" FromRole="AdditionLookup" ToRole="customers" />
+        </EntityType>
+        <EntityType Name="commission">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="new_customer_percentatge" Type="Double" Nullable="false" />
+          <Property Name="old_customer_percentatge" Type="Double" Nullable="false" />
+          <Property Name="target" Type="Int32" />
+          <Property Name="is_hidden" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="added_By_id" Type="Int32" />
+          <Property Name="addition_type_id" Type="Int32" Nullable="false" />
+          <Property Name="mobile" Type="Int32" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="discont_percentage" Type="Int32" />
+          <Property Name="is_called" Type="Boolean" Nullable="false" />
+          <Property Name="calles_count" Type="Int32" Nullable="false" />
+          <Property Name="is_active" Type="Boolean" Nullable="false" />
+          <Property Name="subscription_start_date" Type="DateTime" Precision="3" />
+          <Property Name="subscription_end_date" Type="DateTime" Precision="3" />
+          <Property Name="men_forign_Key" Type="Int32" />
+          <Property Name="women_forign_key" Type="Int32" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AdditionLookup" Relationship="Self.FK_customers_AdditionLookup" FromRole="customers" ToRole="AdditionLookup" />
+        </EntityType>
+        <EntityType Name="knowledgeLookup">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="possibleCustmers" Relationship="Self.FK_possibleCustmers_knowledgeLookup" FromRole="knowledgeLookup" ToRole="possibleCustmers" />
+        </EntityType>
+        <EntityType Name="possibleCustmer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="mobile" Type="Int32" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="customer_id" Type="Int32" />
+          <Property Name="is_called" Type="Boolean" Nullable="false" />
+          <Property Name="calles_count" Type="Int32" Nullable="false" />
+          <Property Name="is_subscribed" Type="Boolean" Nullable="false" />
+          <Property Name="discont_percentage" Type="Int32" />
+          <Property Name="is_hidden" Type="Boolean" Nullable="false" />
+          <Property Name="knowledge_id" Type="Int32" Nullable="false" />
+          <Property Name="creaation_date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="knowledgeLookup" Relationship="Self.FK_possibleCustmers_knowledgeLookup" FromRole="possibleCustmers" ToRole="knowledgeLookup" />
+        </EntityType>
+        <EntityType Name="review">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="training" Type="Int32" Nullable="false" />
+          <Property Name="reciption" Type="Int32" Nullable="false" />
+          <Property Name="general" Type="Int32" Nullable="false" />
+          <Property Name="comment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="parent_id" Type="Int32" Nullable="false" />
+          <Property Name="parent_id_type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="UserRoles" Relationship="Self.FK_UserRoles_Roles" FromRole="Roles" ToRole="UserRoles" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="role_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_UserRoles_Roles" FromRole="UserRoles" ToRole="Roles" />
+          <NavigationProperty Name="UserRoles1" Relationship="Self.FK_UserRoles_UserRoles" FromRole="UserRoles" ToRole="UserRoles1" />
+          <NavigationProperty Name="UserRole1" Relationship="Self.FK_UserRoles_UserRoles" FromRole="UserRoles1" ToRole="UserRoles" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserRoles_Users" FromRole="UserRoles" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="user_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="UserRoles" Relationship="Self.FK_UserRoles_Users" FromRole="Users" ToRole="UserRoles" />
+        </EntityType>
+        <Association Name="FK_customers_AdditionLookup">
+          <End Role="AdditionLookup" Type="Self.AdditionLookup" Multiplicity="1" />
+          <End Role="customers" Type="Self.customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdditionLookup">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customers">
+              <PropertyRef Name="addition_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_possibleCustmers_knowledgeLookup">
+          <End Role="knowledgeLookup" Type="Self.knowledgeLookup" Multiplicity="1" />
+          <End Role="possibleCustmers" Type="Self.possibleCustmer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="knowledgeLookup">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="possibleCustmers">
+              <PropertyRef Name="knowledge_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRoles_Roles">
+          <End Role="Roles" Type="Self.Role" Multiplicity="1" />
+          <End Role="UserRoles" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="role_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRoles_UserRoles">
+          <End Role="UserRoles" Type="Self.UserRole" Multiplicity="1" />
+          <End Role="UserRoles1" Type="Self.UserRole" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UserRoles">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserRoles1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRoles_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="UserRoles" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SmartGymSalesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AdditionLookups" EntityType="Self.AdditionLookup" />
+          <EntitySet Name="commissions" EntityType="Self.commission" />
+          <EntitySet Name="customers" EntityType="Self.customer" />
+          <EntitySet Name="knowledgeLookups" EntityType="Self.knowledgeLookup" />
+          <EntitySet Name="possibleCustmers" EntityType="Self.possibleCustmer" />
+          <EntitySet Name="reviews" EntityType="Self.review" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_customers_AdditionLookup" Association="Self.FK_customers_AdditionLookup">
+            <End Role="AdditionLookup" EntitySet="AdditionLookups" />
+            <End Role="customers" EntitySet="customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_possibleCustmers_knowledgeLookup" Association="Self.FK_possibleCustmers_knowledgeLookup">
+            <End Role="knowledgeLookup" EntitySet="knowledgeLookups" />
+            <End Role="possibleCustmers" EntitySet="possibleCustmers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_Roles" Association="Self.FK_UserRoles_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_UserRoles" Association="Self.FK_UserRoles_UserRoles">
+            <End Role="UserRoles" EntitySet="UserRoles" />
+            <End Role="UserRoles1" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_Users" Association="Self.FK_UserRoles_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SmartGymSalesModelStoreContainer" CdmEntityContainer="SmartGymSalesEntities">
+          <EntitySetMapping Name="AdditionLookups">
+            <EntityTypeMapping TypeName="SmartGymSalesModel.AdditionLookup">
+              <MappingFragment StoreEntitySet="AdditionLookup">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="addition_type" ColumnName="addition_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="commissions">
+            <EntityTypeMapping TypeName="SmartGymSalesModel.commission">
+              <MappingFragment StoreEntitySet="commission">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="new_customer_percentatge" ColumnName="new_customer_percentatge" />
+                <ScalarProperty Name="old_customer_percentatge" ColumnName="old_customer_percentatge" />
+                <ScalarProperty Name="target" ColumnName="target" />
+                <ScalarProperty Name="is_hidden" ColumnName="is_hidden" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="customers">
+            <EntityTypeMapping TypeName="SmartGymSalesModel.customer">
+              <MappingFragment StoreEntitySet="customers">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="added_By_id" ColumnName="added_By_id" />
+                <ScalarProperty Name="addition_type_id" ColumnName="addition_type_id" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="discont_percentage" ColumnName="discont_percentage" />
+                <ScalarProperty Name="is_called" ColumnName="is_called" />
+                <ScalarProperty Name="calles_count" ColumnName="calles_count" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="subscription_start_date" ColumnName="subscription_start_date" />
+                <ScalarProperty Name="subscription_end_date" ColumnName="subscription_end_date" />
+                <ScalarProperty Name="men_forign_Key" ColumnName="men_forign_Key" />
+                <ScalarProperty Name="women_forign_key" ColumnName="women_forign_key" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="knowledgeLookups">
+            <EntityTypeMapping TypeName="SmartGymSalesModel.knowledgeLookup">
+              <MappingFragment StoreEntitySet="knowledgeLookup">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="type" ColumnName="type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="possibleCustmers">
+            <EntityTypeMapping TypeName="SmartGymSalesModel.possibleCustmer">
+              <MappingFragment StoreEntitySet="possibleCustmers">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="is_called" ColumnName="is_called" />
+                <ScalarProperty Name="calles_count" ColumnName="calles_count" />
+                <ScalarProperty Name="is_subscribed" ColumnName="is_subscribed" />
+                <ScalarProperty Name="discont_percentage" ColumnName="discont_percentage" />
+                <ScalarProperty Name="is_hidden" ColumnName="is_hidden" />
+                <ScalarProperty Name="knowledge_id" ColumnName="knowledge_id" />
+                <ScalarProperty Name="creaation_date" ColumnName="creaation_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="reviews">
+            <EntityTypeMapping TypeName="SmartGymSalesModel.review">
+              <MappingFragment StoreEntitySet="reviews">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="training" ColumnName="training" />
+                <ScalarProperty Name="reciption" ColumnName="reciption" />
+                <ScalarProperty Name="general" ColumnName="general" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+                <ScalarProperty Name="parent_id" ColumnName="parent_id" />
+                <ScalarProperty Name="parent_id_type" ColumnName="parent_id_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="SmartGymSalesModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="SmartGymSalesModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRoles">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="role_id" ColumnName="role_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="SmartGymSalesModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
