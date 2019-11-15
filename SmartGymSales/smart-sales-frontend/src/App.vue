@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <nav-bar></nav-bar>
-    <router-view />
+    <div class="context-wrapper">
+      <router-view class="context" />
+    </div>
   </div>
 </template>
 <script>
@@ -16,14 +18,23 @@ export default {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 
 #nav {
   padding: 30px;
 }
+.context-wrapper {
+  /* flex: 1 1 300px; */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 
+.context {
+  padding-top: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
 #nav a {
   font-weight: bold;
   color: #2c3e50;
