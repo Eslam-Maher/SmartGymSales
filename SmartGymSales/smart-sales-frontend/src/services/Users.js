@@ -13,7 +13,7 @@ export default {
       return getAllUsers.get(requestBody);
     },
     insertUser(User){
-      const insertUser= new API("insertUsers");
+      const insertUser= new API("Users/insertUsers");
       const requestBody = {
         headers: {
           // userName: store.getters.getUser.eMail,
@@ -25,7 +25,7 @@ export default {
     },
     login(user_name,password){
 
-      const login= new API("login");
+      const login= new API("Users/login");
       const requestBody={
         user_name:user_name,
         password:password
@@ -39,7 +39,7 @@ export default {
       return login.post(config,requestBody);
     },
     deleteUser(UserId){
-      const deleteUser= new API("deleteUser/"+UserId);
+      const deleteUser= new API("Users/deleteUser/"+UserId);
       const requestBody = {
         headers: {
           // userName: store.getters.getUser.eMail,
