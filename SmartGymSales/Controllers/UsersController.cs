@@ -9,17 +9,32 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using SmartGymSales.Models;
+using SmartGymSales.Services;
 
 namespace SmartGymSales.Controllers
 {
     public class UsersController : ApiController
     {
         private SmartGymSalesEntities db = new SmartGymSalesEntities();
+        private UsersServices UsersService = new UsersServices();
 
         // GET: api/Users
-        public IQueryable<User> GetUsers()
+        [HttpGet]
+        [ActionName("getUsers")]
+        public List<User> GetUsers()
         {
-            return db.Users;
+            return UsersService.getAllUsers();
+        }
+
+        [HttpGet]
+        [ActionName("login")]
+        public bool checkCredentials(string user_name,string password ) {
+            bool isValid = false;
+            if ( string.IsNullOrEmpty(user_name)|| string.IsNullOrEmpty(password)) {
+               return isValid;
+            }
+            isValid= db.Users.Where(e => e.user_name == user_name && e.password == password).Any();
+            return isValid;
         }
 
         // GET: api/Users/5
@@ -72,6 +87,8 @@ namespace SmartGymSales.Controllers
 
         // POST: api/Users
         [ResponseType(typeof(User))]
+        [HttpPost]
+        [ActionName("insertUsers")]
         public IHttpActionResult PostUser(User user)
         {
             if (!ModelState.IsValid)
@@ -87,6 +104,8 @@ namespace SmartGymSales.Controllers
 
         // DELETE: api/Users/5
         [ResponseType(typeof(User))]
+        [HttpDelete]
+        [ActionName("deleteUser")]
         public IHttpActionResult DeleteUser(int id)
         {
             User user = db.Users.Find(id);

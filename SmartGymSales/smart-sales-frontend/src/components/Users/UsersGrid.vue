@@ -11,8 +11,8 @@
       @filtered="onFiltered"
     >
      <template v-slot:cell(delete)="row">
-        <b-button size="sm" class="mr-1">
-          Delete User
+        <b-button variant="danger" size="sm" class="mr-1" @click="deleteUser(row.item)">
+        <font-awesome-icon icon="trash-alt" />
         </b-button>
      </template>
       <template v-slot:cell(userRoles)="row">
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import UsersService from "../../services/Users";
 export default {
   props: ["users"],
   data() {
@@ -53,11 +54,16 @@ export default {
     };
   },
   methods:{
-     onFiltered(filteredItems) {
+      onFiltered(filteredItems) {
         // Trigger pagination to update the number of buttons/pages due to filtering
         this.totalRows = filteredItems.length
         this.currentPage = 1
-      }
+     },
+    deleteUser:function(user){ 
+      UsersService.deleteUser(user.id).then((res)=>{ // eslint-disable-line no-unused-vars
+        this.$emit("refreshGrid")
+      })
+    }
   },
   watch:{
     users:function(newVal){

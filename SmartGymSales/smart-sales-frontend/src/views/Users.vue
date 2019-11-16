@@ -1,8 +1,8 @@
 <template>
   <div>
-    <add-users></add-users>
+    <add-users @refreshGrid="refreshGrid"></add-users>
     <br />
-    <users-grid :users="users"></users-grid>
+    <users-grid :users="users" @refreshGrid="refreshGrid"></users-grid>
   </div>
 </template>
 
@@ -22,6 +22,9 @@ export default {
     this.getAllUsers();
   },
   methods: {
+    refreshGrid:function(){
+      this.getAllUsers();
+    },
     getAllUsers: function() {
       UsersService.getAllUsers()
         .then(res => {

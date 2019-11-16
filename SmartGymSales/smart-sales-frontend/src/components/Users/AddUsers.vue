@@ -21,15 +21,15 @@
             >
               <b-form-input
                 id="input-2"
-                v-model="user.userName"
+                v-model="user.user_name"
                 required
                 placeholder="Enter user name"
                 :state="userNameValidation"
               ></b-form-input>
               <b-form-invalid-feedback :state="userNameValidation">
-                {{userNameValidation}}   -----
-                Your user name must be 6 characters max, contain letters and
-                numbers, and must not contain spaces, special characters
+               Your password must be 4-10 characters long, 
+               contain letters and numbers, and must not
+                contain spaces, special characters
               </b-form-invalid-feedback>
               <b-form-valid-feedback :state="userNameValidation">
                 Looks Good.
@@ -64,7 +64,7 @@
           <b-col>
             <div class="button-group actions-buttons">
               <b-button type="submit" variant="primary">Submit</b-button>
-              <b-button type="reset" variant="danger">Reset</b-button>
+              <b-button type="reset" variant="secondary">Reset</b-button>
             </div>
           </b-col>
         </b-row>
@@ -74,12 +74,14 @@
 </template>
 
 <script>
+import UsersService from "../../services/Users";
+
 export default {
   name: "addUsers",
   data() {
     return {
       user: {
-        userName: null,
+        user_name: null,
         name: null,
         password: null
       }
@@ -93,28 +95,36 @@ export default {
           this.user.password.length < 20 &&
           !this.invalidFilter(this.user.password)
         );
-      }
-      else{
+      } else {
         return null;
       }
     },
     userNameValidation() {
-      if (this.user.userName) {
+      if (this.user.user_name) {
         return (
-          this.user.userName.length <= 6 && !this.invalidFilter(this.user.userName)
+          this.user.user_name.length <= 10 && this.user.user_name.length >= 4&&
+          !this.invalidFilter(this.user.user_name)
         );
-      }
-      else{
+      } else {
         return null;
       }
     }
   },
   methods: {
-    onSubmit: function() {},
+    onSubmit: function() {
+      UsersService.insertUser(this.user)
+        .then(res => {          // eslint-disable-line no-unused-vars
+        this.$emit("refreshGrid")
+        this.onReset();
+          /*eslint no-console: ["error", { allow: ["warn", "error","log"] }] */
+          console.log("test");
+        })
+        .finally(() => {});
+    },
     onReset: function() {
-      this.user.userName= null;
-      this.user.name= null;
-      this.user.password= null;
+      this.user.user_name = null;
+      this.user.name = null;
+      this.user.password = null;
     }
   }
 };
