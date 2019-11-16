@@ -40,7 +40,6 @@ export class API {
     return apiPath;
   }
 
-
   get(requestBody) {
     return axios
       .get(this.apiUrl, requestBody)
@@ -50,7 +49,7 @@ export class API {
         return Promise.resolve(result);
       })
       .catch(error => {
-        console.error(error);
+        // console.error(error);
         return Promise.reject(error);
       });
   }
@@ -63,7 +62,7 @@ export class API {
         return Promise.resolve(result);
       })
       .catch(error => {
-        console.error(error);
+        // console.error(error);
         return Promise.reject(error);
       });
   }
@@ -75,7 +74,7 @@ export class API {
         return Promise.resolve(result);
       })
       .catch(error => {
-        console.error(error);
+        // console.error(error);
         return Promise.reject(error);
       });
   }
@@ -87,7 +86,7 @@ export class API {
         return Promise.resolve(result);
       })
       .catch(error => {
-        console.error(error);
+        // console.error(error);
         return Promise.reject(error);
       });
   }

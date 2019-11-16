@@ -134,18 +134,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_UserRoles_UserRoles">
-    <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="1" />
-    <End Role="UserRoles1" Type="Self.UserRoles" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="UserRoles">
-        <PropertyRef Name="id" />
-      </Principal>
-      <Dependent Role="UserRoles1">
-        <PropertyRef Name="id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_UserRoles_Users">
     <End Role="Users" Type="Self.Users" Multiplicity="1" />
     <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
@@ -179,10 +167,6 @@
     <AssociationSet Name="FK_UserRoles_Roles" Association="Self.FK_UserRoles_Roles">
       <End Role="Roles" EntitySet="Roles" />
       <End Role="UserRoles" EntitySet="UserRoles" />
-    </AssociationSet>
-    <AssociationSet Name="FK_UserRoles_UserRoles" Association="Self.FK_UserRoles_UserRoles">
-      <End Role="UserRoles" EntitySet="UserRoles" />
-      <End Role="UserRoles1" EntitySet="UserRoles" />
     </AssociationSet>
     <AssociationSet Name="FK_UserRoles_Users" Association="Self.FK_UserRoles_Users">
       <End Role="Users" EntitySet="Users" />

@@ -19,8 +19,6 @@ namespace SmartGymSales.Models
         public int role_id { get; set; }
     
         public virtual Role Role { get; set; }
-        public virtual UserRole UserRoles1 { get; set; }
-        public virtual UserRole UserRole1 { get; set; }
         public virtual User User { get; set; }
     }
 }

@@ -1,58 +1,63 @@
 <template>
-  <b-card header="Create new Users" header-tag="h4">
+  <b-card header="Create new User" header-tag="h4">
     <div>
       <b-form @submit="onSubmit" @reset="onReset">
         <b-row>
           <b-col>
-            <b-form-group
-              id="input-group-1"
-              label="Email address:"
-              label-for="input-1"
-              description="We'll never share your email with anyone else."
-            >
+            <b-form-group id="input-group-1" label="Name:" label-for="input-1">
               <b-form-input
                 id="input-1"
-                v-model="form.email"
-                type="email"
-                required
-                placeholder="Enter email"
-              ></b-form-input>
-            </b-form-group>
-          </b-col>
-          <b-col>
-            <b-form-group
-              id="input-group-2"
-              label="Your Name:"
-              label-for="input-2"
-            >
-              <b-form-input
-                id="input-2"
-                v-model="form.name"
+                v-model="user.name"
                 required
                 placeholder="Enter name"
               ></b-form-input>
             </b-form-group>
           </b-col>
           <b-col>
-            <b-form-group id="input-group-3" label="Food:" label-for="input-3">
-              <b-form-select
-                id="input-3"
-                v-model="form.food"
-                :options="foods"
+            <b-form-group
+              id="input-group-2"
+              label="User Name:"
+              label-for="input-2"
+            >
+              <b-form-input
+                id="input-2"
+                v-model="user.userName"
                 required
-              ></b-form-select>
+                placeholder="Enter user name"
+                :state="userNameValidation"
+              ></b-form-input>
+              <b-form-invalid-feedback :state="userNameValidation">
+                {{userNameValidation}}   -----
+                Your user name must be 6 characters max, contain letters and
+                numbers, and must not contain spaces, special characters
+              </b-form-invalid-feedback>
+              <b-form-valid-feedback :state="userNameValidation">
+                Looks Good.
+              </b-form-valid-feedback>
             </b-form-group>
           </b-col>
-        </b-row>
-
-        <b-row>
-            <b-col>
-          <b-form-group id="input-group-4">
-            <b-form-checkbox-group v-model="form.checked" id="checkboxes-4">
-              <b-form-checkbox value="me">Check me out</b-form-checkbox>
-              <b-form-checkbox value="that">Check that out</b-form-checkbox>
-            </b-form-checkbox-group>
-          </b-form-group>
+          <b-col>
+            <b-form-group
+              id="input-group-3"
+              label="Password:"
+              label-for="input-3"
+            >
+              <b-form-input
+                type="password"
+                id="text-password"
+                required
+                v-model="user.password"
+                :state="PasswordValidation"
+              ></b-form-input>
+              <b-form-invalid-feedback :state="PasswordValidation">
+                Your password must be 5-20 characters long, contain letters and
+                numbers, and must not contain spaces, special characters, or
+                emoji.
+              </b-form-invalid-feedback>
+              <b-form-valid-feedback :state="PasswordValidation">
+                Looks Good.
+              </b-form-valid-feedback>
+            </b-form-group>
           </b-col>
         </b-row>
         <b-row>
@@ -73,24 +78,44 @@ export default {
   name: "addUsers",
   data() {
     return {
-      form: {
-        email: "",
-        name: "",
-        food: null,
-        checked: []
-      },
-      foods: [
-        { text: "Select One", value: null },
-        "Carrots",
-        "Beans",
-        "Tomatoes",
-        "Corn"
-      ]
+      user: {
+        userName: null,
+        name: null,
+        password: null
+      }
     };
+  },
+  computed: {
+    PasswordValidation() {
+      if (this.user.password) {
+        return (
+          this.user.password.length >= 5 &&
+          this.user.password.length < 20 &&
+          !this.invalidFilter(this.user.password)
+        );
+      }
+      else{
+        return null;
+      }
+    },
+    userNameValidation() {
+      if (this.user.userName) {
+        return (
+          this.user.userName.length <= 6 && !this.invalidFilter(this.user.userName)
+        );
+      }
+      else{
+        return null;
+      }
+    }
   },
   methods: {
     onSubmit: function() {},
-    onReset: function() {}
+    onReset: function() {
+      this.user.userName= null;
+      this.user.name= null;
+      this.user.password= null;
+    }
   }
 };
 </script>
