@@ -48,6 +48,7 @@
                 required
                 v-model="user.password"
                 :state="PasswordValidation"
+                placeholder="Enter Password"
               ></b-form-input>
               <b-form-invalid-feedback :state="PasswordValidation">
                 Your password must be 5-20 characters long, contain letters and
