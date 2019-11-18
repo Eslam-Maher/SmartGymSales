@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <loader v-if="loadingCount >0" />
     <nav-bar></nav-bar>
     <div class="context-wrapper">
       <router-view class="context" />
@@ -8,9 +9,10 @@
 </template>
 <script>
 import navBar from "../src/components/navBar.vue";
+import loader from  "../src/components/Loader.vue";
 export default {
   name: "App",
-  components: { navBar }
+  components: { navBar,loader }
 };
 </script>
 <style>

@@ -67,30 +67,16 @@ export default {
             res
           ); /*eslint no-console: ["error", { allow: ["warn", "error","log"] }] */
           if (res.data == true) {
-            this.$bvToast.toast('Login Done Successfully', {
-          title: `Success`,
-          variant: "success",
-          solid: true
-          });
+            this.$bvToast.toast('Login Done Successfully',this.sucessToastConfig);
             this.$router.push({ name: "home" });
           } else {
-          this.$bvToast.toast('Login Failed', {
-          title: `Failure`,
-          variant: "danger",
-          solid: true
-          });
+          this.$bvToast.toast('Login Failed',this.failToastConfig);
             this.error = true;
           }
         })
         .catch(error => {
 
-          this.$bvToast.toast('Error'+error.message, {
-          title: "Failure",/*eslint no-undef: "error"*/
-
-          variant: "danger", /*eslint no-undef: "error"*/
-
-          solid: true
-          });
+          this.$bvToast.toast('Error'+error.message, this.failToastConfig);
 
         }) // eslint-disable-line no-unused-vars
         .finally(() => {});
