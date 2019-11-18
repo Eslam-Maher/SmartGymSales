@@ -26,14 +26,14 @@ namespace SmartGymSales.Controllers
             return UsersService.getAllUsers();
         }
 
-        [HttpGet]
+        [HttpPost]
         [ActionName("login")]
-        public bool checkCredentials(string user_name,string password ) {
+        public bool checkCredentials(User user ) {
             bool isValid = false;
-            if ( string.IsNullOrEmpty(user_name)|| string.IsNullOrEmpty(password)) {
+            if ( string.IsNullOrEmpty(user.user_name) || string.IsNullOrEmpty(user.password)) {
                return isValid;
             }
-            isValid= db.Users.Where(e => e.user_name == user_name && e.password == password).Any();
+            isValid= db.Users.Where(e => e.user_name == user.user_name && e.password == user.password).Any();
             return isValid;
         }
 
