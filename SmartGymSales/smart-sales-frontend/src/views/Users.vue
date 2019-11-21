@@ -26,15 +26,18 @@ export default {
       this.getAllUsers();
     },
     getAllUsers: function() {
+            this.loadingCount++
       UsersService.getAllUsers()
         .then(res => {
           this.users = res.data;
-        
         })
-        // .catch(error => {
-        //   console.log(error.message);
-        // })
-        .finally(() => {});
+        .catch(error => {
+          this.$bvToast.toast('getting all users error ',error.message);
+        })
+        .finally(() => {
+                this.loadingCount--
+
+        });
     }
   }
 };

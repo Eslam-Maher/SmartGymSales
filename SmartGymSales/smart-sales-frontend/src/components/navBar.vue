@@ -17,7 +17,9 @@
 
           <b-nav-item-dropdown text="Setup" right>
             <b-dropdown-item to="/Users">Users</b-dropdown-item>
+            <b-dropdown-item to="/UserRoles">Roles</b-dropdown-item>
           </b-nav-item-dropdown>
+          
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>

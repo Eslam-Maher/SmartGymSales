@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Users from "../views/Users.vue";
 import Login from "../views/Login.vue";
+import UserRoles from "../views/UserRoles.vue";
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -30,7 +31,8 @@ const router = new VueRouter({
       path: "/Login",
       name: "Login",
       component: Login
-    }
+    },
+    { path: "/UserRoles", name: "UserRoles", component: UserRoles }
   ]
 });
 

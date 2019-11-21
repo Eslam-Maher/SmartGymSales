@@ -60,13 +60,15 @@ export default {
   },
   methods: {
     Login: function() {
+      this.loadingCount++
       UsersService.login(this.user_name, this.password)
         .then(res => {
           // eslint-disable-line no-unused-vars
           console.log(
             res
           ); /*eslint no-console: ["error", { allow: ["warn", "error","log"] }] */
-          if (res.data == true) {
+          if (res.data) {
+            this.user=res.data
             this.$bvToast.toast('Login Done Successfully',this.sucessToastConfig);
             this.$router.push({ name: "home" });
           } else {
@@ -76,10 +78,12 @@ export default {
         })
         .catch(error => {
 
-          this.$bvToast.toast('Error'+error.message, this.failToastConfig);
+          this.$bvToast.toast('Error '+error.message, this.failToastConfig);
 
         }) // eslint-disable-line no-unused-vars
-        .finally(() => {});
+        .finally(() => {
+          this.loadingCount--
+        });
     }
   }
 };

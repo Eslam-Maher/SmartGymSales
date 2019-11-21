@@ -28,13 +28,14 @@ namespace SmartGymSales.Controllers
 
         [HttpPost]
         [ActionName("login")]
-        public bool checkCredentials(User user ) {
+        public User checkCredentials(User user ) {
             bool isValid = false;
             if ( string.IsNullOrEmpty(user.user_name) || string.IsNullOrEmpty(user.password)) {
-               return isValid;
+               return null;
             }
             isValid= db.Users.Where(e => e.user_name == user.user_name && e.password == user.password).Any();
-            return isValid;
+            User foundUser = db.Users.Where(e => e.user_name == user.user_name && e.password == user.password).FirstOrDefault();
+            return isValid? foundUser : null;
         }
 
         // GET: api/Users/5
@@ -108,16 +109,23 @@ namespace SmartGymSales.Controllers
         [ActionName("deleteUser")]
         public IHttpActionResult DeleteUser(int id)
         {
-            User user = db.Users.Find(id);
-            if (user == null)
+            try
             {
-                return NotFound();
+                User user = db.Users.Find(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                db.Users.Remove(user);
+                db.SaveChanges();
+                return Ok(true);
+
             }
+            catch {
+                return Ok(false);
 
-            db.Users.Remove(user);
-            db.SaveChanges();
-
-            return Ok(user);
+            }
         }
 
         protected override void Dispose(bool disposing)

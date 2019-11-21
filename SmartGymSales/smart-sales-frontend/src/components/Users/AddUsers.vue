@@ -7,7 +7,7 @@
             <b-form-group id="input-group-1" label="Name:" label-for="input-1">
               <b-form-input
                 id="input-1"
-                v-model="user.name"
+                v-model="InputUser.name"
                 required
                 placeholder="Enter name"
               ></b-form-input>
@@ -21,15 +21,14 @@
             >
               <b-form-input
                 id="input-2"
-                v-model="user.user_name"
+                v-model="InputUser.user_name"
                 required
                 placeholder="Enter user name"
                 :state="userNameValidation"
               ></b-form-input>
               <b-form-invalid-feedback :state="userNameValidation">
-               Your password must be 4-10 characters long, 
-               contain letters and numbers, and must not
-                contain spaces, special characters
+                Your password must be 4-10 characters long, contain letters and
+                numbers, and must not contain spaces, special characters
               </b-form-invalid-feedback>
               <b-form-valid-feedback :state="userNameValidation">
                 Looks Good.
@@ -46,7 +45,7 @@
                 type="password"
                 id="text-password"
                 required
-                v-model="user.password"
+                v-model="InputUser.password"
                 :state="PasswordValidation"
                 placeholder="Enter Password"
               ></b-form-input>
@@ -81,7 +80,7 @@ export default {
   name: "addUsers",
   data() {
     return {
-      user: {
+      InputUser: {
         user_name: null,
         name: null,
         password: null
@@ -90,21 +89,22 @@ export default {
   },
   computed: {
     PasswordValidation() {
-      if (this.user.password) {
+      if (this.InputUser.password) {
         return (
-          this.user.password.length >= 5 &&
-          this.user.password.length < 20 &&
-          !this.invalidFilter(this.user.password)
+          this.InputUser.password.length >= 5 &&
+          this.InputUser.password.length < 20 &&
+          !this.invalidFilter(this.InputUser.password)
         );
       } else {
         return null;
       }
     },
     userNameValidation() {
-      if (this.user.user_name) {
+      if (this.InputUser.user_name) {
         return (
-          this.user.user_name.length <= 10 && this.user.user_name.length >= 4&&
-          !this.invalidFilter(this.user.user_name)
+          this.InputUser.user_name.length <= 10 &&
+          this.InputUser.user_name.length >= 4 &&
+          !this.invalidFilter(this.InputUser.user_name)
         );
       } else {
         return null;
@@ -113,19 +113,30 @@ export default {
   },
   methods: {
     onSubmit: function() {
-      UsersService.insertUser(this.user)
-        .then(res => {          // eslint-disable-line no-unused-vars
-        this.$emit("refreshGrid")
-        this.onReset();
-          /*eslint no-console: ["error", { allow: ["warn", "error","log"] }] */
-          console.log("test");
+      this.loadingCount++;
+      UsersService.insertUser(this.InputUser)
+        .then(res => {
+          if (res.data) {
+            this.$bvToast.toast(
+              "User added Successfully",
+              this.sucessToastConfig
+            );
+          }
+          // eslint-disable-line no-unused-vars
+          this.$emit("refreshGrid");
+          this.onReset();
         })
-        .finally(() => {});
+        .catch(error => {
+          this.$bvToast.toast("User addtion Failed", error.message);
+        })
+        .finally(() => {
+          this.loadingCount--;
+        });
     },
     onReset: function() {
-      this.user.user_name = null;
-      this.user.name = null;
-      this.user.password = null;
+      this.InputUser.user_name = null;
+      this.InputUser.name = null;
+      this.InputUser.password = null;
     }
   }
 };

@@ -1,9 +1,9 @@
 <template>
-  <b-card header="Users Grid" header-tag="h4">
+  <b-card header="Users Roles Grid" header-tag="h4">
     <b-table
       striped
       hover
-      :items="users"
+      :items="usersRoles"
       :fields="fields"
       :current-page="currentPage"
       :per-page="perPage"
@@ -15,26 +15,20 @@
           variant="danger"
           size="sm"
           class="mr-1"
-          @click="deleteUser(row.item)"
+          @click="deleteUserRole(row.item)"
         >
           <font-awesome-icon icon="trash-alt" />
         </b-button>
-      </template>
-      <template v-slot:cell(userRoles)="row">
-        <div>
-          <p v-for="(value, key) in row.item.userRoles" :key="key">
-            {{ value.role.name }}
-          </p>
-        </div>
       </template>
     </b-table>
   </b-card>
 </template>
 
 <script>
-import UsersService from "../../services/Users";
+import UserRolesService from "../../services/UserRoles"
 export default {
-  props: ["users"],
+
+ props: ["usersRoles"],
   data() {
     return {
       totalRows: 0,
@@ -43,19 +37,14 @@ export default {
       pageOptions: [5, 10, 15],
       filter: null,
       fields: [
-        { key: "name", label: "Name", sortable: true, class: "text-center" },
+        { key: "user.name", label: "User Name", sortable: true, class: "text-center" },
         {
-          key: "user_name",
-          label: "User Name",
+          key: "role.name",
+          label: "Role",
           sortable: true,
           class: "text-center"
         },
-        {
-          key: "userRoles",
-          label: "Roles",
-          sortable: true,
-          class: "text-center"
-        },
+       
         { key: "delete", label: "Delete" }
       ]
     };
@@ -66,23 +55,23 @@ export default {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
-    deleteUser: function(user) {
+    deleteUserRole: function(user) {
       this.loadingCount++;
-      UsersService.deleteUser(user.id)
+      UserRolesService.deleteUserRole(user.id)
         .then(res => {
           // eslint-disable-line no-unused-vars
           if (res.data){
           this.$emit("refreshGrid");
           this.$bvToast.toast(
-            "User deleted Successfully",
+            "User Role deleted Successfully",
             this.sucessToastConfig
           );}
           else{
-             this.$bvToast.toast("User deletion Failed","User is not found");
+             this.$bvToast.toast("User Role deletion Failed","User is not found");
           }
         })
         .catch(error => {
-          this.$bvToast.toast("User deletion Failed", error.message);
+          this.$bvToast.toast("User Role deletion Failed", error.message);
         })
         .finally(() => {
           this.loadingCount--;
@@ -90,7 +79,7 @@ export default {
     }
   },
   watch: {
-    users: function(newVal) {
+    usersRoles: function(newVal) {
       if (newVal) {
         this.totalRows = newVal.length;
       }
@@ -99,8 +88,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.card-body {
-  text-align: center;
-}
+<style>
+
 </style>

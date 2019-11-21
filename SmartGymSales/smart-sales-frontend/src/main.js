@@ -26,7 +26,7 @@ Vue.use(VueAxios, axios);
 Vue.use(require("vue-moment"));
 Vue.component("multiselect", Multiselect);
 Vue.component("Datepicker", Datepicker);
-Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 new Vue({
   router,
