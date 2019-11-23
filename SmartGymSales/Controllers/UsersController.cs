@@ -16,7 +16,7 @@ namespace SmartGymSales.Controllers
     public class UsersController : ApiController
     {
         private SmartGymSalesEntities db = new SmartGymSalesEntities();
-        private UsersServices UsersService = new UsersServices();
+        private UsersService UsersService = new UsersService();
 
         // GET: api/Users
         [HttpGet]
