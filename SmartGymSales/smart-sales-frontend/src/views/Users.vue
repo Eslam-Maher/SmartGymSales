@@ -19,28 +19,27 @@ export default {
     };
   },
   created: function() {
-      if (!this.isAdmin){
-    this.$router.push({ name: "home" });
-    return;
-  }
+    if (!this.isAdmin) {
+      this.$router.push({ name: "home" });
+      return;
+    }
     this.getAllUsers();
   },
   methods: {
-    refreshGrid:function(){
+    refreshGrid: function() {
       this.getAllUsers();
     },
     getAllUsers: function() {
-            this.loadingCount++
+      this.loadingCount++;
       UsersService.getAllUsers()
         .then(res => {
           this.users = res.data;
         })
         .catch(error => {
-          this.$bvToast.toast('getting all users error ',error.message);
+          this.$bvToast.toast("getting all users error ", error.message);
         })
         .finally(() => {
-                this.loadingCount--
-
+          this.loadingCount--;
         });
     }
   }
