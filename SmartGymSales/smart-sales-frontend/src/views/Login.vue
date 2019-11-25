@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="login-header">
-      <!-- <img src="./../assets/valeo-logo.svg" /> -->
     </div>
     <div class="login-container">
       <div class="login-form">
@@ -35,14 +34,13 @@
           variant="light"
           @click="Login"
         >
-          <!-- <img src="./../assets/search.png"> -->
           <span>Sign in</span>
         </b-button>
         <label v-if="error" style="color:red">
           please double check your user name and password
         </label>
       </div>
-      <img class="login-background" src="./../assets/gymBackground.jpg" />
+      <img class="login-background" alt="smart gym image" src="./../assets/smart body gym.png" />
     </div>
   </div>
 </template>
@@ -112,6 +110,9 @@ export default {
 .login-background {
   width: 40%;
   height: 5%;
+  position: relative;
+    top: -30px;
+    right: 80px;
 }
 
 .login-form-header {

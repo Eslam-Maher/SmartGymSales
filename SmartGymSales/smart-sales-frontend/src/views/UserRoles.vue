@@ -43,7 +43,6 @@ methods:{
         .then(res => {
           this.userRoles = res.data;
           /*eslint no-console: ["error", { allow: ["warn", "error","log"] }] */
-          console.log(res.data);
         })
         .catch(error => {    // eslint-disable-line no-unused-vars
           this.$bvToast.toast('error in getting users roles ',this.failToastConfig);
@@ -55,6 +54,10 @@ methods:{
     }
 },
 created:function(){
+  if (!this.isAdmin){
+    this.$router.push({ name: "home" });
+    return;
+  }
   this.getAllUsers();
   this.getAllUsersRoles();
 }

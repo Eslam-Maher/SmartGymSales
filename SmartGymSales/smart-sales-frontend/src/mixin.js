@@ -1,5 +1,5 @@
 import moment from "moment";
-
+import {ROLES_ENUM} from "./models/enums/roles";
 export default {
   methods: {
     invalidFilter(val) {
@@ -40,7 +40,9 @@ export default {
         };
     },
     isAdmin:function(){
-      // return this.userRoles.includes(ROLES.ADMIN);
+        return this.user&&this.user.userRoles && this.user.userRoles.some(element => {
+         return element.role_id==ROLES_ENUM.ADMIN;
+        }); 
     },
     isSales:function(){},
     isManger:function(){},

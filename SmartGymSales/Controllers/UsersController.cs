@@ -38,54 +38,6 @@ namespace SmartGymSales.Controllers
             return isValid? foundUser : null;
         }
 
-        // GET: api/Users/5
-        [ResponseType(typeof(User))]
-        public IHttpActionResult GetUser(int id)
-        {
-            User user = db.Users.Find(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(user);
-        }
-
-        // PUT: api/Users/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutUser(int id, User user)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != user.id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
         // POST: api/Users
         [ResponseType(typeof(User))]
         [HttpPost]
@@ -97,10 +49,9 @@ namespace SmartGymSales.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Users.Add(user);
-            db.SaveChanges();
+            bool isInserted = UsersService.insertUsers(user);
 
-            return CreatedAtRoute("DefaultApi", new { id = user.id }, user);
+            return Ok(isInserted);
         }
 
         // DELETE: api/Users/5
@@ -111,20 +62,12 @@ namespace SmartGymSales.Controllers
         {
             try
             {
-                User user = db.Users.Find(id);
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
-                db.Users.Remove(user);
-                db.SaveChanges();
-                return Ok(true);
+                bool isDeleted =UsersService.deleteUser(id);
+                return Ok(isDeleted);
 
             }
             catch {
-                return Ok(false);
-
+                return Ok(false);  
             }
         }
 

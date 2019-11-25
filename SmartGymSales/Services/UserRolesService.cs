@@ -1,4 +1,5 @@
-﻿using SmartGymSales.Models;
+﻿using SmartGymSales.enums;
+using SmartGymSales.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,36 @@ namespace SmartGymSales.Services
         public IQueryable<UserRole> GetUserRoles()
         {
             return db.UserRoles;
+        }
+
+        public bool insertUserRole(UserRole userRole) {
+            if (db.UserRoles.Count(e => e.user_id == userRole.user_id && e.role_id == userRole.role_id) > 0)
+            {
+                return false;
+            }
+            else {
+                db.UserRoles.Add(userRole);
+                db.SaveChanges();
+                return true;
+            }
+        }
+
+        public bool deleteUserRole(int id)
+        {
+            UserRole userRole = db.UserRoles.Find(id);
+            if (userRole == null) {
+                return false;
+            }
+            List<UserRole> AdminUserRoles = db.UserRoles.Where(e => e.role_id == (int)rolesEnum.admin).ToList();
+            if (AdminUserRoles.Contains(userRole) && AdminUserRoles.Count == 1)
+            {
+                return false;
+            }
+            else {
+                db.UserRoles.Remove(userRole);
+                db.SaveChanges();
+                return true;
+            }
         }
     }
 }

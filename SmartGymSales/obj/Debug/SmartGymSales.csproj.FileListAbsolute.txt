@@ -120,3 +120,4 @@ C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\Microsoft.AspNet
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\Microsoft.AspNet.Identity.EntityFramework.xml
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\obj\Debug\SmartGymSales.dll
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\obj\Debug\SmartGymSales.pdb
+C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\obj\Debug\SmartGymSales.csprojResolveAssemblyReference.cache

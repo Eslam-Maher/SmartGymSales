@@ -9,19 +9,21 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using SmartGymSales.Models;
+using SmartGymSales.Services;
 
 namespace SmartGymSales.Controllers
 {
     public class UserRolesController : ApiController
     {
         private SmartGymSalesEntities db = new SmartGymSalesEntities();
+        private UserRolesService userRolesService = new UserRolesService();
 
         // GET: api/UserRoles
         [HttpGet]
         [ActionName("getAllUserRoles")]
         public IQueryable<UserRole> GetUserRoles()
         {
-            return db.UserRoles;
+            return userRolesService.GetUserRoles();
         }
 
         // GET: api/UserRoles/5
@@ -83,10 +85,9 @@ namespace SmartGymSales.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.UserRoles.Add(userRole);
-            db.SaveChanges();
+            bool isInserted = userRolesService.insertUserRole(userRole);
 
-            return CreatedAtRoute("DefaultApi", new { id = userRole.id }, userRole);
+            return Ok(isInserted);
         }
 
         // DELETE: api/UserRoles/5
@@ -95,16 +96,8 @@ namespace SmartGymSales.Controllers
         [ActionName("deleteUserRole")]
         public IHttpActionResult DeleteUserRole(int id)
         {
-            UserRole userRole = db.UserRoles.Find(id);
-            if (userRole == null)
-            {
-                return NotFound();
-            }
-
-            db.UserRoles.Remove(userRole);
-            db.SaveChanges();
-
-            return Ok(userRole);
+            bool isDeleted = userRolesService.deleteUserRole(id);
+            return Ok(isDeleted);
         }
 
         protected override void Dispose(bool disposing)

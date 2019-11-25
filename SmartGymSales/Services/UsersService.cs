@@ -43,6 +43,26 @@ namespace SmartGymSales.Services
             }
         }
 
+        public bool insertUsers(User user) {
+            if (db.Users.Where(e => e.user_name == user.user_name).Any()) {
+                return false;
+            }
+            if (String.IsNullOrEmpty(user.name) || String.IsNullOrEmpty(user.user_name) || String.IsNullOrEmpty(user.password)) {
+
+                return false;
+            }
+            try
+            {
+                db.Users.Add(user);
+                db.SaveChanges();
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+
+        }
 
         public bool UserExists(int id)
         {

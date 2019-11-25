@@ -19,6 +19,10 @@ export default {
     };
   },
   created: function() {
+      if (!this.isAdmin){
+    this.$router.push({ name: "home" });
+    return;
+  }
     this.getAllUsers();
   },
   methods: {
