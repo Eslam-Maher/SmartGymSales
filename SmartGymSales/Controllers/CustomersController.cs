@@ -10,6 +10,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using SmartGymSales.Models;
 using System.Web;
+using OfficeOpenXml;
+using SmartGymSales.Services;
 
 namespace SmartGymSales.Controllers
 {
@@ -29,11 +31,10 @@ namespace SmartGymSales.Controllers
         [ActionName("updateCustomersFromSheet")]
         public void UploadFile(HttpRequestMessage request)
         {
-            var filesToDelete = HttpContext.Current.Request.Params["file"];
-
             HttpContext context = HttpContext.Current;
             HttpPostedFile postedFile = context.Request.Files["file"];
-            // ...
+            CustomerService cs = new CustomerService();
+            List<String> errors = cs.insertExcelToCustomers(postedFile);
         }
 
         // GET: api/Customers/5
