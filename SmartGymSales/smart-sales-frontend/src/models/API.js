@@ -53,6 +53,15 @@ export class API {
         return Promise.reject(error);
       });
   }
+
+  getExcel(requestBody) {
+    return axios({
+      url: this.apiUrl,
+      method: "GET",
+      responseType: "blob",
+      headers:requestBody
+    });
+  }
   post(config, requestData = null) {
     return axios
       .post(this.apiUrl, requestData, config)

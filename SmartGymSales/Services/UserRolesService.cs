@@ -16,7 +16,23 @@ namespace SmartGymSales.Services
         {
             return db.UserRoles.Count(e => e.id == id) > 0;
         }
+        public bool isUserAdmin(string User_name) {
+            User user = userService.GetUserbyUser_name(User_name);
+            return user.UserRoles.Where(x => x.role_id == (int)rolesEnum.admin).Any();
 
+        }
+        public bool isUserManger(string User_name)
+        {
+            User user = userService.GetUserbyUser_name(User_name);
+            return user.UserRoles.Where(x => x.role_id == (int)rolesEnum.manger).Any();
+
+        }
+        public bool isUserSales(string User_name)
+        {
+            User user = userService.GetUserbyUser_name(User_name);
+            return user.UserRoles.Where(x => x.role_id == (int)rolesEnum.sales).Any();
+
+        }
         public List<UserRole> GetUserRoleByUserId(int id) {
             User user=userService.GetUserbyId(id);
 

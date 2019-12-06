@@ -18,7 +18,8 @@ namespace SmartGymSales.enums
          StartDate,
         [Description("Subscription End Date")]
         EndDate,
-
+        [Description("Discont Percentage")]
+        discont_percentage
 
     }
 }

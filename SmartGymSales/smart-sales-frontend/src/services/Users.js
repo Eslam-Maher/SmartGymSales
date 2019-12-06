@@ -1,12 +1,12 @@
 import { API } from "./../models/API";
-// import { store } from "./../store";
+import { store } from "./../store/index";
 export default {
     getAllUsers() {
       const getAllUsers = new API("Users/getUsers");
       const requestBody = {
         headers: {
-          // userName: store.getters.getUser.eMail,
-        //   Password: store.getters.getToken
+          userName: store.getters.getUser.user_name,
+          Password: store.getters.getUser.password
         },
       };
   
@@ -16,8 +16,8 @@ export default {
       const insertUser= new API("Users/insertUsers");
       const requestBody = {
         headers: {
-          // userName: store.getters.getUser.eMail,
-        //   Password: store.getters.getToken
+          userName: store.getters.getUser.user_name,
+          Password: store.getters.getUser.password
         },
       };
   
@@ -32,8 +32,8 @@ export default {
       }
       const config = {
         headers: {
-          // userName: store.getters.getUser.eMail,
-        //   Password: store.getters.getToken
+          userName: store.getters.getUser.user_name,
+          Password: store.getters.getUser.password
         },
       };
       return login.post(config,requestBody);
@@ -42,8 +42,8 @@ export default {
       const deleteUser= new API("Users/deleteUser/"+UserId);
       const requestBody = {
         headers: {
-          // userName: store.getters.getUser.eMail,
-        //   Password: store.getters.getToken
+          userName: store.getters.getUser.user_name,
+          Password: store.getters.getUser.password
         },
       };
   

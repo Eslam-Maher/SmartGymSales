@@ -4,9 +4,9 @@ using SmartGymSales.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
-
 namespace SmartGymSales.Services
 {
     public class CustomerService
@@ -40,40 +40,182 @@ namespace SmartGymSales.Services
             }
             return tbl;
         }
-
-        public List<String> insertExcelToCustomers(HttpPostedFile postedFile)
+ 
+        public List<String> insertExcelToCustomers(HttpPostedFile postedFile,string user_name,string password)
         {
+           
+            UtilsService US = new UtilsService();
+            UsersService userService = new UsersService();
+            UserRolesService userRolesService = new UserRolesService();
+
+
+           User currentUser= userService.GetUserbyUser_name(user_name);
             List<String> errors = new List<string>();
-            if (postedFile == null) {
+            if (!userService.checkUserCred(user_name, password)) {
+                errors.Add("please Login and try again");
+                return errors;
+            }
+            if (!userRolesService.isUserAdmin(user_name)) {
+                errors.Add("You are not authorized");
+                return errors;
+            }
+            if (postedFile == null)
+            {
                 errors.Add("failed to parse youe excel file ");
                 return errors;
             }
             DataTable excelCustomers = getDTfromExel(postedFile);
             if (excelCustomers.Rows.Count == 0) { errors.Add("failed to parse youe excel file "); }
-            foreach (DataColumn column in excelCustomers.Columns)
+            int rowIndex = 0;
+            foreach (DataRow row in excelCustomers.Rows)
             {
-                foreach (DataRow row in excelCustomers.Rows)
+                rowIndex++;
+                customer newCustomer = new customer();
+                bool customerError = false;
+                foreach (DataColumn column in excelCustomers.Columns)
                 {
-                    if (column.ColumnName == customerSheetHeadersEnum.Name.ToDescriptionString()) {
+                    if (column.ColumnName == customerSheetHeadersEnum.Name.ToDescriptionString())
+                    {
                         Console.WriteLine(row[column]);
+                        if (!String.IsNullOrEmpty(row[column].ToString()))
+                        {
+                            newCustomer.name = row[column].ToString();
+                        }
+                        else
+                        {
+                            errors.Add("Name is Empty at row : " + rowIndex);
+                            customerError = true;
+                        }
                     }
                     if (column.ColumnName == customerSheetHeadersEnum.Mobile.ToDescriptionString())
                     {
+                        if (String.IsNullOrEmpty(row[column].ToString()))
+                        {
+                            errors.Add("Mobile Phone is Empty at row : " + rowIndex);
+                            customerError = true;
+                        }
+                        else if (!US.checkPhoneNumberVaildaty(row[column].ToString()))
+                        {
+                            errors.Add("Mobile Phone is not correct at row : " + rowIndex);
+                            customerError = true;
+                        }
+                        else if (!US.checkPhoneNumberRedundancy(row[column].ToString()))
+                        {
+                            errors.Add("Mobile Phone is already found at row : " + rowIndex);
+                            customerError = true;
+                        }
+                        else
+                        {
+                            newCustomer.mobile = int.Parse(row[column].ToString());
+                        }
                         Console.WriteLine(row[column]);
                     }
                     if (column.ColumnName == customerSheetHeadersEnum.Email.ToDescriptionString())
                     {
-                        Console.WriteLine(row[column]);
+                        if (String.IsNullOrEmpty(row[column].ToString()))
+                        {
+                            errors.Add("Email is Empty at row : " + rowIndex);
+                        }
+                        else if (!String.IsNullOrEmpty(row[column].ToString())&&!US.checkEmailVaildaty(row[column].ToString()))
+                        {
+                            errors.Add("Email is not correct at row : " + rowIndex);
+                            customerError = true;
+                        }
+                        else if (!String.IsNullOrEmpty(row[column].ToString()) && !US.checkEmailRedundancy(row[column].ToString()))
+                        {
+                            errors.Add("Email is already found at row : " + rowIndex);
+                            customerError = true;
+                        }
+                        else
+                        {
+                            newCustomer.email = row[column].ToString();
+                        }
                     }
                     if (column.ColumnName == customerSheetHeadersEnum.StartDate.ToDescriptionString())
                     {
-                        Console.WriteLine(row[column]);
+                        DateTime startDate = new DateTime();
+                            bool sucess= DateTime.TryParseExact(row[column].ToString(), "dd-MM-yyyy",
+                                System.Globalization.CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate);
+                        if (!sucess)
+                        {
+                            errors.Add("Couldn't convert start date at row : " + rowIndex);
+                            customerError = true;
+                        }
+                        else {
+                            newCustomer.subscription_start_date = startDate;
+                        }
                     }
+                    if(column.ColumnName == customerSheetHeadersEnum.discont_percentage.ToDescriptionString()) {
+                        if (!String.IsNullOrEmpty(row[column].ToString()))
+                        {
+                            int percentage = 0;
+                            if (int.TryParse(row[column].ToString(), out percentage))
+                            {
+                                newCustomer.discont_percentage = percentage;
+                            }
+                            else
+                            {
+                                errors.Add("please enter discont percentage in numbers only at row : " + rowIndex);
+                                customerError = true;
+                            }
+                        }
+
+                    }
+                        
                     if (column.ColumnName == customerSheetHeadersEnum.EndDate.ToDescriptionString())
                     {
-                        Console.WriteLine(row[column]);
+                        DateTime endDate = new DateTime();
+                        bool sucess = DateTime.TryParseExact(row[column].ToString(), "dd-MM-yyyy",
+                            System.Globalization.CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate);
+                        if (!sucess)
+                        {
+                            errors.Add("Couldn't convert start date at row : " + rowIndex);
+                            customerError = true;
+                        }
+                        else
+                        {
+                            if (newCustomer.subscription_start_date > endDate)
+                            {
+                                errors.Add("End Date can't be earlier than start date at row : " + rowIndex);
+                                customerError = true;
+                            }
+                            else
+                            {
+                                newCustomer.subscription_start_date = endDate;
+                            }
+                        }
                     }
                 }
+
+                #region fill cutomerData
+                newCustomer.added_By_id = currentUser.id;
+                newCustomer.addition_type_id = (int)enums.AddtionalLookupEnm.Sheet;
+                newCustomer.is_called = false;
+                newCustomer.calles_count = 0;
+                newCustomer.men_forign_Key = null;
+                newCustomer.women_forign_key=null;
+                newCustomer.creation_date = DateTime.Now;
+                if (newCustomer.subscription_start_date < DateTime.Now &&
+                    DateTime.Now < newCustomer.subscription_end_date)
+                {
+                    newCustomer.is_active = true;
+                }
+                else {
+                    newCustomer.is_active = false;
+                }
+
+                #endregion
+
+
+                if (!customerError)
+                {
+                    db.customers.Add(newCustomer);
+
+                }
+            }
+            if (errors.Count == 0)
+            {
+                db.SaveChanges();
             }
             return errors;
 

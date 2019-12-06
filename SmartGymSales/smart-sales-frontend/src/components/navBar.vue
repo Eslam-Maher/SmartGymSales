@@ -18,6 +18,10 @@
             <b-dropdown-item to="/UserRoles">Roles</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
+
+        <b-navbar-nav>
+        <b-nav-item @click="this.user=null" href="/">Sign Out</b-nav-item>
+        </b-navbar-nav>
       </b-collapse>
     </b-navbar>
   </div>

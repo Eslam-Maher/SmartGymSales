@@ -170,6 +170,7 @@
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\UserRolesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="enums\AddtionalLookupEnm.cs" />
     <Compile Include="enums\customerSheetHeadersEnum.cs" />
     <Compile Include="enums\rolesEnum.cs" />
     <Compile Include="Global.asax.cs">
@@ -226,6 +227,7 @@
     <Compile Include="Services\UserRolesService.cs" />
     <Compile Include="Services\UsersService.cs" />
     <Compile Include="Services\UtilsEnumService.cs" />
+    <Compile Include="Services\UtilsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+export const store = new Vuex.Store({
   state: {
     user: {},
     loadingCount:0
@@ -24,6 +24,4 @@ export default new Vuex.Store({
       state.loadingCount=count;
     }
   },
-  actions: {},
-  modules: {}
 });
