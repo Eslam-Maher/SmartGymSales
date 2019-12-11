@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import Users from "../views/Users.vue";
 import Login from "../views/Login.vue";
 import CustomerRefreshPage from "../views/CustomerRefreshPage.vue";
+import CustomersView from "../views/CustomersView.vue";
 import UserRoles from "../views/UserRoles.vue";
 Vue.use(VueRouter);
 
@@ -37,6 +38,11 @@ const router = new VueRouter({
       path:"/CustomerRefreshPage",
       name:"CustomerRefresh",
       component:CustomerRefreshPage
+    },
+    {
+      path:"/Customers",
+      name:"Customers",
+      component:CustomersView
     },
     { path: "/UserRoles", name: "UserRoles", component: UserRoles }
   ]

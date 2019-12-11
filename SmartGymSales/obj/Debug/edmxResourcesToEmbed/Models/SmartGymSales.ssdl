@@ -25,7 +25,7 @@
     <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="added_By_id" Type="int" />
     <Property Name="addition_type_id" Type="int" Nullable="false" />
-    <Property Name="mobile" Type="int" />
+    <Property Name="mobile" Type="nvarchar" MaxLength="50" />
     <Property Name="email" Type="nvarchar" MaxLength="100" />
     <Property Name="discont_percentage" Type="int" />
     <Property Name="is_called" Type="bit" Nullable="false" />

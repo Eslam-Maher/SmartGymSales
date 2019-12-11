@@ -44,8 +44,16 @@ export default {
          return element.role_id==ROLES_ENUM.ADMIN;
         }); 
     },
-    isSales:function(){},
-    isManger:function(){},
+    isSales:function(){
+      return this.user&&this.user.userRoles && this.user.userRoles.some(element => {
+        return element.role_id==ROLES_ENUM.SALES;
+       }); 
+    },
+    isManger:function(){
+      return this.user&&this.user.userRoles && this.user.userRoles.some(element => {
+        return element.role_id==ROLES_ENUM.MANGER;
+       }); 
+    },
 
   },
   filters: {

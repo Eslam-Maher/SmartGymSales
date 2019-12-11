@@ -70,6 +70,7 @@ export default {
           }
           else{
               this.$bvToast.toast("File uploaded successfully", this.sucessToastConfig);
+              this.file = null;
           }
         }) // eslint-disable-line no-unused-vars
         .catch(() => {

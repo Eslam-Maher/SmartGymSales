@@ -7,17 +7,17 @@
       <Diagram DiagramId="9289e8a05f654fdfb7df686b9701662f" Name="Diagram1" ZoomLevel="107">
         <EntityTypeShape EntityType="SmartGymSalesModel.AdditionLookup" Width="1.5" PointX="7.75" PointY="2.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SmartGymSalesModel.commission" Width="1.5" PointX="7.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmartGymSalesModel.customer" Width="1.5" PointX="10" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="SmartGymSalesModel.knowledgeLookup" Width="1.5" PointX="2.75" PointY="6" IsExpanded="true" />
         <EntityTypeShape EntityType="SmartGymSalesModel.possibleCustmer" Width="1.5" PointX="5" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="SmartGymSalesModel.review" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SmartGymSalesModel.Role" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SmartGymSalesModel.User" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
-        <AssociationConnector Association="SmartGymSalesModel.FK_customers_AdditionLookup" ManuallyRouted="false" />
         <AssociationConnector Association="SmartGymSalesModel.FK_possibleCustmers_knowledgeLookup" ManuallyRouted="false" />
         <EntityTypeShape EntityType="SmartGymSalesModel.UserRole" Width="1.5" PointX="3" PointY="2.25" />
         <AssociationConnector Association="SmartGymSalesModel.FK_UserRoles_Roles" />
         <AssociationConnector Association="SmartGymSalesModel.FK_UserRoles_Users" />
+        <EntityTypeShape EntityType="SmartGymSalesModel.customer" Width="1.5" PointX="10" PointY="1" />
+        <AssociationConnector Association="SmartGymSalesModel.FK_customers_AdditionLookup" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

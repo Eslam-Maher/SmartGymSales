@@ -5,14 +5,16 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item href="/">Link</b-nav-item>
-          <b-nav-item-dropdown text="Customers">
-            <b-dropdown-item to="/CustomerRefreshPage">Refresh Customers</b-dropdown-item>
+          <!-- <b-nav-item href="/">Link</b-nav-item> -->
+          <b-nav-item-dropdown v-if="isManger||isSales" text="Customers">
+             <b-dropdown-item v-if="isManger||isSales" to="/Customers">View Customers</b-dropdown-item>
+            <b-dropdown-item v-if="isManger" to="/CustomerRefreshPage">Refresh Customers</b-dropdown-item>
           </b-nav-item-dropdown>
+          
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
+        <b-navbar-nav class="ml-auto" v-if="isAdmin">
           <b-nav-item-dropdown text="Setup" right>
             <b-dropdown-item to="/Users">Users</b-dropdown-item>
             <b-dropdown-item to="/UserRoles">Roles</b-dropdown-item>

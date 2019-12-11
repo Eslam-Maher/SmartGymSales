@@ -30,7 +30,7 @@
           <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="added_By_id" Type="int" />
           <Property Name="addition_type_id" Type="int" Nullable="false" />
-          <Property Name="mobile" Type="int" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="50" />
           <Property Name="email" Type="nvarchar" MaxLength="100" />
           <Property Name="discont_percentage" Type="int" />
           <Property Name="is_called" Type="bit" Nullable="false" />
@@ -188,7 +188,7 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="addition_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="customers" Relationship="Self.FK_customers_AdditionLookup" FromRole="AdditionLookup" ToRole="customers" />
+          <NavigationProperty Name="customers" Relationship="SmartGymSalesModel.FK_customers_AdditionLookup" FromRole="AdditionLookup" ToRole="customer" />
         </EntityType>
         <EntityType Name="commission">
           <Key>
@@ -199,27 +199,6 @@
           <Property Name="old_customer_percentatge" Type="Double" Nullable="false" />
           <Property Name="target" Type="Int32" />
           <Property Name="is_hidden" Type="Boolean" />
-        </EntityType>
-        <EntityType Name="customer">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="added_By_id" Type="Int32" />
-          <Property Name="addition_type_id" Type="Int32" Nullable="false" />
-          <Property Name="mobile" Type="Int32" />
-          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="discont_percentage" Type="Int32" />
-          <Property Name="is_called" Type="Boolean" Nullable="false" />
-          <Property Name="calles_count" Type="Int32" Nullable="false" />
-          <Property Name="is_active" Type="Boolean" Nullable="false" />
-          <Property Name="subscription_start_date" Type="DateTime" Precision="3" />
-          <Property Name="subscription_end_date" Type="DateTime" Precision="3" />
-          <Property Name="men_forign_Key" Type="Int32" />
-          <Property Name="women_forign_key" Type="Int32" />
-          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="AdditionLookup" Relationship="Self.FK_customers_AdditionLookup" FromRole="customers" ToRole="AdditionLookup" />
         </EntityType>
         <EntityType Name="knowledgeLookup">
           <Key>
@@ -278,18 +257,6 @@
           <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="UserRoles" Relationship="SmartGymSalesModel.FK_UserRoles_Users" FromRole="User" ToRole="UserRole" />
         </EntityType>
-        <Association Name="FK_customers_AdditionLookup">
-          <End Role="AdditionLookup" Type="Self.AdditionLookup" Multiplicity="1" />
-          <End Role="customers" Type="Self.customer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AdditionLookup">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="customers">
-              <PropertyRef Name="addition_type_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_possibleCustmers_knowledgeLookup">
           <End Role="knowledgeLookup" Type="Self.knowledgeLookup" Multiplicity="1" />
           <End Role="possibleCustmers" Type="Self.possibleCustmer" Multiplicity="*" />
@@ -305,16 +272,11 @@
         <EntityContainer Name="SmartGymSalesEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AdditionLookups" EntityType="Self.AdditionLookup" />
           <EntitySet Name="commissions" EntityType="Self.commission" />
-          <EntitySet Name="customers" EntityType="Self.customer" />
           <EntitySet Name="knowledgeLookups" EntityType="Self.knowledgeLookup" />
           <EntitySet Name="possibleCustmers" EntityType="Self.possibleCustmer" />
           <EntitySet Name="reviews" EntityType="Self.review" />
           <EntitySet Name="Roles" EntityType="Self.Role" />
           <EntitySet Name="Users" EntityType="Self.User" />
-          <AssociationSet Name="FK_customers_AdditionLookup" Association="Self.FK_customers_AdditionLookup">
-            <End Role="AdditionLookup" EntitySet="AdditionLookups" />
-            <End Role="customers" EntitySet="customers" />
-          </AssociationSet>
           <AssociationSet Name="FK_possibleCustmers_knowledgeLookup" Association="Self.FK_possibleCustmers_knowledgeLookup">
             <End Role="knowledgeLookup" EntitySet="knowledgeLookups" />
             <End Role="possibleCustmers" EntitySet="possibleCustmers" />
@@ -327,6 +289,11 @@
           <AssociationSet Name="FK_UserRoles_Users" Association="SmartGymSalesModel.FK_UserRoles_Users">
             <End Role="User" EntitySet="Users" />
             <End Role="UserRole" EntitySet="UserRoles" />
+          </AssociationSet>
+          <EntitySet Name="customers" EntityType="SmartGymSalesModel.customer" />
+          <AssociationSet Name="FK_customers_AdditionLookup" Association="SmartGymSalesModel.FK_customers_AdditionLookup">
+            <End Role="AdditionLookup" EntitySet="AdditionLookups" />
+            <End Role="customer" EntitySet="customers" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="UserRole">
@@ -363,6 +330,39 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="added_By_id" Type="Int32" />
+          <Property Name="addition_type_id" Type="Int32" Nullable="false" />
+          <Property Name="mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="discont_percentage" Type="Int32" />
+          <Property Name="is_called" Type="Boolean" Nullable="false" />
+          <Property Name="calles_count" Type="Int32" Nullable="false" />
+          <Property Name="is_active" Type="Boolean" Nullable="false" />
+          <Property Name="subscription_start_date" Type="DateTime" Precision="3" />
+          <Property Name="subscription_end_date" Type="DateTime" Precision="3" />
+          <Property Name="men_forign_Key" Type="Int32" />
+          <Property Name="women_forign_key" Type="Int32" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AdditionLookup" Relationship="SmartGymSalesModel.FK_customers_AdditionLookup" FromRole="customer" ToRole="AdditionLookup" />
+        </EntityType>
+        <Association Name="FK_customers_AdditionLookup">
+          <End Type="SmartGymSalesModel.AdditionLookup" Role="AdditionLookup" Multiplicity="1" />
+          <End Type="SmartGymSalesModel.customer" Role="customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdditionLookup">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer">
+              <PropertyRef Name="addition_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -385,27 +385,6 @@
                 <ScalarProperty Name="old_customer_percentatge" ColumnName="old_customer_percentatge" />
                 <ScalarProperty Name="target" ColumnName="target" />
                 <ScalarProperty Name="is_hidden" ColumnName="is_hidden" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="customers">
-            <EntityTypeMapping TypeName="SmartGymSalesModel.customer">
-              <MappingFragment StoreEntitySet="customers">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="added_By_id" ColumnName="added_By_id" />
-                <ScalarProperty Name="addition_type_id" ColumnName="addition_type_id" />
-                <ScalarProperty Name="mobile" ColumnName="mobile" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="discont_percentage" ColumnName="discont_percentage" />
-                <ScalarProperty Name="is_called" ColumnName="is_called" />
-                <ScalarProperty Name="calles_count" ColumnName="calles_count" />
-                <ScalarProperty Name="is_active" ColumnName="is_active" />
-                <ScalarProperty Name="subscription_start_date" ColumnName="subscription_start_date" />
-                <ScalarProperty Name="subscription_end_date" ColumnName="subscription_end_date" />
-                <ScalarProperty Name="men_forign_Key" ColumnName="men_forign_Key" />
-                <ScalarProperty Name="women_forign_key" ColumnName="women_forign_key" />
-                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -472,6 +451,27 @@
               <MappingFragment StoreEntitySet="UserRoles">
                 <ScalarProperty Name="role_id" ColumnName="role_id" />
                 <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="customers">
+            <EntityTypeMapping TypeName="SmartGymSalesModel.customer">
+              <MappingFragment StoreEntitySet="customers">
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+                <ScalarProperty Name="women_forign_key" ColumnName="women_forign_key" />
+                <ScalarProperty Name="men_forign_Key" ColumnName="men_forign_Key" />
+                <ScalarProperty Name="subscription_end_date" ColumnName="subscription_end_date" />
+                <ScalarProperty Name="subscription_start_date" ColumnName="subscription_start_date" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="calles_count" ColumnName="calles_count" />
+                <ScalarProperty Name="is_called" ColumnName="is_called" />
+                <ScalarProperty Name="discont_percentage" ColumnName="discont_percentage" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="addition_type_id" ColumnName="addition_type_id" />
+                <ScalarProperty Name="added_By_id" ColumnName="added_By_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

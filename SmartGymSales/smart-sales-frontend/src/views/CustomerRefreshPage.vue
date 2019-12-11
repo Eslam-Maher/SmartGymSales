@@ -6,7 +6,13 @@
 <script>
 import uploadCustomerExcel from "../components/CustomerRefreshPage/UploadCustomerExcel"
 export default {
-components:{uploadCustomerExcel}
+components:{uploadCustomerExcel},
+created: function() {
+    if (!this.isManger) {
+      this.$router.push({ name: "home" });
+      return;
+    }
+}
 }
 </script>
 

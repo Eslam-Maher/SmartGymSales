@@ -47,7 +47,20 @@ namespace SmartGymSales.Services
             return db.UserRoles;
         }
 
-        public bool insertUserRole(UserRole userRole) {
+        public bool insertUserRole(UserRole userRole,string userName, string password) {
+
+            UsersService userService = new UsersService();
+            UserRolesService userRolesService = new UserRolesService();
+
+            if (!userService.checkUserCred(userName, password))
+            {
+                return false;
+            }
+            if (!userRolesService.isUserAdmin(userName))
+            {
+                return false;
+            }
+
             if (db.UserRoles.Count(e => e.user_id == userRole.user_id && e.role_id == userRole.role_id) > 0)
             {
                 return false;
@@ -59,8 +72,19 @@ namespace SmartGymSales.Services
             }
         }
 
-        public bool deleteUserRole(int id)
+        public bool deleteUserRole(int id, string userName, string password)
         {
+            UsersService userService = new UsersService();
+            UserRolesService userRolesService = new UserRolesService();
+
+            if (!userService.checkUserCred(userName, password))
+            {
+                return false;
+            }
+            if (!userRolesService.isUserAdmin(userName))
+            {
+                return false;
+            }
             UserRole userRole = db.UserRoles.Find(id);
             if (userRole == null) {
                 return false;

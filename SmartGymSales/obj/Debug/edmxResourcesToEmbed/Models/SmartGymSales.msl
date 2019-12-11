@@ -20,27 +20,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="customers">
-      <EntityTypeMapping TypeName="SmartGymSalesModel.customer">
-        <MappingFragment StoreEntitySet="customers">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="added_By_id" ColumnName="added_By_id" />
-          <ScalarProperty Name="addition_type_id" ColumnName="addition_type_id" />
-          <ScalarProperty Name="mobile" ColumnName="mobile" />
-          <ScalarProperty Name="email" ColumnName="email" />
-          <ScalarProperty Name="discont_percentage" ColumnName="discont_percentage" />
-          <ScalarProperty Name="is_called" ColumnName="is_called" />
-          <ScalarProperty Name="calles_count" ColumnName="calles_count" />
-          <ScalarProperty Name="is_active" ColumnName="is_active" />
-          <ScalarProperty Name="subscription_start_date" ColumnName="subscription_start_date" />
-          <ScalarProperty Name="subscription_end_date" ColumnName="subscription_end_date" />
-          <ScalarProperty Name="men_forign_Key" ColumnName="men_forign_Key" />
-          <ScalarProperty Name="women_forign_key" ColumnName="women_forign_key" />
-          <ScalarProperty Name="creation_date" ColumnName="creation_date" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="knowledgeLookups">
       <EntityTypeMapping TypeName="SmartGymSalesModel.knowledgeLookup">
         <MappingFragment StoreEntitySet="knowledgeLookup">
@@ -104,6 +83,27 @@
         <MappingFragment StoreEntitySet="UserRoles">
           <ScalarProperty Name="role_id" ColumnName="role_id" />
           <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="customers">
+      <EntityTypeMapping TypeName="SmartGymSalesModel.customer">
+        <MappingFragment StoreEntitySet="customers">
+          <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+          <ScalarProperty Name="women_forign_key" ColumnName="women_forign_key" />
+          <ScalarProperty Name="men_forign_Key" ColumnName="men_forign_Key" />
+          <ScalarProperty Name="subscription_end_date" ColumnName="subscription_end_date" />
+          <ScalarProperty Name="subscription_start_date" ColumnName="subscription_start_date" />
+          <ScalarProperty Name="is_active" ColumnName="is_active" />
+          <ScalarProperty Name="calles_count" ColumnName="calles_count" />
+          <ScalarProperty Name="is_called" ColumnName="is_called" />
+          <ScalarProperty Name="discont_percentage" ColumnName="discont_percentage" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="mobile" ColumnName="mobile" />
+          <ScalarProperty Name="addition_type_id" ColumnName="addition_type_id" />
+          <ScalarProperty Name="added_By_id" ColumnName="added_By_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="id" ColumnName="id" />
         </MappingFragment>
       </EntityTypeMapping>

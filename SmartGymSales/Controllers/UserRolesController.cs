@@ -10,6 +10,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using SmartGymSales.Models;
 using SmartGymSales.Services;
+using System.Net.Http.Headers;
 
 namespace SmartGymSales.Controllers
 {
@@ -84,8 +85,19 @@ namespace SmartGymSales.Controllers
             {
                 return BadRequest(ModelState);
             }
+            HttpRequestHeaders headers = this.Request.Headers;
+            string userName = string.Empty;
+            string pwd = string.Empty;
+            if (headers.Contains("userName"))
+            {
+                userName = headers.GetValues("userName").First();
+            }
+            if (headers.Contains("Password"))
+            {
+                pwd = headers.GetValues("Password").First();
+            }
 
-            bool isInserted = userRolesService.insertUserRole(userRole);
+            bool isInserted = userRolesService.insertUserRole(userRole, userName,pwd);
 
             return Ok(isInserted);
         }
@@ -96,7 +108,18 @@ namespace SmartGymSales.Controllers
         [ActionName("deleteUserRole")]
         public IHttpActionResult DeleteUserRole(int id)
         {
-            bool isDeleted = userRolesService.deleteUserRole(id);
+            HttpRequestHeaders headers = this.Request.Headers;
+            string userName = string.Empty;
+            string pwd = string.Empty;
+            if (headers.Contains("userName"))
+            {
+                userName = headers.GetValues("userName").First();
+            }
+            if (headers.Contains("Password"))
+            {
+                pwd = headers.GetValues("Password").First();
+            }
+            bool isDeleted = userRolesService.deleteUserRole(id, userName, pwd);
             return Ok(isDeleted);
         }
 

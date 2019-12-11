@@ -26,6 +26,16 @@ export default {
           console.log(headers); /*eslint no-console: ["error", { allow: ["warn", "error","log"] }] */
           return downloadCustomersExcelSheet.getExcel(headers);
 
-      }
+      },
+      getAllCustomers() {
+        const getAllCustomers = new API("Customers/getAllCustomers");
+        const requestBody = {
+          headers: {
+            userName: store.getters.getUser.user_name,
+            Password: store.getters.getUser.password
+          },
+        };
+        return getAllCustomers.get(requestBody);
+      },
 
 }

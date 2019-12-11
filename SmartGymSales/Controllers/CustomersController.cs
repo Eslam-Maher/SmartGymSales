@@ -23,9 +23,23 @@ namespace SmartGymSales.Controllers
         private SmartGymSalesEntities db = new SmartGymSalesEntities();
 
         // GET: api/Customers
-        public IQueryable<customer> Getcustomers()
+        [HttpGet]
+        [ActionName("getAllCustomers")]
+        public List<customer> Getcustomers()
         {
-            return db.customers;
+            HttpRequestHeaders headers = this.Request.Headers;
+            string userName = string.Empty;
+            string pwd = string.Empty;
+            if (headers.Contains("userName"))
+            {
+                userName = headers.GetValues("userName").First();
+            }
+            if (headers.Contains("Password"))
+            {
+                pwd = headers.GetValues("Password").First();
+            }
+            CustomerService cs = new CustomerService();
+            return cs.getAllCustomers(userName, pwd);
         }
 
 
@@ -77,7 +91,7 @@ namespace SmartGymSales.Controllers
             {
                 return response;
             }
-            if (!userRolesService.isUserAdmin(userName))
+            if (!userRolesService.isUserManger(userName))
             {
                 return response;
             }

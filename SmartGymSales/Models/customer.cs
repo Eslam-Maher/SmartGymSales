@@ -18,7 +18,7 @@ namespace SmartGymSales.Models
         public string name { get; set; }
         public Nullable<int> added_By_id { get; set; }
         public int addition_type_id { get; set; }
-        public Nullable<int> mobile { get; set; }
+        public string mobile { get; set; }
         public string email { get; set; }
         public Nullable<int> discont_percentage { get; set; }
         public bool is_called { get; set; }

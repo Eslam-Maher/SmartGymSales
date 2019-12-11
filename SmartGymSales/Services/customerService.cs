@@ -34,7 +34,7 @@ namespace SmartGymSales.Services
                     var wsRow = ws.Cells[rowNum, 1, rowNum, ws.Dimension.End.Column];
                     DataRow row = tbl.NewRow();
                     foreach (var cell in wsRow)
-                        row[cell.Start.Column - 1] = cell.Text;
+                        row[cell.Start.Column - 1] = cell.Value;
                     tbl.Rows.Add(row);
                 }
             }
@@ -55,7 +55,7 @@ namespace SmartGymSales.Services
                 errors.Add("please Login and try again");
                 return errors;
             }
-            if (!userRolesService.isUserAdmin(user_name)) {
+            if (!userRolesService.isUserManger(user_name)) {
                 errors.Add("You are not authorized");
                 return errors;
             }
@@ -99,14 +99,14 @@ namespace SmartGymSales.Services
                             errors.Add("Mobile Phone is not correct at row : " + rowIndex);
                             customerError = true;
                         }
-                        else if (!US.checkPhoneNumberRedundancy(row[column].ToString()))
+                        else if (US.checkPhoneNumberRedundancy(row[column].ToString()))
                         {
                             errors.Add("Mobile Phone is already found at row : " + rowIndex);
                             customerError = true;
                         }
                         else
                         {
-                            newCustomer.mobile = int.Parse(row[column].ToString());
+                            newCustomer.mobile = row[column].ToString();
                         }
                         Console.WriteLine(row[column]);
                     }
@@ -121,7 +121,7 @@ namespace SmartGymSales.Services
                             errors.Add("Email is not correct at row : " + rowIndex);
                             customerError = true;
                         }
-                        else if (!String.IsNullOrEmpty(row[column].ToString()) && !US.checkEmailRedundancy(row[column].ToString()))
+                        else if (!String.IsNullOrEmpty(row[column].ToString()) && US.checkEmailRedundancy(row[column].ToString()))
                         {
                             errors.Add("Email is already found at row : " + rowIndex);
                             customerError = true;
@@ -131,21 +131,8 @@ namespace SmartGymSales.Services
                             newCustomer.email = row[column].ToString();
                         }
                     }
-                    if (column.ColumnName == customerSheetHeadersEnum.StartDate.ToDescriptionString())
+                    if (column.ColumnName == customerSheetHeadersEnum.discont_percentage.ToDescriptionString())
                     {
-                        DateTime startDate = new DateTime();
-                            bool sucess= DateTime.TryParseExact(row[column].ToString(), "dd-MM-yyyy",
-                                System.Globalization.CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate);
-                        if (!sucess)
-                        {
-                            errors.Add("Couldn't convert start date at row : " + rowIndex);
-                            customerError = true;
-                        }
-                        else {
-                            newCustomer.subscription_start_date = startDate;
-                        }
-                    }
-                    if(column.ColumnName == customerSheetHeadersEnum.discont_percentage.ToDescriptionString()) {
                         if (!String.IsNullOrEmpty(row[column].ToString()))
                         {
                             int percentage = 0;
@@ -161,27 +148,40 @@ namespace SmartGymSales.Services
                         }
 
                     }
-                        
-                    if (column.ColumnName == customerSheetHeadersEnum.EndDate.ToDescriptionString())
+                    if (column.ColumnName == customerSheetHeadersEnum.StartDate.ToDescriptionString())
                     {
-                        DateTime endDate = new DateTime();
-                        bool sucess = DateTime.TryParseExact(row[column].ToString(), "dd-MM-yyyy",
-                            System.Globalization.CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate);
+                        DateTime startDate = new DateTime();
+                            bool sucess= DateTime.TryParse(row[column].ToString(), out startDate);
                         if (!sucess)
                         {
                             errors.Add("Couldn't convert start date at row : " + rowIndex);
                             customerError = true;
                         }
+                        else {
+                            newCustomer.subscription_start_date = startDate;
+                        }
+                    }
+                  
+                        
+                    if (column.ColumnName == customerSheetHeadersEnum.EndDate.ToDescriptionString())
+                    {
+                        DateTime endDate = new DateTime();
+                        bool sucess = DateTime.TryParse(row[column].ToString(), out endDate);
+                        if (!sucess)
+                        {
+                            errors.Add("Couldn't convert end date at row : " + rowIndex);
+                            customerError = true;
+                        }
                         else
                         {
-                            if (newCustomer.subscription_start_date > endDate)
+                            if (newCustomer.subscription_start_date !=null&& newCustomer.subscription_start_date > endDate)
                             {
                                 errors.Add("End Date can't be earlier than start date at row : " + rowIndex);
                                 customerError = true;
                             }
                             else
                             {
-                                newCustomer.subscription_start_date = endDate;
+                                newCustomer.subscription_end_date = endDate;
                             }
                         }
                     }
@@ -220,5 +220,26 @@ namespace SmartGymSales.Services
             return errors;
 
         }
+
+        public List<customer> getAllCustomers(string user_name, string password) {
+
+            UsersService userService = new UsersService();
+            UserRolesService userRolesService = new UserRolesService();
+
+
+            User currentUser = userService.GetUserbyUser_name(user_name);
+            if (!userService.checkUserCred(user_name, password))
+            {
+                return new List<customer>();
+            }
+            if (!userRolesService.isUserManger(user_name)&& !userRolesService.isUserSales(user_name))
+            {
+                return new List<customer>();
+
+            }
+            return db.customers.ToList();
+
+        }
+
     }
 }
