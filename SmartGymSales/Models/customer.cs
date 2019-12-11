@@ -12,24 +12,27 @@ namespace SmartGymSales.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class customer
+    public partial class Customer
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public Nullable<int> added_By_id { get; set; }
-        public int addition_type_id { get; set; }
-        public string mobile { get; set; }
+        public int Customer_ID { get; set; }
+        public string Name { get; set; }
         public string email { get; set; }
-        public Nullable<int> discont_percentage { get; set; }
-        public bool is_called { get; set; }
-        public int calles_count { get; set; }
-        public bool is_active { get; set; }
-        public Nullable<System.DateTime> subscription_start_date { get; set; }
-        public Nullable<System.DateTime> subscription_end_date { get; set; }
-        public Nullable<int> men_forign_Key { get; set; }
-        public Nullable<int> women_forign_key { get; set; }
-        public System.DateTime creation_date { get; set; }
-    
-        public virtual AdditionLookup AdditionLookup { get; set; }
+        public string Gendar { get; set; }
+        public System.DateTime DateOfBirth { get; set; }
+        public string Phone_mobile { get; set; }
+        public string address { get; set; }
+        public string phone_home { get; set; }
+        public string id_type { get; set; }
+        public string id_number { get; set; }
+        public string cardid { get; set; }
+        public Nullable<decimal> hieght { get; set; }
+        public Nullable<decimal> wieght { get; set; }
+        public string notes { get; set; }
+        public string pic_path { get; set; }
+        public Nullable<int> block { get; set; }
+        public Nullable<int> userstuffid { get; set; }
+        public Nullable<int> recordstatus { get; set; }
+        public Nullable<System.DateTime> recorddate { get; set; }
+        public Nullable<System.TimeSpan> recordtime { get; set; }
     }
 }

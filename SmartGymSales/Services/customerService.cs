@@ -70,7 +70,7 @@ namespace SmartGymSales.Services
             foreach (DataRow row in excelCustomers.Rows)
             {
                 rowIndex++;
-                customer newCustomer = new customer();
+                SalesCustomer newCustomer = new SalesCustomer();
                 bool customerError = false;
                 foreach (DataColumn column in excelCustomers.Columns)
                 {
@@ -209,7 +209,7 @@ namespace SmartGymSales.Services
 
                 if (!customerError)
                 {
-                    db.customers.Add(newCustomer);
+                    db.SalesCustomers.Add(newCustomer);
 
                 }
             }
@@ -221,7 +221,7 @@ namespace SmartGymSales.Services
 
         }
 
-        public List<customer> getAllCustomers(string user_name, string password) {
+        public List<SalesCustomer> getAllCustomers(string user_name, string password) {
 
             UsersService userService = new UsersService();
             UserRolesService userRolesService = new UserRolesService();
@@ -230,14 +230,14 @@ namespace SmartGymSales.Services
             User currentUser = userService.GetUserbyUser_name(user_name);
             if (!userService.checkUserCred(user_name, password))
             {
-                return new List<customer>();
+                return new List<SalesCustomer>();
             }
             if (!userRolesService.isUserManger(user_name)&& !userRolesService.isUserSales(user_name))
             {
-                return new List<customer>();
+                return new List<SalesCustomer>();
 
             }
-            return db.customers.ToList();
+            return db.SalesCustomers.ToList();
 
         }
 

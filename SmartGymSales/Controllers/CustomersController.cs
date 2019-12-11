@@ -25,7 +25,7 @@ namespace SmartGymSales.Controllers
         // GET: api/Customers
         [HttpGet]
         [ActionName("getAllCustomers")]
-        public List<customer> Getcustomers()
+        public List<SalesCustomer> Getcustomers()
         {
             HttpRequestHeaders headers = this.Request.Headers;
             string userName = string.Empty;
@@ -128,10 +128,10 @@ namespace SmartGymSales.Controllers
         }
 
         // GET: api/Customers/5
-        [ResponseType(typeof(customer))]
+        [ResponseType(typeof(SalesCustomer))]
         public IHttpActionResult Getcustomer(int id)
         {
-            customer customer = db.customers.Find(id);
+            SalesCustomer customer = db.SalesCustomers.Find(id);
             if (customer == null)
             {
                 return NotFound();
@@ -142,7 +142,7 @@ namespace SmartGymSales.Controllers
 
         // PUT: api/Customers/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult Putcustomer(int id, customer customer)
+        public IHttpActionResult Putcustomer(int id, SalesCustomer customer)
         {
             if (!ModelState.IsValid)
             {
@@ -176,31 +176,31 @@ namespace SmartGymSales.Controllers
         }
 
         // POST: api/Customers
-        [ResponseType(typeof(customer))]
-        public IHttpActionResult Postcustomer(customer customer)
+        [ResponseType(typeof(SalesCustomer))]
+        public IHttpActionResult Postcustomer(SalesCustomer customer)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.customers.Add(customer);
+            db.SalesCustomers.Add(customer);
             db.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = customer.id }, customer);
         }
 
         // DELETE: api/Customers/5
-        [ResponseType(typeof(customer))]
+        [ResponseType(typeof(SalesCustomer))]
         public IHttpActionResult Deletecustomer(int id)
         {
-            customer customer = db.customers.Find(id);
+            SalesCustomer customer = db.SalesCustomers.Find(id);
             if (customer == null)
             {
                 return NotFound();
             }
 
-            db.customers.Remove(customer);
+            db.SalesCustomers.Remove(customer);
             db.SaveChanges();
 
             return Ok(customer);
@@ -217,7 +217,7 @@ namespace SmartGymSales.Controllers
 
         private bool customerExists(int id)
         {
-            return db.customers.Count(e => e.id == id) > 0;
+            return db.SalesCustomers.Count(e => e.id == id) > 0;
         }
     }
 }

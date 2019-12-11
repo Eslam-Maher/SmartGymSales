@@ -6,7 +6,7 @@
     </Key>
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="addition_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-    <NavigationProperty Name="customers" Relationship="SmartGymSalesModel.FK_customers_AdditionLookup" FromRole="AdditionLookup" ToRole="customer" />
+    <NavigationProperty Name="SalesCustomers" Relationship="SmartGymSalesModel.FK_customers_AdditionLookup" FromRole="AdditionLookup" ToRole="SalesCustomer" />
   </EntityType>
   <EntityType Name="commission">
     <Key>
@@ -108,10 +108,10 @@
       <End Role="User" EntitySet="Users" />
       <End Role="UserRole" EntitySet="UserRoles" />
     </AssociationSet>
-    <EntitySet Name="customers" EntityType="SmartGymSalesModel.customer" />
+    <EntitySet Name="SalesCustomers" EntityType="SmartGymSalesModel.SalesCustomer" />
     <AssociationSet Name="FK_customers_AdditionLookup" Association="SmartGymSalesModel.FK_customers_AdditionLookup">
       <End Role="AdditionLookup" EntitySet="AdditionLookups" />
-      <End Role="customer" EntitySet="customers" />
+      <End Role="SalesCustomer" EntitySet="SalesCustomers" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserRole">
@@ -148,7 +148,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityType Name="customer">
+  <EntityType Name="SalesCustomer">
     <Key>
       <PropertyRef Name="id" />
     </Key>
@@ -167,16 +167,16 @@
     <Property Name="men_forign_Key" Type="Int32" />
     <Property Name="women_forign_key" Type="Int32" />
     <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
-    <NavigationProperty Name="AdditionLookup" Relationship="SmartGymSalesModel.FK_customers_AdditionLookup" FromRole="customer" ToRole="AdditionLookup" />
+    <NavigationProperty Name="AdditionLookup" Relationship="SmartGymSalesModel.FK_customers_AdditionLookup" FromRole="SalesCustomer" ToRole="AdditionLookup" />
   </EntityType>
   <Association Name="FK_customers_AdditionLookup">
     <End Type="SmartGymSalesModel.AdditionLookup" Role="AdditionLookup" Multiplicity="1" />
-    <End Type="SmartGymSalesModel.customer" Role="customer" Multiplicity="*" />
+    <End Type="SmartGymSalesModel.SalesCustomer" Role="SalesCustomer" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="AdditionLookup">
         <PropertyRef Name="id" />
       </Principal>
-      <Dependent Role="customer">
+      <Dependent Role="SalesCustomer">
         <PropertyRef Name="addition_type_id" />
       </Dependent>
     </ReferentialConstraint>

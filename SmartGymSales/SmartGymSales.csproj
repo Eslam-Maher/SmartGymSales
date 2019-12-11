@@ -184,9 +184,6 @@
     <Compile Include="Models\commission.cs">
       <DependentUpon>SmartGymSales.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\customer.cs">
-      <DependentUpon>SmartGymSales.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\knowledgeLookup.cs">
       <DependentUpon>SmartGymSales.tt</DependentUpon>
     </Compile>
@@ -197,6 +194,9 @@
       <DependentUpon>SmartGymSales.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Role.cs">
+      <DependentUpon>SmartGymSales.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SalesCustomer.cs">
       <DependentUpon>SmartGymSales.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SmartGymSales.Context.cs">

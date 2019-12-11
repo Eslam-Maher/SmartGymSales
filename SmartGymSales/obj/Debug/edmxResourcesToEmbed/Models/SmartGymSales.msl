@@ -87,9 +87,9 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="customers">
-      <EntityTypeMapping TypeName="SmartGymSalesModel.customer">
-        <MappingFragment StoreEntitySet="customers">
+    <EntitySetMapping Name="SalesCustomers">
+      <EntityTypeMapping TypeName="SmartGymSalesModel.SalesCustomer">
+        <MappingFragment StoreEntitySet="SalesCustomers">
           <ScalarProperty Name="creation_date" ColumnName="creation_date" />
           <ScalarProperty Name="women_forign_key" ColumnName="women_forign_key" />
           <ScalarProperty Name="men_forign_Key" ColumnName="men_forign_Key" />

@@ -22,26 +22,6 @@
           <Property Name="target" Type="int" />
           <Property Name="is_hidden" Type="bit" />
         </EntityType>
-        <EntityType Name="customers">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="added_By_id" Type="int" />
-          <Property Name="addition_type_id" Type="int" Nullable="false" />
-          <Property Name="mobile" Type="nvarchar" MaxLength="50" />
-          <Property Name="email" Type="nvarchar" MaxLength="100" />
-          <Property Name="discont_percentage" Type="int" />
-          <Property Name="is_called" Type="bit" Nullable="false" />
-          <Property Name="calles_count" Type="int" Nullable="false" />
-          <Property Name="is_active" Type="bit" Nullable="false" />
-          <Property Name="subscription_start_date" Type="datetime" />
-          <Property Name="subscription_end_date" Type="datetime" />
-          <Property Name="men_forign_Key" Type="int" />
-          <Property Name="women_forign_key" Type="int" />
-          <Property Name="creation_date" Type="datetime" Nullable="false" />
-        </EntityType>
         <EntityType Name="knowledgeLookup">
           <Key>
             <PropertyRef Name="id" />
@@ -86,6 +66,26 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="SalesCustomers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="added_By_id" Type="int" />
+          <Property Name="addition_type_id" Type="int" Nullable="false" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="50" />
+          <Property Name="email" Type="nvarchar" MaxLength="100" />
+          <Property Name="discont_percentage" Type="int" />
+          <Property Name="is_called" Type="bit" Nullable="false" />
+          <Property Name="calles_count" Type="int" Nullable="false" />
+          <Property Name="is_active" Type="bit" Nullable="false" />
+          <Property Name="subscription_start_date" Type="datetime" />
+          <Property Name="subscription_end_date" Type="datetime" />
+          <Property Name="men_forign_Key" Type="int" />
+          <Property Name="women_forign_key" Type="int" />
+          <Property Name="creation_date" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="UserRoles">
           <Key>
             <PropertyRef Name="id" />
@@ -105,12 +105,12 @@
         </EntityType>
         <Association Name="FK_customers_AdditionLookup">
           <End Role="AdditionLookup" Type="Self.AdditionLookup" Multiplicity="1" />
-          <End Role="customers" Type="Self.customers" Multiplicity="*" />
+          <End Role="SalesCustomers" Type="Self.SalesCustomers" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AdditionLookup">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="customers">
+            <Dependent Role="SalesCustomers">
               <PropertyRef Name="addition_type_id" />
             </Dependent>
           </ReferentialConstraint>
@@ -154,16 +154,16 @@
         <EntityContainer Name="SmartGymSalesModelStoreContainer">
           <EntitySet Name="AdditionLookup" EntityType="Self.AdditionLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="commission" EntityType="Self.commission" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="customers" EntityType="Self.customers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="knowledgeLookup" EntityType="Self.knowledgeLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="possibleCustmers" EntityType="Self.possibleCustmers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="reviews" EntityType="Self.reviews" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SalesCustomers" EntityType="Self.SalesCustomers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_customers_AdditionLookup" Association="Self.FK_customers_AdditionLookup">
             <End Role="AdditionLookup" EntitySet="AdditionLookup" />
-            <End Role="customers" EntitySet="customers" />
+            <End Role="SalesCustomers" EntitySet="SalesCustomers" />
           </AssociationSet>
           <AssociationSet Name="FK_possibleCustmers_knowledgeLookup" Association="Self.FK_possibleCustmers_knowledgeLookup">
             <End Role="knowledgeLookup" EntitySet="knowledgeLookup" />
@@ -188,7 +188,7 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="addition_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="customers" Relationship="SmartGymSalesModel.FK_customers_AdditionLookup" FromRole="AdditionLookup" ToRole="customer" />
+          <NavigationProperty Name="SalesCustomers" Relationship="SmartGymSalesModel.FK_customers_AdditionLookup" FromRole="AdditionLookup" ToRole="SalesCustomer" />
         </EntityType>
         <EntityType Name="commission">
           <Key>
@@ -290,10 +290,10 @@
             <End Role="User" EntitySet="Users" />
             <End Role="UserRole" EntitySet="UserRoles" />
           </AssociationSet>
-          <EntitySet Name="customers" EntityType="SmartGymSalesModel.customer" />
+          <EntitySet Name="SalesCustomers" EntityType="SmartGymSalesModel.SalesCustomer" />
           <AssociationSet Name="FK_customers_AdditionLookup" Association="SmartGymSalesModel.FK_customers_AdditionLookup">
             <End Role="AdditionLookup" EntitySet="AdditionLookups" />
-            <End Role="customer" EntitySet="customers" />
+            <End Role="SalesCustomer" EntitySet="SalesCustomers" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="UserRole">
@@ -330,7 +330,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="customer">
+        <EntityType Name="SalesCustomer">
           <Key>
             <PropertyRef Name="id" />
           </Key>
@@ -349,16 +349,16 @@
           <Property Name="men_forign_Key" Type="Int32" />
           <Property Name="women_forign_key" Type="Int32" />
           <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="AdditionLookup" Relationship="SmartGymSalesModel.FK_customers_AdditionLookup" FromRole="customer" ToRole="AdditionLookup" />
+          <NavigationProperty Name="AdditionLookup" Relationship="SmartGymSalesModel.FK_customers_AdditionLookup" FromRole="SalesCustomer" ToRole="AdditionLookup" />
         </EntityType>
         <Association Name="FK_customers_AdditionLookup">
           <End Type="SmartGymSalesModel.AdditionLookup" Role="AdditionLookup" Multiplicity="1" />
-          <End Type="SmartGymSalesModel.customer" Role="customer" Multiplicity="*" />
+          <End Type="SmartGymSalesModel.SalesCustomer" Role="SalesCustomer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AdditionLookup">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="customer">
+            <Dependent Role="SalesCustomer">
               <PropertyRef Name="addition_type_id" />
             </Dependent>
           </ReferentialConstraint>
@@ -455,9 +455,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="customers">
-            <EntityTypeMapping TypeName="SmartGymSalesModel.customer">
-              <MappingFragment StoreEntitySet="customers">
+          <EntitySetMapping Name="SalesCustomers">
+            <EntityTypeMapping TypeName="SmartGymSalesModel.SalesCustomer">
+              <MappingFragment StoreEntitySet="SalesCustomers">
                 <ScalarProperty Name="creation_date" ColumnName="creation_date" />
                 <ScalarProperty Name="women_forign_key" ColumnName="women_forign_key" />
                 <ScalarProperty Name="men_forign_Key" ColumnName="men_forign_Key" />
