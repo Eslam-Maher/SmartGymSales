@@ -8,16 +8,21 @@
         <EntityTypeShape EntityType="SmartGymSalesModel.AdditionLookup" Width="1.5" PointX="7.75" PointY="2.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SmartGymSalesModel.commission" Width="1.5" PointX="7.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SmartGymSalesModel.knowledgeLookup" Width="1.5" PointX="2.75" PointY="6" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmartGymSalesModel.possibleCustmer" Width="1.5" PointX="5" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="SmartGymSalesModel.review" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SmartGymSalesModel.Role" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SmartGymSalesModel.User" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
-        <AssociationConnector Association="SmartGymSalesModel.FK_possibleCustmers_knowledgeLookup" ManuallyRouted="false" />
         <EntityTypeShape EntityType="SmartGymSalesModel.UserRole" Width="1.5" PointX="3" PointY="2.25" />
         <AssociationConnector Association="SmartGymSalesModel.FK_UserRoles_Roles" />
         <AssociationConnector Association="SmartGymSalesModel.FK_UserRoles_Users" />
-        <EntityTypeShape EntityType="SmartGymSalesModel.SalesCustomer" Width="1.5" PointX="10" PointY="1" />
+        <EntityTypeShape EntityType="SmartGymSalesModel.possibleCustomer" Width="1.5" PointX="13" PointY="2.75" />
+        <EntityTypeShape EntityType="SmartGymSalesModel.SalesCustomer" Width="1.5" PointX="10" PointY="2.625" />
         <AssociationConnector Association="SmartGymSalesModel.FK_customers_AdditionLookup" />
+        <AssociationConnector Association="SmartGymSalesModel.FK_possibleCustomers_AdditionLookup" />
+        <AssociationConnector Association="SmartGymSalesModel.FK_possibleCustmers_knowledgeLookup" />
+        <AssociationConnector Association="SmartGymSalesModel.FK_possibleCustomers_Users" />
+        <AssociationConnector Association="SmartGymSalesModel.FK_possibleCustomers_Users1" />
+        <AssociationConnector Association="SmartGymSalesModel.FK_customers_Users" />
+        <AssociationConnector Association="SmartGymSalesModel.FK_customers_Users1" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

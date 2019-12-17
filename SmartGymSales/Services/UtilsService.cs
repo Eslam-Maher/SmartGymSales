@@ -22,12 +22,21 @@ namespace SmartGymSales.Services
         }
         public bool checkPhoneNumberRedundancy(String number)
         {
-             return db.customers.Where(x => x.mobile == number).Any();
+             return db.SalesCustomers.Where(x => x.mobile == number).Any();
         }
 
-        internal bool checkEmailRedundancy(string email)
+        public bool checkPhoneNumberRedundancyforPossibleCustomers(String number)
         {
-            return db.customers.Where(x=>x.email.ToLower()==email.ToLower()).Any();
+            return db.possibleCustomers.Where(x => x.mobile.ToString() == number).Any();
+        }
+        public bool checkEmailRedundancyforPossibleCustomers(string email)
+        {
+            return db.possibleCustomers.Where(x => x.email.ToLower() == email.ToLower()).Any();
+        }
+
+        public bool checkEmailRedundancy(string email)
+        {
+            return db.SalesCustomers.Where(x=>x.email.ToLower()==email.ToLower()).Any();
         }
 
         internal bool checkEmailVaildaty(string email)

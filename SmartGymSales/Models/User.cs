@@ -18,6 +18,10 @@ namespace SmartGymSales.Models
         public User()
         {
             this.UserRoles = new HashSet<UserRole>();
+            this.possibleCustomers = new HashSet<possibleCustomer>();
+            this.possibleCustomers1 = new HashSet<possibleCustomer>();
+            this.SalesCustomers = new HashSet<SalesCustomer>();
+            this.SalesCustomers1 = new HashSet<SalesCustomer>();
         }
     
         public int id { get; set; }
@@ -27,5 +31,13 @@ namespace SmartGymSales.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserRole> UserRoles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<possibleCustomer> possibleCustomers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<possibleCustomer> possibleCustomers1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SalesCustomer> SalesCustomers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SalesCustomer> SalesCustomers1 { get; set; }
     }
 }

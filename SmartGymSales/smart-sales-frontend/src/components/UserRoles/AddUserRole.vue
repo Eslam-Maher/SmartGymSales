@@ -68,13 +68,15 @@ export default {
               "User Role added Successfully",
               this.sucessToastConfig
             );
+          }else{
+            this.$bvToast.toast("User Role addtion Failed", this.failToastConfig);
           }
           // eslint-disable-line no-unused-vars
           this.$emit("refreshGrid");
           this.onReset();
         })
         .catch(error => {
-          this.$bvToast.toast("User Role addtion Failed", error.message);
+          this.$bvToast.toast(error.message, this.failToastConfig);
         })
         .finally(() => {
           this.loadingCount--;

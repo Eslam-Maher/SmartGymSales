@@ -172,6 +172,7 @@
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="enums\AddtionalLookupEnm.cs" />
     <Compile Include="enums\customerSheetHeadersEnum.cs" />
+    <Compile Include="enums\KnowledgeLookupEnum.cs" />
     <Compile Include="enums\rolesEnum.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -184,10 +185,16 @@
     <Compile Include="Models\commission.cs">
       <DependentUpon>SmartGymSales.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Customer.cs">
+      <DependentUpon>SmartGymMen.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\knowledgeLookup.cs">
       <DependentUpon>SmartGymSales.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\possibleCustmer.cs">
+    <Compile Include="Models\Membership.cs">
+      <DependentUpon>SmartGymMen.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\possibleCustomer.cs">
       <DependentUpon>SmartGymSales.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\review.cs">
@@ -198,6 +205,21 @@
     </Compile>
     <Compile Include="Models\SalesCustomer.cs">
       <DependentUpon>SmartGymSales.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SmartGymMen.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SmartGymMen.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SmartGymMen.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SmartGymMen.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SmartGymMen.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SmartGymMen.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\SmartGymSales.Context.cs">
       <AutoGen>True</AutoGen>
@@ -213,6 +235,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SmartGymSales.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\T_session_subscriber.cs">
+      <DependentUpon>SmartGymMen.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
       <DependentUpon>SmartGymSales.tt</DependentUpon>
@@ -236,8 +261,25 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SmartGymSales.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="Models\SmartGymMen.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SmartGymMen.edmx</DependentUpon>
+      <LastGenOutput>SmartGymMen.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\SmartGymMen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SmartGymMen.edmx</DependentUpon>
+      <LastGenOutput>SmartGymMen.cs</LastGenOutput>
+    </Content>
     <Content Include="Models\SmartGymSales.edmx.diagram">
       <DependentUpon>SmartGymSales.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\SmartGymMen.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SmartGymMen.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\SmartGymMen.edmx.diagram">
+      <DependentUpon>SmartGymMen.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Models\SmartGymSales.Context.tt">
@@ -270,6 +312,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="docs\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

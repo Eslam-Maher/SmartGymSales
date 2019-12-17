@@ -13,6 +13,11 @@ export default {
   name: "home",
   components: {
     HelloWorld
+  },
+  created:function() {
+    if(!this.user ||!this.user.userRoles){
+    this.$router.push({ name: "Login" });
+    }
   }
 };
 </script>

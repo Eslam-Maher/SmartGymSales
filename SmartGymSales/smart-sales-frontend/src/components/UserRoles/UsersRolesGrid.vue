@@ -90,11 +90,11 @@ export default {
             this.sucessToastConfig
           );}
           else{
-             this.$bvToast.toast("User Role deletion Failed","User is not found");
+             this.$bvToast.toast("User Role deletion Failed: User is not found",this.failToastConfig);
           }
         })
-        .catch(error => {
-          this.$bvToast.toast("User Role deletion Failed", error.message);
+        .catch(() => {
+          this.$bvToast.toast("User Role deletion Failed", this.failToastConfig);
         })
         .finally(() => {
           this.loadingCount--;

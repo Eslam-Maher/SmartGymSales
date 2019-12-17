@@ -36,7 +36,7 @@ export default {
           this.users = res.data;
         })
         .catch(error => {
-          this.$bvToast.toast("getting all users error ", error.message);
+          this.$bvToast.toast(error.message, this.failToastConfig);
         })
         .finally(() => {
           this.loadingCount--;

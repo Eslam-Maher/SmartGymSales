@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SmartGymSales.enums
 {
-    public enum AddtionalLookupEnm
+    public enum AddtionalLookupEnum
     {
         Sheet=1,
         Sync=2,

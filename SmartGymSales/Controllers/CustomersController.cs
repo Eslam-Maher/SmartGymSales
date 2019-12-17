@@ -127,6 +127,46 @@ namespace SmartGymSales.Controllers
 
         }
 
+        [HttpPost]
+        [ActionName("updateCustomersFromDb")]
+        public IHttpActionResult updateSalesCustomerTable(HttpRequestMessage request, [FromBody]String dbType)
+        {
+            HttpRequestHeaders headers = request.Headers;
+            string userName = string.Empty;
+            string pwd = string.Empty;
+            if (headers.Contains("userName"))
+            {
+                userName = headers.GetValues("userName").First();
+            }
+            if (headers.Contains("Password"))
+            {
+                pwd = headers.GetValues("Password").First();
+            }
+            CustomerService cs = new CustomerService();
+            List<String> errors = cs.UpdateSalesCustomerFromdb(userName, pwd, dbType);
+            return Ok(errors);
+        }
+
+        [HttpPost]
+        [ActionName("updatePossibleCustomersFromDb")]
+        public IHttpActionResult updatePossibleCustomerTable(HttpRequestMessage request, String dbType)
+        {
+            HttpRequestHeaders headers = request.Headers;
+            string userName = string.Empty;
+            string pwd = string.Empty;
+            if (headers.Contains("userName"))
+            {
+                userName = headers.GetValues("userName").First();
+            }
+            if (headers.Contains("Password"))
+            {
+                pwd = headers.GetValues("Password").First();
+            }
+            CustomerService cs = new CustomerService();
+            List<String> errors = cs.UpdatePossibleCustomerFromdb(userName, pwd, "Men");
+            return Ok(errors);
+
+        }
         // GET: api/Customers/5
         [ResponseType(typeof(SalesCustomer))]
         public IHttpActionResult Getcustomer(int id)

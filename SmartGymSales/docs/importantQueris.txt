@@ -1,0 +1,4 @@
+ update  [smartgym].[dbo].[Customer] set Phone_mobile= '0'+Phone_mobile where Phone_mobile not like '0%'
+
+
+update  [smartgym].[dbo].[T_session_subscriber] set sunmobil= '0'+sunmobil where sunmobil not like '0%' and sunmobil !=''
