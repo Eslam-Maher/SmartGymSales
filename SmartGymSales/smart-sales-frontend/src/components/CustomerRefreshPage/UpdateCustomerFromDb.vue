@@ -38,7 +38,7 @@ export default {
             });
           } else {
             this.$bvToast.toast(
-              "File uploaded successfully",
+              "Customers Updated Successfully",
               this.sucessToastConfig
             );
           }
@@ -63,7 +63,7 @@ export default {
             });
           } else {
             this.$bvToast.toast(
-              "File uploaded successfully",
+              "Possible Customers Updated Successfully",
               this.sucessToastConfig
             );
           }
