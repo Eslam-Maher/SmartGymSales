@@ -33,21 +33,21 @@
       @filtered="onFiltered"
     >
       <template v-slot:cell(is_called)="row">
-        <label> {{ row.item.is_called ? "Yes" : "No" }}</label>
+        <label>{{ row.item.is_called ? "Yes" : "No" }}</label>
       </template>
       <template v-slot:cell(is_active)="row">
-        <label> {{ row.item.is_active ? "Yes" : "No" }}</label>
+        <label>{{ row.item.is_active ? "Yes" : "No" }}</label>
       </template>
       <template v-slot:cell(subscription_start_date)="row">
-        <label>{{ row.item.subscription_start_date || DD_MMM_YYYY }} </label>
+        <label>{{ row.item.subscription_start_date || DD_MMM_YYYY }}</label>
       </template>
       <template v-slot:cell(subscription_end_date)="row">
-        <label>{{ row.item.subscription_end_date || DD_MMM_YYYY }} </label>
+        <label>{{ row.item.subscription_end_date || DD_MMM_YYYY }}</label>
       </template>
       <template v-slot:cell(call)="row">
         <b-button variant="success" @click="openReview(row)">Call</b-button>
       </template>
-      <template  v-slot:cell(insertPossibleCustomer)="row">
+      <template v-slot:cell(insertPossibleCustomer)="row">
         <b-button variant="primary" @click="openInsertPossibleCustomers(row)">Insert Referral</b-button>
       </template>
     </b-table>
@@ -60,12 +60,7 @@
           label-size="sm"
           label-for="perPageSelect"
         >
-          <b-form-select
-            v-model="perPage"
-            id="perPageSelect"
-            size="sm"
-            :options="pageOptions"
-          ></b-form-select>
+          <b-form-select v-model="perPage" id="perPageSelect" size="sm" :options="pageOptions"></b-form-select>
         </b-form-group>
       </b-col>
 
@@ -86,7 +81,8 @@
       title="Call Review"
       @show="resetReviewModal"
       @hidden="resetReviewModal"
-      @ok="handleReviewOk">
+      @ok="handleReviewOk"
+    >
       <form ref="form" @submit.stop.prevent="handleReviewSubmit">
         <b-row>
           <b-col>
@@ -148,48 +144,47 @@
           </b-col>
         </b-row>
         <b-row>
-        <b-col>
-         <b-form-group
-          :state="reviewState.comment"
-          label="Comment"
-          label-for="Comment-input"
-          invalid-feedback="Comment is required"
-        >
-          <b-form-input
-            id="Comment-input"
-            v-model="review.comment"
-            :state="reviewState.comment"
-            required
-          ></b-form-input>
-        </b-form-group>  
-          
-          
-        </b-col>  
+          <b-col>
+            <b-form-group
+              :state="reviewState.comment"
+              label="Comment"
+              label-for="Comment-input"
+              invalid-feedback="Comment is required"
+            >
+              <b-form-input
+                id="Comment-input"
+                v-model="review.comment"
+                :state="reviewState.comment"
+                required
+              ></b-form-input>
+            </b-form-group>
+          </b-col>
         </b-row>
-       
       </form>
     </b-modal>
 
-      <b-modal
+    <b-modal
       ref="modal-possibleCustomers"
       id="modal-possibleCustomers"
       centered
       :visible="modalShow"
       @change="prevent"
-      hide-footer	
-      hide-header>
-     <insert-possibleCustomer :customer_id="customer_id" @preventPopUp="hidePopUp()"></insert-possibleCustomer>
+      hide-footer
+      hide-header
+    >
+      <insert-possibleCustomer :customer_id="customer_id" @closePopUp="hidePopUp()"></insert-possibleCustomer>
     </b-modal>
   </b-card>
 </template>
 
 <script>
-import insertPossibleCustomer from "../shared/insertPossibleCustomer"
+import insertPossibleCustomer from "../shared/insertPossibleCustomer";
 export default {
-  components:{insertPossibleCustomer},
+  components: { insertPossibleCustomer },
   props: ["customers"],
   data() {
-    return {modalShow:false,
+    return {
+      modalShow: false,
       // customers: [
       //   {
       //     id: 1,
@@ -210,7 +205,7 @@ export default {
         parent_id: null,
         parent_id_type: "customer"
       },
-     
+
       totalRows: 0,
       currentPage: 1,
       perPage: 5,
@@ -282,7 +277,7 @@ export default {
           class: "text-center"
         }
       ],
-      customer_id:null
+      customer_id: null
     };
   },
   computed: {
@@ -312,7 +307,7 @@ export default {
     },
 
     resetReviewModal: function() {
-      this.review= {
+      this.review = {
         training: 0,
         reciption: 0,
         general: 0,
@@ -330,7 +325,7 @@ export default {
         return;
       }
 
-        //call submit review Api 
+      //call submit review Api
 
       this.$nextTick(() => {
         this.$refs["modal-review"].hide();
@@ -340,22 +335,21 @@ export default {
       this.review.parent_id = row.item.id;
       this.$refs["modal-review"].show();
     },
- 
-     prevent:function() {
-        this.$nextTick(() => {
-            this.modalShow = false
-    })
-  },
-  hidePopUp:function(){
-     this.$nextTick(() => {
-          this.$refs["modal-possibleCustomers"].hide();
-     })
-  },
-    handleP_CustomerSubmit:function(){},
-    openInsertPossibleCustomers:function(row){
-      this.customer_id=row.item.id
-      this.$refs["modal-possibleCustomers"].show();
 
+    prevent: function() {
+      this.$nextTick(() => {
+        this.modalShow = false;
+      });
+    },
+    hidePopUp: function() {
+      this.$nextTick(() => {
+        this.$refs["modal-possibleCustomers"].hide();
+      });
+    },
+    handleP_CustomerSubmit: function() {},
+    openInsertPossibleCustomers: function(row) {
+      this.customer_id = row.item.id;
+      this.$refs["modal-possibleCustomers"].show();
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering

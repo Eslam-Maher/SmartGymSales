@@ -59,11 +59,11 @@ C:\Users\Eslam\documents\visual studio 2015\Projects\SmartGymSales\SmartGymSales
 C:\Users\Eslam\documents\visual studio 2015\Projects\SmartGymSales\SmartGymSales\bin\Microsoft.AspNet.Identity.EntityFramework.xml
 C:\Users\Eslam\documents\visual studio 2015\Projects\SmartGymSales\SmartGymSales\obj\Debug\SmartGymSales.dll
 C:\Users\Eslam\documents\visual studio 2015\Projects\SmartGymSales\SmartGymSales\obj\Debug\SmartGymSales.pdb
+C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\roslyn\csc.exe
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\roslyn\Microsoft.CodeAnalysis.dll
-C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\roslyn\Microsoft.CSharp.Core.targets
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\roslyn\Microsoft.VisualBasic.Core.targets
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\roslyn\System.Collections.Immutable.dll
@@ -76,6 +76,7 @@ C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\SmartGymSales.dl
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\SmartGymSales.pdb
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\EntityFramework.dll
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\EntityFramework.SqlServer.dll
+C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\EPPlus.dll
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\Microsoft.AspNet.Identity.Core.dll
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\Microsoft.AspNet.Identity.EntityFramework.dll
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
@@ -99,6 +100,7 @@ C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\System.Web.WebPa
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\System.Web.WebPages.Razor.dll
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\EntityFramework.xml
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\EntityFramework.SqlServer.xml
+C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\EPPlus.xml
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\Microsoft.IdentityModel.Logging.xml
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\Microsoft.IdentityModel.Protocols.xml
@@ -121,5 +123,3 @@ C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\Microsoft.AspNet
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\obj\Debug\SmartGymSales.dll
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\obj\Debug\SmartGymSales.pdb
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\obj\Debug\SmartGymSales.csprojResolveAssemblyReference.cache
-C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\EPPlus.dll
-C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\EPPlus.xml

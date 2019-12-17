@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SmartGymSalesModelStoreContainer" CdmEntityContainer="SmartGymSalesEntities">
+    <EntitySetMapping Name="AdditionLookups">
+      <EntityTypeMapping TypeName="SmartGymSalesModel.AdditionLookup">
+        <MappingFragment StoreEntitySet="AdditionLookup">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="addition_type" ColumnName="addition_type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="commissions">
+      <EntityTypeMapping TypeName="SmartGymSalesModel.commission">
+        <MappingFragment StoreEntitySet="commission">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="new_customer_percentatge" ColumnName="new_customer_percentatge" />
+          <ScalarProperty Name="old_customer_percentatge" ColumnName="old_customer_percentatge" />
+          <ScalarProperty Name="target" ColumnName="target" />
+          <ScalarProperty Name="is_hidden" ColumnName="is_hidden" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="knowledgeLookups">
+      <EntityTypeMapping TypeName="SmartGymSalesModel.knowledgeLookup">
+        <MappingFragment StoreEntitySet="knowledgeLookup">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="type" ColumnName="type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="reviews">
+      <EntityTypeMapping TypeName="SmartGymSalesModel.review">
+        <MappingFragment StoreEntitySet="reviews">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="training" ColumnName="training" />
+          <ScalarProperty Name="reciption" ColumnName="reciption" />
+          <ScalarProperty Name="general" ColumnName="general" />
+          <ScalarProperty Name="comment" ColumnName="comment" />
+          <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+          <ScalarProperty Name="parent_id" ColumnName="parent_id" />
+          <ScalarProperty Name="parent_id_type" ColumnName="parent_id_type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="SmartGymSalesModel.Role">
+        <MappingFragment StoreEntitySet="Roles">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="SmartGymSalesModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="user_name" ColumnName="user_name" />
+          <ScalarProperty Name="password" ColumnName="password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserRoles">
+      <EntityTypeMapping TypeName="SmartGymSalesModel.UserRole">
+        <MappingFragment StoreEntitySet="UserRoles">
+          <ScalarProperty Name="role_id" ColumnName="role_id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="possibleCustomers">
+      <EntityTypeMapping TypeName="SmartGymSalesModel.possibleCustomer">
+        <MappingFragment StoreEntitySet="possibleCustomers">
+          <ScalarProperty Name="is_called_by" ColumnName="is_called_by" />
+          <ScalarProperty Name="addition_type_id" ColumnName="addition_type_id" />
+          <ScalarProperty Name="added_By_id" ColumnName="added_By_id" />
+          <ScalarProperty Name="creaation_date" ColumnName="creaation_date" />
+          <ScalarProperty Name="knowledge_id" ColumnName="knowledge_id" />
+          <ScalarProperty Name="is_hidden" ColumnName="is_hidden" />
+          <ScalarProperty Name="discont_percentage" ColumnName="discont_percentage" />
+          <ScalarProperty Name="is_subscribed" ColumnName="is_subscribed" />
+          <ScalarProperty Name="calles_count" ColumnName="calles_count" />
+          <ScalarProperty Name="is_called" ColumnName="is_called" />
+          <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="mobile" ColumnName="mobile" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SalesCustomers">
+      <EntityTypeMapping TypeName="SmartGymSalesModel.SalesCustomer">
+        <MappingFragment StoreEntitySet="SalesCustomers">
+          <ScalarProperty Name="subscription_paid_money" ColumnName="subscription_paid_money" />
+          <ScalarProperty Name="is_called_by" ColumnName="is_called_by" />
+          <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+          <ScalarProperty Name="women_forign_key" ColumnName="women_forign_key" />
+          <ScalarProperty Name="men_forign_Key" ColumnName="men_forign_Key" />
+          <ScalarProperty Name="subscription_end_date" ColumnName="subscription_end_date" />
+          <ScalarProperty Name="subscription_start_date" ColumnName="subscription_start_date" />
+          <ScalarProperty Name="is_active" ColumnName="is_active" />
+          <ScalarProperty Name="calles_count" ColumnName="calles_count" />
+          <ScalarProperty Name="is_called" ColumnName="is_called" />
+          <ScalarProperty Name="discont_percentage" ColumnName="discont_percentage" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="mobile" ColumnName="mobile" />
+          <ScalarProperty Name="addition_type_id" ColumnName="addition_type_id" />
+          <ScalarProperty Name="added_By_id" ColumnName="added_By_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
