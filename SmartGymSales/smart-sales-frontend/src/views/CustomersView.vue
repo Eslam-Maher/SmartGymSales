@@ -19,8 +19,7 @@ export default {
         .then(res => {
           this.customers = res.data;
         })
-        .catch(() => {
-          // eslint-disable-line no-unused-vars
+        .catch(error => { // eslint-disable-line no-unused-vars
           this.$bvToast.toast(
             "error in getting customers ",
             this.failToastConfig

@@ -39,10 +39,10 @@
         <label>{{ row.item.is_active ? "Yes" : "No" }}</label>
       </template>
       <template v-slot:cell(subscription_start_date)="row">
-        <label>{{ row.item.subscription_start_date || DD_MMM_YYYY }}</label>
+        <label>{{row.item.subscription_start_date? row.item.subscription_start_date||DD_MMM_YYYY :'-'}}</label>
       </template>
       <template v-slot:cell(subscription_end_date)="row">
-        <label>{{ row.item.subscription_end_date || DD_MMM_YYYY }}</label>
+        <label>{{ row.item.subscription_end_date ? row.item.subscription_end_date||DD_MMM_YYYY:'-' }}</label>
       </template>
       <template v-slot:cell(call)="row">
         <b-button variant="success" @click="openReview(row)">Call</b-button>

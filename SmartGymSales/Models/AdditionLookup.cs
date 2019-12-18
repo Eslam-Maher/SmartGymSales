@@ -17,15 +17,12 @@ namespace SmartGymSales.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public AdditionLookup()
         {
-            this.SalesCustomers = new HashSet<SalesCustomer>();
             this.possibleCustomers = new HashSet<possibleCustomer>();
         }
     
         public int id { get; set; }
         public string addition_type { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SalesCustomer> SalesCustomers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<possibleCustomer> possibleCustomers { get; set; }
     }

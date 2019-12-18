@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="9289e8a05f654fdfb7df686b9701662f" Name="Diagram1" ZoomLevel="107">
+      <Diagram DiagramId="9289e8a05f654fdfb7df686b9701662f" Name="Diagram1" ZoomLevel="80">
         <EntityTypeShape EntityType="SmartGymSalesModel.AdditionLookup" Width="1.5" PointX="7.75" PointY="2.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SmartGymSalesModel.commission" Width="1.5" PointX="7.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SmartGymSalesModel.knowledgeLookup" Width="1.5" PointX="2.75" PointY="6" IsExpanded="true" />
@@ -15,14 +15,9 @@
         <AssociationConnector Association="SmartGymSalesModel.FK_UserRoles_Roles" />
         <AssociationConnector Association="SmartGymSalesModel.FK_UserRoles_Users" />
         <EntityTypeShape EntityType="SmartGymSalesModel.possibleCustomer" Width="1.5" PointX="13" PointY="2.75" />
-        <EntityTypeShape EntityType="SmartGymSalesModel.SalesCustomer" Width="1.5" PointX="10" PointY="2.625" />
-        <AssociationConnector Association="SmartGymSalesModel.FK_customers_AdditionLookup" />
         <AssociationConnector Association="SmartGymSalesModel.FK_possibleCustomers_AdditionLookup" />
         <AssociationConnector Association="SmartGymSalesModel.FK_possibleCustmers_knowledgeLookup" />
-        <AssociationConnector Association="SmartGymSalesModel.FK_possibleCustomers_Users" />
-        <AssociationConnector Association="SmartGymSalesModel.FK_possibleCustomers_Users1" />
-        <AssociationConnector Association="SmartGymSalesModel.FK_customers_Users" />
-        <AssociationConnector Association="SmartGymSalesModel.FK_customers_Users1" />
+        <EntityTypeShape EntityType="SmartGymSalesModel.SalesCustomer" Width="1.5" PointX="5.5" PointY="6.625" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

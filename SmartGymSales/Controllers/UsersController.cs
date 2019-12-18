@@ -15,27 +15,21 @@ namespace SmartGymSales.Controllers
 {
     public class UsersController : ApiController
     {
-        private SmartGymSalesEntities db = new SmartGymSalesEntities();
-        private UsersService UsersService = new UsersService();
 
         // GET: api/Users
         [HttpGet]
         [ActionName("getUsers")]
         public List<User> GetUsers()
         {
+            UsersService UsersService = new UsersService();
             return UsersService.getAllUsers();
         }
 
         [HttpPost]
         [ActionName("login")]
         public User checkCredentials(User user ) {
-            bool isValid = false;
-            if ( string.IsNullOrEmpty(user.user_name) || string.IsNullOrEmpty(user.password)) {
-               return null;
-            }
-            isValid= db.Users.Where(e => e.user_name == user.user_name && e.password == user.password).Any();
-            User foundUser = db.Users.Where(e => e.user_name == user.user_name && e.password == user.password).FirstOrDefault();
-            return isValid? foundUser : null;
+            UsersService UsersService = new UsersService();
+            return UsersService.checkCredentials(user);
         }
 
         // POST: api/Users
@@ -48,7 +42,7 @@ namespace SmartGymSales.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            UsersService UsersService = new UsersService();
             bool isInserted = UsersService.insertUsers(user);
 
             return Ok(isInserted);
@@ -62,6 +56,7 @@ namespace SmartGymSales.Controllers
         {
             try
             {
+                UsersService UsersService = new UsersService();
                 bool isDeleted =UsersService.deleteUser(id);
                 return Ok(isDeleted);
 
@@ -73,16 +68,12 @@ namespace SmartGymSales.Controllers
 
         protected override void Dispose(bool disposing)
         {
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
             if (disposing)
             {
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool UserExists(int id)
-        {
-            return db.Users.Count(e => e.id == id) > 0;
         }
     }
 }

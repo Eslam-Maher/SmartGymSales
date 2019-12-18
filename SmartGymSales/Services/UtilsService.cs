@@ -10,7 +10,6 @@ namespace SmartGymSales.Services
 {
     public class UtilsService
     {
-        private SmartGymSalesEntities db = new SmartGymSalesEntities();
 
         public bool checkPhoneNumberVaildaty(String number)
         {
@@ -22,20 +21,24 @@ namespace SmartGymSales.Services
         }
         public bool checkPhoneNumberRedundancy(String number)
         {
-             return db.SalesCustomers.Where(x => x.mobile == number).Any();
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
+            return db.SalesCustomers.Where(x => x.mobile == number).Any();
         }
 
         public bool checkPhoneNumberRedundancyforPossibleCustomers(String number)
         {
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
             return db.possibleCustomers.Where(x => x.mobile.ToString() == number).Any();
         }
         public bool checkEmailRedundancyforPossibleCustomers(string email)
         {
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
             return db.possibleCustomers.Where(x => x.email.ToLower() == email.ToLower()).Any();
         }
 
         public bool checkEmailRedundancy(string email)
         {
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
             return db.SalesCustomers.Where(x=>x.email.ToLower()==email.ToLower()).Any();
         }
 

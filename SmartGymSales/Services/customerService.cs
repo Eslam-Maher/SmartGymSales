@@ -13,7 +13,6 @@ namespace SmartGymSales.Services
 {
     public class CustomerService
     {
-        private SmartGymSalesEntities db = new SmartGymSalesEntities();
 
         private DataTable getDTfromExel(HttpPostedFile postedFile)
         {
@@ -45,519 +44,538 @@ namespace SmartGymSales.Services
 
         public List<String> UpdatePossibleCustomerFromdb(string user_name, string password, string sourceDbString) {
 
-            UtilsService US = new UtilsService();
-            UsersService userService = new UsersService();
-            UserRolesService userRolesService = new UserRolesService();
+            using (var db = new SmartGymSalesEntities())
+            {
+                UtilsService US = new UtilsService();
+                UsersService userService = new UsersService();
+                UserRolesService userRolesService = new UserRolesService();
 
 
-            User currentUser = userService.GetUserbyUser_name(user_name);
-            List<String> errors = new List<string>();
-            if (!userService.checkUserCred(user_name, password))
-            {
-                errors.Add("please Login and try again");
-                return errors;
-            }
-            if (!userRolesService.isUserManger(user_name))
-            {
-                errors.Add("You are not authorized");
-                return errors;
-            }
-            if (sourceDbString == "Men")
-            {
-                SmartGymMenEntities sourceDb = new SmartGymMenEntities();
-                List<T_session_subscriber> sourceCustomers = sourceDb.T_session_subscriber.Where(x => !String.IsNullOrEmpty( x.sunmobil) && US.checkPhoneNumberVaildaty(x.sunmobil)).ToList();
-
-                List<T_session_subscriber> toBeInsertedPossibleCustomers = new List<T_session_subscriber>();
-                foreach (T_session_subscriber element in sourceCustomers)
+                User currentUser = userService.GetUserbyUser_name(user_name);
+                List<String> errors = new List<string>();
+                if (!userService.checkUserCred(user_name, password))
                 {
-                    if (db.possibleCustomers.Where(possibleCusElement => possibleCusElement.mobile.ToString() == element.sunmobil).Count() == 0)
-                    {
-                        toBeInsertedPossibleCustomers.Add(element);
-                    }
+                    errors.Add("please Login and try again");
+                    return errors;
                 }
-                InsertIntoPossibleCustomersFromMenDb(toBeInsertedPossibleCustomers, currentUser);
-            }
-            else if (sourceDbString == "Women")
-            {
-                SmartGymMenEntities sourceDb = new SmartGymMenEntities();
-            }
-            else
-            {
-                errors.Add("Failed to identify source to update from");
+                if (!userRolesService.isUserManger(user_name))
+                {
+                    errors.Add("You are not authorized");
+                    return errors;
+                }
+                if (sourceDbString == "Men")
+                {
+                    SmartGymMenEntities sourceDb = new SmartGymMenEntities();
+                    List<T_session_subscriber> sourceCustomers = sourceDb.T_session_subscriber.Where(x => !String.IsNullOrEmpty(x.sunmobil) && US.checkPhoneNumberVaildaty(x.sunmobil)).ToList();
+
+                    List<T_session_subscriber> toBeInsertedPossibleCustomers = new List<T_session_subscriber>();
+                    foreach (T_session_subscriber element in sourceCustomers)
+                    {
+                        if (db.possibleCustomers.Where(possibleCusElement => possibleCusElement.mobile.ToString() == element.sunmobil).Count() == 0)
+                        {
+                            toBeInsertedPossibleCustomers.Add(element);
+                        }
+                    }
+                    InsertIntoPossibleCustomersFromMenDb(toBeInsertedPossibleCustomers, currentUser);
+                }
+                else if (sourceDbString == "Women")
+                {
+                    SmartGymMenEntities sourceDb = new SmartGymMenEntities();
+                }
+                else
+                {
+                    errors.Add("Failed to identify source to update from");
+                    return errors;
+                }
+
+
                 return errors;
+
             }
-
-
-            return errors;
-
-
         }
         public List<String> UpdateSalesCustomerFromdb(string user_name, string password, string sourceDbString)
         {
-            UtilsService US = new UtilsService();
-            UsersService userService = new UsersService();
-            UserRolesService userRolesService = new UserRolesService();
+            using (var db = new SmartGymSalesEntities())
+            {
+                UtilsService US = new UtilsService();
+                UsersService userService = new UsersService();
+                UserRolesService userRolesService = new UserRolesService();
 
 
-            User currentUser = userService.GetUserbyUser_name(user_name);
-            List<String> errors = new List<string>();
-            if (!userService.checkUserCred(user_name, password))
-            {
-                errors.Add("please Login and try again");
-                return errors;
-            }
-            if (!userRolesService.isUserManger(user_name))
-            {
-                errors.Add("You are not authorized");
-                return errors;
-            }
-            if (sourceDbString == "Men")
-            {
-                SmartGymMenEntities sourceDb = new SmartGymMenEntities();
-                List<Customer> sourceCustomers = sourceDb.Customers.Where(x => !String.IsNullOrEmpty( x.Phone_mobile)).ToList();
-
-                List<Customer> toBeUpdatedCustomers = new List<Customer>();
-                List<Customer> toBeInsertedCustomers = new List<Customer>();
-                foreach (Customer element in sourceCustomers)
+                User currentUser = userService.GetUserbyUser_name(user_name);
+                List<String> errors = new List<string>();
+                if (!userService.checkUserCred(user_name, password))
                 {
-                    if (US.checkPhoneNumberVaildaty(element.Phone_mobile))
+                    errors.Add("please Login and try again");
+                    return errors;
+                }
+                if (!userRolesService.isUserManger(user_name))
+                {
+                    errors.Add("You are not authorized");
+                    return errors;
+                }
+                if (sourceDbString == "Men")
+                {
+                    SmartGymMenEntities sourceDb = new SmartGymMenEntities();
+                    List<Customer> sourceCustomers = sourceDb.Customers.Where(x => !String.IsNullOrEmpty(x.Phone_mobile)).ToList();
+
+                    List<Customer> toBeUpdatedCustomers = new List<Customer>();
+                    List<Customer> toBeInsertedCustomers = new List<Customer>();
+                    foreach (Customer element in sourceCustomers)
                     {
-                        if (db.SalesCustomers.Where(salesCusElement => salesCusElement.men_forign_Key == element.Customer_ID).Count() > 1)
+                        if (US.checkPhoneNumberVaildaty(element.Phone_mobile))
                         {
-                            toBeUpdatedCustomers.Add(element);
-                        }
-                        else
-                        {
-                            toBeInsertedCustomers.Add(element);
+                            if (db.SalesCustomers.Where(salesCusElement => salesCusElement.men_forign_Key == element.Customer_ID).Count() > 1)
+                            {
+                                toBeUpdatedCustomers.Add(element);
+                            }
+                            else
+                            {
+                                toBeInsertedCustomers.Add(element);
+                            }
                         }
                     }
+                    updateCustomersFromMenDb(toBeUpdatedCustomers, currentUser);
+                    List<String> insertResult = InsertIntoCustomersFromMenDb(toBeInsertedCustomers, currentUser);
+                    errors.AddRange(insertResult);
                 }
-                updateCustomersFromMenDb(toBeUpdatedCustomers, currentUser);
-                List<String> insertResult = InsertIntoCustomersFromMenDb(toBeInsertedCustomers, currentUser);
-                errors.AddRange(insertResult);
-            }
-            else if (sourceDbString == "Women")
-            {
-                SmartGymMenEntities sourceDb = new SmartGymMenEntities();
-            }
-            else
-            {
-                errors.Add("Failed to identify source to update from");
+                else if (sourceDbString == "Women")
+                {
+                    SmartGymMenEntities sourceDb = new SmartGymMenEntities();
+                }
+                else
+                {
+                    errors.Add("Failed to identify source to update from");
+                    return errors;
+                }
+
+
                 return errors;
             }
-
-            
-            return errors;
-
 
         }
         private void updateCustomersFromMenDb(List<Customer> sourceList, User currentUser)
         {
-            SmartGymMenEntities sourceDb = new SmartGymMenEntities();
-            foreach (Customer srcCustomer in sourceList)
+            using (var db = new SmartGymSalesEntities())
             {
-               SalesCustomer salesCustomer= db.SalesCustomers.Where(x => x.men_forign_Key == srcCustomer.Customer_ID).FirstOrDefault();
-
-                Membership srcCustomerMembership = sourceDb.Memberships.Where(x => x.Customer_ID == srcCustomer.Customer_ID).FirstOrDefault();
-                //isActive and SubscribtionDate
-                if (srcCustomerMembership == null)
+                SmartGymMenEntities sourceDb = new SmartGymMenEntities();
+                foreach (Customer srcCustomer in sourceList)
                 {
-                    salesCustomer.subscription_end_date = salesCustomer.subscription_start_date = null;
-                    salesCustomer.is_active = false;
-                }
-                else
-                {
+                    SalesCustomer salesCustomer = db.SalesCustomers.Where(x => x.men_forign_Key == srcCustomer.Customer_ID).FirstOrDefault();
 
-                    salesCustomer.subscription_start_date = srcCustomerMembership.S_Date;
-                    salesCustomer.subscription_end_date = srcCustomerMembership.E_Date;
-                    if (salesCustomer.subscription_start_date < DateTime.Now &&
-                    DateTime.Now < salesCustomer.subscription_end_date)
+                    Membership srcCustomerMembership = sourceDb.Memberships.Where(x => x.Customer_ID == srcCustomer.Customer_ID).FirstOrDefault();
+                    //isActive and SubscribtionDate
+                    if (srcCustomerMembership == null)
                     {
-                        salesCustomer.is_active = true;
-                        salesCustomer.subscription_paid_money = srcCustomerMembership.moneypaied;
-
+                        salesCustomer.subscription_end_date = salesCustomer.subscription_start_date = null;
+                        salesCustomer.is_active = false;
                     }
                     else
                     {
-                        salesCustomer.is_active = false;
+
+                        salesCustomer.subscription_start_date = srcCustomerMembership.S_Date;
+                        salesCustomer.subscription_end_date = srcCustomerMembership.E_Date;
+                        if (salesCustomer.subscription_start_date < DateTime.Now &&
+                        DateTime.Now < salesCustomer.subscription_end_date)
+                        {
+                            salesCustomer.is_active = true;
+                            salesCustomer.subscription_paid_money = srcCustomerMembership.moneypaied;
+
+                        }
+                        else
+                        {
+                            salesCustomer.is_active = false;
+                        }
                     }
+                    db.SalesCustomers.AddOrUpdate(salesCustomer);
                 }
-                db.SalesCustomers.AddOrUpdate(salesCustomer);
+                db.SaveChanges();
             }
-            db.SaveChanges();
         }
         private List<String> InsertIntoCustomersFromMenDb(List<Customer> sourceList,User currentUser)
         {
-            UtilsService US = new UtilsService();
-            SmartGymMenEntities sourceDb = new SmartGymMenEntities();
+            using (var db = new SmartGymSalesEntities())
+            {
+                UtilsService US = new UtilsService();
+                SmartGymMenEntities sourceDb = new SmartGymMenEntities();
 
-            List<String> errors = new List<String>();
-            int rowError=0;
-            foreach (Customer srcCustomer in sourceList) {
+                List<String> errors = new List<String>();
+                int rowError = 0;
+                foreach (Customer srcCustomer in sourceList)
+                {
 
-                SalesCustomer newCustomer = new SalesCustomer();
-                bool customerError = false;
-                //name
-                if (!String.IsNullOrEmpty(srcCustomer.Name))
-                {
-                    newCustomer.name = srcCustomer.Name;
-                }
-                else
-                {
-                    customerError = true;
-                }
+                    SalesCustomer newCustomer = new SalesCustomer();
+                    bool customerError = false;
+                    //name
+                    if (!String.IsNullOrEmpty(srcCustomer.Name))
+                    {
+                        newCustomer.name = srcCustomer.Name;
+                    }
+                    else
+                    {
+                        customerError = true;
+                    }
 
-                //mobile
-                if (String.IsNullOrEmpty(srcCustomer.Phone_mobile))
-                {
-                    customerError = true;
-                }
-                else if (!US.checkPhoneNumberVaildaty(srcCustomer.Phone_mobile))
-                {
-                    customerError = true;
-                }
-                else if (US.checkPhoneNumberRedundancy(srcCustomer.Phone_mobile))
-                {
-                    customerError = true;
-                }
-                else
-                {
-                    newCustomer.mobile = srcCustomer.Phone_mobile;
-                }
-                //email
-                if (!String.IsNullOrEmpty(srcCustomer.email) && !US.checkEmailVaildaty(srcCustomer.email))
-                {
-                    customerError = true;
-                }
-                else if (!String.IsNullOrEmpty(srcCustomer.email) && US.checkEmailRedundancy(srcCustomer.email))
-                {
-                    customerError = true;
-                }
-                else if (!String.IsNullOrEmpty(srcCustomer.email))
-                {
-                    newCustomer.email = srcCustomer.email;
-                }
+                    //mobile
+                    if (String.IsNullOrEmpty(srcCustomer.Phone_mobile))
+                    {
+                        customerError = true;
+                    }
+                    else if (!US.checkPhoneNumberVaildaty(srcCustomer.Phone_mobile))
+                    {
+                        customerError = true;
+                    }
+                    else if (US.checkPhoneNumberRedundancy(srcCustomer.Phone_mobile))
+                    {
+                        customerError = true;
+                    }
+                    else
+                    {
+                        newCustomer.mobile = srcCustomer.Phone_mobile;
+                    }
+                    //email
+                    if (!String.IsNullOrEmpty(srcCustomer.email) && !US.checkEmailVaildaty(srcCustomer.email))
+                    {
+                        customerError = true;
+                    }
+                    else if (!String.IsNullOrEmpty(srcCustomer.email) && US.checkEmailRedundancy(srcCustomer.email))
+                    {
+                        customerError = true;
+                    }
+                    else if (!String.IsNullOrEmpty(srcCustomer.email))
+                    {
+                        newCustomer.email = srcCustomer.email;
+                    }
 
 
-               Membership srcCustomerMembership=  sourceDb.Memberships.Where(x => x.Customer_ID == srcCustomer.Customer_ID).OrderByDescending(x=>x.recorddate).FirstOrDefault();
-                //isActive and SubscribtionDate
-                if (srcCustomerMembership == null)
-                {
-                    newCustomer.subscription_end_date = newCustomer.subscription_start_date = null;
-                    newCustomer.is_active = false;
-                }
-                else {
+                    Membership srcCustomerMembership = sourceDb.Memberships.Where(x => x.Customer_ID == srcCustomer.Customer_ID).OrderByDescending(x => x.recorddate).FirstOrDefault();
+                    //isActive and SubscribtionDate
+                    if (srcCustomerMembership == null)
+                    {
+                        newCustomer.subscription_end_date = newCustomer.subscription_start_date = null;
+                        newCustomer.is_active = false;
+                    }
+                    else
+                    {
 
-                    newCustomer.subscription_start_date = srcCustomerMembership.S_Date;
-                    newCustomer.subscription_end_date = srcCustomerMembership.E_Date;
+                        newCustomer.subscription_start_date = srcCustomerMembership.S_Date;
+                        newCustomer.subscription_end_date = srcCustomerMembership.E_Date;
+                        if (newCustomer.subscription_start_date < DateTime.Now &&
+                        DateTime.Now < newCustomer.subscription_end_date)
+                        {
+                            newCustomer.is_active = true;
+                            newCustomer.subscription_paid_money = srcCustomerMembership.moneypaied;
+                        }
+                        else
+                        {
+                            newCustomer.is_active = false;
+                        }
+                    }
+
+
+                    newCustomer.added_By_id = currentUser.id;
+                    newCustomer.addition_type_id = (int)enums.AddtionalLookupEnum.Sync;
+                    newCustomer.is_called = false;
+                    newCustomer.calles_count = 0;
+                    newCustomer.men_forign_Key = srcCustomer.Customer_ID;
+                    newCustomer.women_forign_key = null;
+                    newCustomer.creation_date = DateTime.Now;
                     if (newCustomer.subscription_start_date < DateTime.Now &&
-                    DateTime.Now < newCustomer.subscription_end_date)
+                        DateTime.Now < newCustomer.subscription_end_date)
                     {
                         newCustomer.is_active = true;
-                        newCustomer.subscription_paid_money = srcCustomerMembership.moneypaied;
                     }
                     else
                     {
                         newCustomer.is_active = false;
                     }
+
+
+                    if (!customerError)
+                    {
+                        db.SalesCustomers.Add(newCustomer);
+
+                    }
+                    else
+                    {
+                        rowError++;
+
+                    }
+
                 }
-
-
-                newCustomer.added_By_id = currentUser.id;
-                newCustomer.addition_type_id = (int)enums.AddtionalLookupEnum.Sync;
-                newCustomer.is_called = false;
-                newCustomer.calles_count = 0;
-                newCustomer.men_forign_Key = srcCustomer.Customer_ID;
-                newCustomer.women_forign_key = null;
-                newCustomer.creation_date = DateTime.Now;
-                if (newCustomer.subscription_start_date < DateTime.Now &&
-                    DateTime.Now < newCustomer.subscription_end_date)
+                if (rowError > 0)
                 {
-                    newCustomer.is_active = true;
+                    errors.Add("Couldn't Sync " + rowError + " customers due to wrong data");
                 }
-                else
-                {
-                    newCustomer.is_active = false;
-                }
+                db.SaveChanges();
 
-
-                if (!customerError)
-                {
-                    db.SalesCustomers.Add(newCustomer);
-
-                }
-                else {
-                    rowError++;
-
-                }
-
+                return errors;
             }
-            if (rowError>0) {
-                errors.Add("Couldn't Sync " + rowError+" customers due to wrong data");
-            }
-            db.SaveChanges();
-
-            return errors;
         }
 
         private void InsertIntoPossibleCustomersFromMenDb(List<T_session_subscriber> sourceList, User currentUser) {
-            UtilsService US = new UtilsService();
-            SmartGymMenEntities sourceDb = new SmartGymMenEntities();
-            foreach (T_session_subscriber item in sourceList)
+            using (var db = new SmartGymSalesEntities())
             {
-                possibleCustomer possibleCustomerItem = new possibleCustomer();
-                bool customerError = false;
-                //name
-                if (!String.IsNullOrEmpty(item.subname))
+                UtilsService US = new UtilsService();
+                SmartGymMenEntities sourceDb = new SmartGymMenEntities();
+                foreach (T_session_subscriber item in sourceList)
                 {
-                    possibleCustomerItem.name = item.subname;
-                }
-                else
-                {
-                    customerError = true;
-                }
+                    possibleCustomer possibleCustomerItem = new possibleCustomer();
+                    bool customerError = false;
+                    //name
+                    if (!String.IsNullOrEmpty(item.subname))
+                    {
+                        possibleCustomerItem.name = item.subname;
+                    }
+                    else
+                    {
+                        customerError = true;
+                    }
 
-                //mobile
-                if (String.IsNullOrEmpty(item.sunmobil))
-                {
-                    customerError = true;
-                }
-                else if (!US.checkPhoneNumberVaildaty(item.sunmobil))
-                {
-                    customerError = true;
-                }
-                else if (US.checkPhoneNumberRedundancyforPossibleCustomers(item.sunmobil))
-                {
-                    customerError = true;
-                }
-                else
-                {
-                    possibleCustomerItem.mobile =  item.sunmobil;
-                }
-                //email
-                if (!String.IsNullOrEmpty(item.subemail) && !US.checkEmailVaildaty(item.subemail))
-                {
-                    customerError = true;
-                }
-                else if (!String.IsNullOrEmpty(item.subemail) && US.checkEmailRedundancyforPossibleCustomers(item.subemail))
-                {
-                    customerError = true;
-                }
-                else
-                {
-                    possibleCustomerItem.email = item.subemail;
-                }
-                possibleCustomerItem.knowledge_id = (int)KnowledgeLookupEnum.Sync;
+                    //mobile
+                    if (String.IsNullOrEmpty(item.sunmobil))
+                    {
+                        customerError = true;
+                    }
+                    else if (!US.checkPhoneNumberVaildaty(item.sunmobil))
+                    {
+                        customerError = true;
+                    }
+                    else if (US.checkPhoneNumberRedundancyforPossibleCustomers(item.sunmobil))
+                    {
+                        customerError = true;
+                    }
+                    else
+                    {
+                        possibleCustomerItem.mobile = item.sunmobil;
+                    }
+                    //email
+                    if (!String.IsNullOrEmpty(item.subemail) && !US.checkEmailVaildaty(item.subemail))
+                    {
+                        customerError = true;
+                    }
+                    else if (!String.IsNullOrEmpty(item.subemail) && US.checkEmailRedundancyforPossibleCustomers(item.subemail))
+                    {
+                        customerError = true;
+                    }
+                    else
+                    {
+                        possibleCustomerItem.email = item.subemail;
+                    }
+                    possibleCustomerItem.knowledge_id = (int)KnowledgeLookupEnum.Sync;
 
 
-                if (!customerError) {
-                    db.possibleCustomers.Add(possibleCustomerItem);
+                    if (!customerError)
+                    {
+                        db.possibleCustomers.Add(possibleCustomerItem);
+                    }
                 }
+                db.SaveChanges();
             }
-            db.SaveChanges();
         }
         public List<String> insertExcelToCustomers(HttpPostedFile postedFile, string user_name, string password)
         {
+            using (var db = new SmartGymSalesEntities())
+            {
+                UtilsService US = new UtilsService();
+                UsersService userService = new UsersService();
+                UserRolesService userRolesService = new UserRolesService();
 
-            UtilsService US = new UtilsService();
-            UsersService userService = new UsersService();
-            UserRolesService userRolesService = new UserRolesService();
 
-
-            User currentUser = userService.GetUserbyUser_name(user_name);
-            List<String> errors = new List<string>();
-            if (!userService.checkUserCred(user_name, password))
-            {
-                errors.Add("please Login and try again");
-                return errors;
-            }
-            if (!userRolesService.isUserManger(user_name))
-            {
-                errors.Add("You are not authorized");
-                return errors;
-            }
-            if (postedFile == null)
-            {
-                errors.Add("failed to parse youe excel file ");
-                return errors;
-            }
-            DataTable excelCustomers = getDTfromExel(postedFile);
-            if (excelCustomers.Rows.Count == 0) { errors.Add("failed to parse youe excel file "); }
-            int rowIndex = 0;
-            foreach (DataRow row in excelCustomers.Rows)
-            {
-                rowIndex++;
-                SalesCustomer newCustomer = new SalesCustomer();
-                bool customerError = false;
-                foreach (DataColumn column in excelCustomers.Columns)
+                User currentUser = userService.GetUserbyUser_name(user_name);
+                List<String> errors = new List<string>();
+                if (!userService.checkUserCred(user_name, password))
                 {
-                    if (column.ColumnName == customerSheetHeadersEnum.Name.ToDescriptionString())
+                    errors.Add("please Login and try again");
+                    return errors;
+                }
+                if (!userRolesService.isUserManger(user_name))
+                {
+                    errors.Add("You are not authorized");
+                    return errors;
+                }
+                if (postedFile == null)
+                {
+                    errors.Add("failed to parse youe excel file ");
+                    return errors;
+                }
+                DataTable excelCustomers = getDTfromExel(postedFile);
+                if (excelCustomers.Rows.Count == 0) { errors.Add("failed to parse youe excel file "); }
+                int rowIndex = 0;
+                foreach (DataRow row in excelCustomers.Rows)
+                {
+                    rowIndex++;
+                    SalesCustomer newCustomer = new SalesCustomer();
+                    bool customerError = false;
+                    foreach (DataColumn column in excelCustomers.Columns)
                     {
-                        Console.WriteLine(row[column]);
-                        if (!String.IsNullOrEmpty(row[column].ToString()))
+                        if (column.ColumnName == customerSheetHeadersEnum.Name.ToDescriptionString())
                         {
-                            newCustomer.name = row[column].ToString();
-                        }
-                        else
-                        {
-                            errors.Add("Name is Empty at row : " + rowIndex);
-                            customerError = true;
-                        }
-                    }
-                    if (column.ColumnName == customerSheetHeadersEnum.Mobile.ToDescriptionString())
-                    {
-                        if (String.IsNullOrEmpty(row[column].ToString()))
-                        {
-                            errors.Add("Mobile Phone is Empty at row : " + rowIndex);
-                            customerError = true;
-                        }
-                        else if (!US.checkPhoneNumberVaildaty(row[column].ToString()))
-                        {
-                            errors.Add("Mobile Phone is not correct at row : " + rowIndex);
-                            customerError = true;
-                        }
-                        else if (US.checkPhoneNumberRedundancy(row[column].ToString()))
-                        {
-                            errors.Add("Mobile Phone is already found at row : " + rowIndex);
-                            customerError = true;
-                        }
-                        else
-                        {
-                            newCustomer.mobile = row[column].ToString();
-                        }
-                    }
-                    if (column.ColumnName == customerSheetHeadersEnum.Email.ToDescriptionString())
-                    {
-                        if (String.IsNullOrEmpty(row[column].ToString()))
-                        {
-                            errors.Add("Email is Empty at row : " + rowIndex);
-                        }
-                        else if (!String.IsNullOrEmpty(row[column].ToString()) && !US.checkEmailVaildaty(row[column].ToString()))
-                        {
-                            errors.Add("Email is not correct at row : " + rowIndex);
-                            customerError = true;
-                        }
-                        else if (!String.IsNullOrEmpty(row[column].ToString()) && US.checkEmailRedundancy(row[column].ToString()))
-                        {
-                            errors.Add("Email is already found at row : " + rowIndex);
-                            customerError = true;
-                        }
-                        else
-                        {
-                            newCustomer.email = row[column].ToString();
-                        }
-                    }
-                    if (column.ColumnName == customerSheetHeadersEnum.discont_percentage.ToDescriptionString())
-                    {
-                        if (!String.IsNullOrEmpty(row[column].ToString()))
-                        {
-                            int percentage = 0;
-                            if (int.TryParse(row[column].ToString(), out percentage))
+                            Console.WriteLine(row[column]);
+                            if (!String.IsNullOrEmpty(row[column].ToString()))
                             {
-                                newCustomer.discont_percentage = percentage;
+                                newCustomer.name = row[column].ToString();
                             }
                             else
                             {
-                                errors.Add("please enter discont percentage in numbers only at row : " + rowIndex);
+                                errors.Add("Name is Empty at row : " + rowIndex);
                                 customerError = true;
                             }
                         }
-
-                    }
-                    if (column.ColumnName == customerSheetHeadersEnum.StartDate.ToDescriptionString())
-                    {
-                        DateTime startDate = new DateTime();
-                        bool sucess = DateTime.TryParse(row[column].ToString(), out startDate);
-                        if (!sucess)
+                        if (column.ColumnName == customerSheetHeadersEnum.Mobile.ToDescriptionString())
                         {
-                            errors.Add("Couldn't convert start date at row : " + rowIndex);
-                            customerError = true;
-                        }
-                        else
-                        {
-                            newCustomer.subscription_start_date = startDate;
-                        }
-                    }
-
-
-                    if (column.ColumnName == customerSheetHeadersEnum.EndDate.ToDescriptionString())
-                    {
-                        DateTime endDate = new DateTime();
-                        bool sucess = DateTime.TryParse(row[column].ToString(), out endDate);
-                        if (!sucess)
-                        {
-                            errors.Add("Couldn't convert end date at row : " + rowIndex);
-                            customerError = true;
-                        }
-                        else
-                        {
-                            if (newCustomer.subscription_start_date != null && newCustomer.subscription_start_date > endDate)
+                            if (String.IsNullOrEmpty(row[column].ToString()))
                             {
-                                errors.Add("End Date can't be earlier than start date at row : " + rowIndex);
+                                errors.Add("Mobile Phone is Empty at row : " + rowIndex);
+                                customerError = true;
+                            }
+                            else if (!US.checkPhoneNumberVaildaty(row[column].ToString()))
+                            {
+                                errors.Add("Mobile Phone is not correct at row : " + rowIndex);
+                                customerError = true;
+                            }
+                            else if (US.checkPhoneNumberRedundancy(row[column].ToString()))
+                            {
+                                errors.Add("Mobile Phone is already found at row : " + rowIndex);
                                 customerError = true;
                             }
                             else
                             {
-                                newCustomer.subscription_end_date = endDate;
+                                newCustomer.mobile = row[column].ToString();
+                            }
+                        }
+                        if (column.ColumnName == customerSheetHeadersEnum.Email.ToDescriptionString())
+                        {
+                            if (String.IsNullOrEmpty(row[column].ToString()))
+                            {
+                                errors.Add("Email is Empty at row : " + rowIndex);
+                            }
+                            else if (!String.IsNullOrEmpty(row[column].ToString()) && !US.checkEmailVaildaty(row[column].ToString()))
+                            {
+                                errors.Add("Email is not correct at row : " + rowIndex);
+                                customerError = true;
+                            }
+                            else if (!String.IsNullOrEmpty(row[column].ToString()) && US.checkEmailRedundancy(row[column].ToString()))
+                            {
+                                errors.Add("Email is already found at row : " + rowIndex);
+                                customerError = true;
+                            }
+                            else
+                            {
+                                newCustomer.email = row[column].ToString();
+                            }
+                        }
+                        if (column.ColumnName == customerSheetHeadersEnum.discont_percentage.ToDescriptionString())
+                        {
+                            if (!String.IsNullOrEmpty(row[column].ToString()))
+                            {
+                                int percentage = 0;
+                                if (int.TryParse(row[column].ToString(), out percentage))
+                                {
+                                    newCustomer.discont_percentage = percentage;
+                                }
+                                else
+                                {
+                                    errors.Add("please enter discont percentage in numbers only at row : " + rowIndex);
+                                    customerError = true;
+                                }
+                            }
+
+                        }
+                        if (column.ColumnName == customerSheetHeadersEnum.StartDate.ToDescriptionString())
+                        {
+                            DateTime startDate = new DateTime();
+                            bool sucess = DateTime.TryParse(row[column].ToString(), out startDate);
+                            if (!sucess)
+                            {
+                                errors.Add("Couldn't convert start date at row : " + rowIndex);
+                                customerError = true;
+                            }
+                            else
+                            {
+                                newCustomer.subscription_start_date = startDate;
+                            }
+                        }
+
+
+                        if (column.ColumnName == customerSheetHeadersEnum.EndDate.ToDescriptionString())
+                        {
+                            DateTime endDate = new DateTime();
+                            bool sucess = DateTime.TryParse(row[column].ToString(), out endDate);
+                            if (!sucess)
+                            {
+                                errors.Add("Couldn't convert end date at row : " + rowIndex);
+                                customerError = true;
+                            }
+                            else
+                            {
+                                if (newCustomer.subscription_start_date != null && newCustomer.subscription_start_date > endDate)
+                                {
+                                    errors.Add("End Date can't be earlier than start date at row : " + rowIndex);
+                                    customerError = true;
+                                }
+                                else
+                                {
+                                    newCustomer.subscription_end_date = endDate;
+                                }
                             }
                         }
                     }
-                }
 
-                #region fill cutomerData
-                newCustomer.added_By_id = currentUser.id;
-                newCustomer.addition_type_id = (int)enums.AddtionalLookupEnum.Sheet;
-                newCustomer.is_called = false;
-                newCustomer.calles_count = 0;
-                newCustomer.men_forign_Key = null;
-                newCustomer.women_forign_key = null;
-                newCustomer.creation_date = DateTime.Now;
-                if (newCustomer.subscription_start_date < DateTime.Now &&
-                    DateTime.Now < newCustomer.subscription_end_date)
+                    #region fill cutomerData
+                    newCustomer.added_By_id = currentUser.id;
+                    newCustomer.addition_type_id = (int)enums.AddtionalLookupEnum.Sheet;
+                    newCustomer.is_called = false;
+                    newCustomer.calles_count = 0;
+                    newCustomer.men_forign_Key = null;
+                    newCustomer.women_forign_key = null;
+                    newCustomer.creation_date = DateTime.Now;
+                    if (newCustomer.subscription_start_date < DateTime.Now &&
+                        DateTime.Now < newCustomer.subscription_end_date)
+                    {
+                        newCustomer.is_active = true;
+                    }
+                    else
+                    {
+                        newCustomer.is_active = false;
+                    }
+
+                    #endregion
+
+
+                    if (!customerError)
+                    {
+                        db.SalesCustomers.Add(newCustomer);
+
+                    }
+                }
+                if (errors.Count == 0)
                 {
-                    newCustomer.is_active = true;
+                    db.SaveChanges();
                 }
-                else
-                {
-                    newCustomer.is_active = false;
-                }
-
-                #endregion
-
-
-                if (!customerError)
-                {
-                    db.SalesCustomers.Add(newCustomer);
-
-                }
+                return errors;
             }
-            if (errors.Count == 0)
-            {
-                db.SaveChanges();
-            }
-            return errors;
-
         }
 
         public List<SalesCustomer> getAllCustomers(string user_name, string password)
         {
 
-            UsersService userService = new UsersService();
-            UserRolesService userRolesService = new UserRolesService();
+            var db = new SmartGymSalesEntities();
+                UsersService userService = new UsersService();
+                UserRolesService userRolesService = new UserRolesService();
 
 
-            User currentUser = userService.GetUserbyUser_name(user_name);
-            if (!userService.checkUserCred(user_name, password))
-            {
-                return new List<SalesCustomer>();
-            }
-            if (!userRolesService.isUserManger(user_name) && !userRolesService.isUserSales(user_name))
-            {
-                return new List<SalesCustomer>();
-            }
-            return db.SalesCustomers.ToList();
+                User currentUser = userService.GetUserbyUser_name(user_name);
+                if (!userService.checkUserCred(user_name, password))
+                {
+                    return null;
+                }
+                if (!userRolesService.isUserManger(user_name) && !userRolesService.isUserSales(user_name))
+                {
+                    return null;
+                }
+                return db.SalesCustomers.ToList();
 
         }
-
     }
 }

@@ -32,7 +32,5 @@ namespace SmartGymSales.Models
     
         public virtual AdditionLookup AdditionLookup { get; set; }
         public virtual knowledgeLookup knowledgeLookup { get; set; }
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
     }
 }

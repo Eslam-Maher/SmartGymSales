@@ -16,65 +16,17 @@ namespace SmartGymSales.Controllers
 {
     public class UserRolesController : ApiController
     {
-        private SmartGymSalesEntities db = new SmartGymSalesEntities();
-        private UserRolesService userRolesService = new UserRolesService();
 
         // GET: api/UserRoles
         [HttpGet]
         [ActionName("getAllUserRoles")]
         public IQueryable<UserRole> GetUserRoles()
         {
+            UserRolesService userRolesService = new UserRolesService();
             return userRolesService.GetUserRoles();
         }
 
-        // GET: api/UserRoles/5
-        [ResponseType(typeof(UserRole))]
-        public IHttpActionResult GetUserRole(int id)
-        {
-            UserRole userRole = db.UserRoles.Find(id);
-            if (userRole == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(userRole);
-        }
-
-        // PUT: api/UserRoles/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutUserRole(int id, UserRole userRole)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != userRole.id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(userRole).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserRoleExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
+   
         // POST: api/UserRoles
         [ResponseType(typeof(UserRole))]
         [HttpPost]
@@ -96,7 +48,7 @@ namespace SmartGymSales.Controllers
             {
                 pwd = headers.GetValues("Password").First();
             }
-
+            UserRolesService userRolesService = new UserRolesService();
             bool isInserted = userRolesService.insertUserRole(userRole, userName,pwd);
 
             return Ok(isInserted);
@@ -119,22 +71,19 @@ namespace SmartGymSales.Controllers
             {
                 pwd = headers.GetValues("Password").First();
             }
+            UserRolesService userRolesService = new UserRolesService();
             bool isDeleted = userRolesService.deleteUserRole(id, userName, pwd);
             return Ok(isDeleted);
         }
 
         protected override void Dispose(bool disposing)
         {
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
             if (disposing)
             {
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool UserRoleExists(int id)
-        {
-            return db.UserRoles.Count(e => e.id == id) > 0;
         }
     }
 }

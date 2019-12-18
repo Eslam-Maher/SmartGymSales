@@ -31,9 +31,5 @@ namespace SmartGymSales.Models
         public System.DateTime creation_date { get; set; }
         public Nullable<int> is_called_by { get; set; }
         public Nullable<decimal> subscription_paid_money { get; set; }
-    
-        public virtual AdditionLookup AdditionLookup { get; set; }
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
     }
 }

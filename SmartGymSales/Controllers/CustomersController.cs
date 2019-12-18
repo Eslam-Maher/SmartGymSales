@@ -20,7 +20,6 @@ namespace SmartGymSales.Controllers
 {
     public class CustomersController : ApiController
     {
-        private SmartGymSalesEntities db = new SmartGymSalesEntities();
 
         // GET: api/Customers
         [HttpGet]
@@ -39,7 +38,8 @@ namespace SmartGymSales.Controllers
                 pwd = headers.GetValues("Password").First();
             }
             CustomerService cs = new CustomerService();
-            return cs.getAllCustomers(userName, pwd);
+            List< SalesCustomer> tmep = cs.getAllCustomers(userName, pwd);
+            return tmep;
         }
 
 
@@ -168,96 +168,63 @@ namespace SmartGymSales.Controllers
 
         }
         // GET: api/Customers/5
-        [ResponseType(typeof(SalesCustomer))]
-        public IHttpActionResult Getcustomer(int id)
-        {
-            SalesCustomer customer = db.SalesCustomers.Find(id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
+        //[ResponseType(typeof(SalesCustomer))]
+        //public IHttpActionResult Getcustomer(int id)
+        //{
+        //    SalesCustomer customer = db.SalesCustomers.Find(id);
+        //    if (customer == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok(customer);
-        }
+        //    return Ok(customer);
+        //}
 
-        // PUT: api/Customers/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult Putcustomer(int id, SalesCustomer customer)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //// PUT: api/Customers/5
+        //[ResponseType(typeof(void))]
+        //public IHttpActionResult Putcustomer(int id, SalesCustomer customer)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            if (id != customer.id)
-            {
-                return BadRequest();
-            }
+        //    if (id != customer.id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            db.Entry(customer).State = EntityState.Modified;
+        //    db.Entry(customer).State = EntityState.Modified;
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!customerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        db.SaveChanges();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!customerExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return StatusCode(HttpStatusCode.NoContent);
-        }
+        //    return StatusCode(HttpStatusCode.NoContent);
+        //}
 
-        // POST: api/Customers
-        [ResponseType(typeof(SalesCustomer))]
-        public IHttpActionResult Postcustomer(SalesCustomer customer)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.SalesCustomers.Add(customer);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = customer.id }, customer);
-        }
-
-        // DELETE: api/Customers/5
-        [ResponseType(typeof(SalesCustomer))]
-        public IHttpActionResult Deletecustomer(int id)
-        {
-            SalesCustomer customer = db.SalesCustomers.Find(id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-            db.SalesCustomers.Remove(customer);
-            db.SaveChanges();
-
-            return Ok(customer);
-        }
+      
 
         protected override void Dispose(bool disposing)
         {
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
             if (disposing)
             {
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool customerExists(int id)
-        {
-            return db.SalesCustomers.Count(e => e.id == id) > 0;
         }
     }
 }
