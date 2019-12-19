@@ -120,6 +120,6 @@ C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\System.Web.WebPa
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\System.Web.WebPages.Razor.xml
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\Microsoft.AspNet.Identity.Core.xml
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\obj\Debug\SmartGymSales.csprojResolveAssemblyReference.cache
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\obj\Debug\SmartGymSales.dll
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\obj\Debug\SmartGymSales.pdb
-C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\obj\Debug\SmartGymSales.csprojResolveAssemblyReference.cache

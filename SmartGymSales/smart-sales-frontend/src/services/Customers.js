@@ -54,6 +54,7 @@ export default {
         const updatePossibleCustomersFromDb= new API("Customers/updatePossibleCustomersFromDb");
         const config = {
           headers: {
+            'Content-Type': 'application/json',
             userName: store.getters.getUser.user_name,
             Password: store.getters.getUser.password
           },

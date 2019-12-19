@@ -7,7 +7,7 @@
       <b-col md="3">
         <b-button
           variant="primary"
-          @click="UpdatePossibleCustomers('Men')"
+          @click="updatePossibleCustomers('Men')"
         >Update Men Possible Customers</b-button>
       </b-col>
       <b-col md="3">
@@ -16,7 +16,7 @@
       <b-col md="3">
         <b-button
           class="women-btn"
-          @click="UpdatePossibleCustomers('Women')"
+          @click="updatePossibleCustomers('Women')"
         >Update Women Possible Customers</b-button>
       </b-col>
     </b-row>

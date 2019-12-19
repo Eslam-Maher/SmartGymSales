@@ -34,7 +34,7 @@ export default {
     }
   },
   created: function() {
-    if (!this.isManger && !this.isSales) {
+    if (!this.isSales) {
       this.$router.push({ name: "home" });
       return;
     }

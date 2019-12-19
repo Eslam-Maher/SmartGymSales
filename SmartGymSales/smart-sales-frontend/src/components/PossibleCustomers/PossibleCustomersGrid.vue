@@ -1,5 +1,5 @@
 <template>
-  <b-card header="Customers Grid" header-tag="h4">
+  <b-card header="Possible Customers Grid" header-tag="h4">
     <b-row>
       <b-col md="6">
         <b-form-group
@@ -25,7 +25,7 @@
     <b-table
       striped
       hover
-      :items="customers"
+      :items="possibleCustomers"
       :fields="fields"
       :current-page="currentPage"
       :per-page="perPage"
@@ -35,20 +35,18 @@
       <template v-slot:cell(is_called)="row">
         <label>{{ row.item.is_called ? "Yes" : "No" }}</label>
       </template>
-      <template v-slot:cell(is_active)="row">
-        <label>{{ row.item.is_active ? "Yes" : "No" }}</label>
-      </template>
-      <template v-slot:cell(subscription_start_date)="row">
-        <label>{{row.item.subscription_start_date? row.item.subscription_start_date||DD_MMM_YYYY :'-'}}</label>
-      </template>
-      <template v-slot:cell(subscription_end_date)="row">
-        <label>{{ row.item.subscription_end_date ? row.item.subscription_end_date||DD_MMM_YYYY:'-' }}</label>
-      </template>
-      <template v-slot:cell(addition_type_id)=row> 
+      <template v-slot:cell(addition_type_id)="row">
         <label>
-        {{row.item.addition_type_id==additionLookup.Sheet?"Sheet":
-          row.item.addition_type_id==additionLookup.Sync?"Sync": 
-            row.item.addition_type_id==additionLookup.Manual?"Manual":"-" }}
+          {{row.item.addition_type_id==additionLookup.Sheet?"Sheet":
+          row.item.addition_type_id==additionLookup.Sync?"Sync":
+          row.item.addition_type_id==additionLookup.Manual?"Manual":"-" }}
+        </label>
+      </template>
+      <template v-slot:cell(knowledge_id)="row">
+        <label>
+          {{row.item.knowledge_id==KnowledgeLookup.FaceBook?"FaceBook":
+          row.item.knowledge_id==KnowledgeLookup.Sync?"Sync":
+          row.item.knowledge_id==KnowledgeLookup.Friend?"Friend":"-" }}
         </label>
       </template>
       <template v-slot:cell(call)="row">
@@ -58,7 +56,7 @@
         <b-button variant="primary" @click="openInsertPossibleCustomers(row)">Insert Referral</b-button>
       </template>
     </b-table>
-    <b-row v-if="customers.length>0" align-h="between">
+    <b-row v-if="possibleCustomers.length>0" align-h="between">
       <b-col cols="3">
         <b-form-group
           label="Per page"
@@ -88,7 +86,8 @@
       title="Call Review"
       @show="resetReviewModal"
       @hidden="resetReviewModal"
-      @ok="handleReviewOk"  >
+      @ok="handleReviewOk"
+    >
       <form ref="form" @submit.stop.prevent="handleReviewSubmit">
         <b-row>
           <b-col>
@@ -176,7 +175,8 @@
       :visible="modalShow"
       @change="prevent"
       hide-footer
-      hide-header >
+      hide-header
+    >
       <insert-possibleCustomer :customer_id="customer_id" @closePopUp="hidePopUp()"></insert-possibleCustomer>
     </b-modal>
   </b-card>
@@ -184,44 +184,27 @@
 
 <script>
 import insertPossibleCustomer from "../PossibleCustomers/insertPossibleCustomer";
-import {Additional_ENUM} from "../../models/enums/AdditionalLookUp.js";
+import { Additional_ENUM } from "../../models/enums/AdditionalLookUp.js";
+import { Knowledge_ENUM } from "../../models/enums/KnowledgeLookUp";
 export default {
+  props: ["possibleCustomers"],
   components: { insertPossibleCustomer },
-  props: ["customers"],
   data() {
     return {
-      additionLookup:Additional_ENUM,
+      customer_id: null,
       modalShow: false,
-      // customers: [
-      //   {
-      //     id: 1,
-      //     name: "eslam",
-      //     mobile: "0151164185",
-      //     email: "test@test",
-      //     additionLookup: { addition_type: "asdasdasd" },
-      //     is_called: false,
-      //     calles_count: 0,
-      //     is_active: false
-      //   }
-      // ], //for testing
-      review: {
-        training: 0,
-        reciption: 0,
-        general: 0,
-        comment: "",
-        parent_id: null,
-        parent_id_type: "Customer"
-      },
-
+      additionLookup: Additional_ENUM,
+      KnowledgeLookup: Knowledge_ENUM,
+      components: { insertPossibleCustomer },
       totalRows: 0,
       currentPage: 1,
       perPage: 10,
-      pageOptions: [ 10, 50,100,200],
+      pageOptions: [10, 50, 100, 200],
       filter: null,
       fields: [
         {
           key: "name",
-          label: "Customer Name",
+          label: "Possible Customer Name",
           sortable: true,
           class: "text-center"
         },
@@ -238,12 +221,6 @@ export default {
           class: "text-center"
         },
         {
-          key: "addition_type_id",
-          label: "Source",
-          sortable: true,
-          class: "text-center"
-        },
-        {
           key: "is_called",
           label: "Called before",
           sortable: true,
@@ -256,20 +233,14 @@ export default {
           class: "text-center"
         },
         {
-          key: "subscription_start_date",
-          label: "Subscription Start Date",
+          key: "knowledge_id",
+          label: "knowledge from",
           sortable: true,
           class: "text-center"
         },
         {
-          key: "subscription_end_date",
-          label: "Subscription End Date",
-          sortable: true,
-          class: "text-center"
-        },
-        {
-          key: "is_active",
-          label: "Already Member",
+          key: "addition_type_id",
+          label: "Addition Type",
           sortable: true,
           class: "text-center"
         },
@@ -284,33 +255,21 @@ export default {
           class: "text-center"
         }
       ],
-      customer_id: null
-    };
-  },
-  computed: {
-    reviewState() {
-      return {
-        training: this.review.training >= 1 && this.review.training <= 5,
-        reciption: this.review.reciption >= 1 && this.review.reciption <= 5,
-        general: this.review.general >= 1 && this.review.general <= 5,
-        comment: this.review.comment.length > 0
-      };
-    }
-  },
-  watch: {
-    customers: function(newVal) {
-      if (newVal) {
-       /*eslint no-console: ["error", { allow: ["warn", "error","log"] }] */
-        this.totalRows = newVal.length;
+      review: {
+        training: 0,
+        reciption: 0,
+        general: 0,
+        comment: "",
+        parent_id: null,
+        parent_id_type: "PossibleCustomer"
       }
-    }
+    };
   },
   methods: {
     handleReviewOk: function(bvModalEvt) {
       bvModalEvt.preventDefault();
       this.handleReviewSubmit();
     },
-
     resetReviewModal: function() {
       this.review = {
         training: 0,
@@ -318,7 +277,7 @@ export default {
         general: 0,
         comment: "",
         parent_id: null,
-        parent_id_type: "Customer"
+        parent_id_type: "PossibleCustomer"
       };
     },
     checkReviewValidity() {
@@ -340,6 +299,11 @@ export default {
       this.review.parent_id = row.item.id;
       this.$refs["modal-review"].show();
     },
+    onFiltered(filteredItems) {
+      // Trigger pagination to update the number of buttons/pages due to filtering
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
+    },
     prevent: function() {
       this.$nextTick(() => {
         this.modalShow = false;
@@ -353,14 +317,28 @@ export default {
     openInsertPossibleCustomers: function(row) {
       this.customer_id = row.item.id;
       this.$refs["modal-possibleCustomers"].show();
-    },
-    onFiltered(filteredItems) {
-      // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length;
-      this.currentPage = 1;
+    }
+  },
+  watch: {
+    possibleCustomers: function(newVal) {
+      if (newVal) {
+        /*eslint no-console: ["error", { allow: ["warn", "error","log"] }] */
+        this.totalRows = newVal.length;
+      }
+    }
+  },
+  computed: {
+    reviewState() {
+      return {
+        training: this.review.training >= 1 && this.review.training <= 5,
+        reciption: this.review.reciption >= 1 && this.review.reciption <= 5,
+        general: this.review.general >= 1 && this.review.general <= 5,
+        comment: this.review.comment.length > 0
+      };
     }
   }
 };
 </script>
 
-<style></style>
+<style>
+</style>

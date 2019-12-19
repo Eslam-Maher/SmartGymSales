@@ -66,14 +66,17 @@ namespace SmartGymSales.Services
                 if (sourceDbString == "Men")
                 {
                     SmartGymMenEntities sourceDb = new SmartGymMenEntities();
-                    List<T_session_subscriber> sourceCustomers = sourceDb.T_session_subscriber.Where(x => !String.IsNullOrEmpty(x.sunmobil) && US.checkPhoneNumberVaildaty(x.sunmobil)).ToList();
+                    List<T_session_subscriber> sourceCustomers = sourceDb.T_session_subscriber.Where(x => !String.IsNullOrEmpty(x.sunmobil)).ToList();
 
                     List<T_session_subscriber> toBeInsertedPossibleCustomers = new List<T_session_subscriber>();
                     foreach (T_session_subscriber element in sourceCustomers)
                     {
-                        if (db.possibleCustomers.Where(possibleCusElement => possibleCusElement.mobile.ToString() == element.sunmobil).Count() == 0)
+                        if (US.checkPhoneNumberVaildaty(element.sunmobil))
                         {
-                            toBeInsertedPossibleCustomers.Add(element);
+                            if (db.possibleCustomers.Where(possibleCusElement => possibleCusElement.mobile.ToString() == element.sunmobil).Count() == 0)
+                            {
+                                toBeInsertedPossibleCustomers.Add(element);
+                            }
                         }
                     }
                     InsertIntoPossibleCustomersFromMenDb(toBeInsertedPossibleCustomers, currentUser);
@@ -314,8 +317,8 @@ namespace SmartGymSales.Services
         }
 
         private void InsertIntoPossibleCustomersFromMenDb(List<T_session_subscriber> sourceList, User currentUser) {
-            using (var db = new SmartGymSalesEntities())
-            {
+            var db = new SmartGymSalesEntities();
+            
                 UtilsService US = new UtilsService();
                 SmartGymMenEntities sourceDb = new SmartGymMenEntities();
                 foreach (T_session_subscriber item in sourceList)
@@ -363,14 +366,19 @@ namespace SmartGymSales.Services
                         possibleCustomerItem.email = item.subemail;
                     }
                     possibleCustomerItem.knowledge_id = (int)KnowledgeLookupEnum.Sync;
+                    possibleCustomerItem.is_called = false;
+                    possibleCustomerItem.calles_count = 0;
+                    possibleCustomerItem.is_subscribed = false;
+                    possibleCustomerItem.is_hidden = false;
+                    possibleCustomerItem.addition_type_id = (int)AddtionalLookupEnum.Sync;
+                    possibleCustomerItem.added_By_id = currentUser.id;
+                    possibleCustomerItem.creaation_date = DateTime.Now;
 
-
-                    if (!customerError)
+                if (!customerError)
                     {
                         db.possibleCustomers.Add(possibleCustomerItem);
-                    }
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
             }
         }
         public List<String> insertExcelToCustomers(HttpPostedFile postedFile, string user_name, string password)

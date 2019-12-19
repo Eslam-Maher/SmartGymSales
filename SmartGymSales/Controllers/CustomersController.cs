@@ -149,7 +149,7 @@ namespace SmartGymSales.Controllers
 
         [HttpPost]
         [ActionName("updatePossibleCustomersFromDb")]
-        public IHttpActionResult updatePossibleCustomerTable(HttpRequestMessage request, String dbType)
+        public IHttpActionResult updatePossibleCustomerTable(HttpRequestMessage request, [FromBody] String dbType)
         {
             HttpRequestHeaders headers = request.Headers;
             string userName = string.Empty;
@@ -163,7 +163,7 @@ namespace SmartGymSales.Controllers
                 pwd = headers.GetValues("Password").First();
             }
             CustomerService cs = new CustomerService();
-            List<String> errors = cs.UpdatePossibleCustomerFromdb(userName, pwd, "Men");
+            List<String> errors = cs.UpdatePossibleCustomerFromdb(userName, pwd, dbType);
             return Ok(errors);
 
         }

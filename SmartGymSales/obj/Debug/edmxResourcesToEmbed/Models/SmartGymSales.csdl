@@ -6,7 +6,6 @@
     </Key>
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="addition_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-    <NavigationProperty Name="possibleCustomers" Relationship="SmartGymSalesModel.FK_possibleCustomers_AdditionLookup" FromRole="AdditionLookup" ToRole="possibleCustomer" />
   </EntityType>
   <EntityType Name="commission">
     <Key>
@@ -24,7 +23,6 @@
     </Key>
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-    <NavigationProperty Name="possibleCustomers" Relationship="SmartGymSalesModel.FK_possibleCustmers_knowledgeLookup" FromRole="knowledgeLookup" ToRole="possibleCustomer" />
   </EntityType>
   <EntityType Name="review">
     <Key>
@@ -73,16 +71,8 @@
       <End Role="User" EntitySet="Users" />
       <End Role="UserRole" EntitySet="UserRoles" />
     </AssociationSet>
-    <EntitySet Name="possibleCustomers" EntityType="SmartGymSalesModel.possibleCustomer" />
-    <AssociationSet Name="FK_possibleCustomers_AdditionLookup" Association="SmartGymSalesModel.FK_possibleCustomers_AdditionLookup">
-      <End Role="AdditionLookup" EntitySet="AdditionLookups" />
-      <End Role="possibleCustomer" EntitySet="possibleCustomers" />
-    </AssociationSet>
-    <AssociationSet Name="FK_possibleCustmers_knowledgeLookup" Association="SmartGymSalesModel.FK_possibleCustmers_knowledgeLookup">
-      <End Role="knowledgeLookup" EntitySet="knowledgeLookups" />
-      <End Role="possibleCustomer" EntitySet="possibleCustomers" />
-    </AssociationSet>
     <EntitySet Name="SalesCustomers" EntityType="SmartGymSalesModel.SalesCustomer" />
+    <EntitySet Name="possibleCustomers" EntityType="SmartGymSalesModel.possibleCustomer" />
   </EntityContainer>
   <EntityType Name="UserRole">
     <Key>
@@ -118,52 +108,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityType Name="possibleCustomer">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="mobile" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="customer_id" Type="Int32" />
-    <Property Name="is_called" Type="Boolean" Nullable="false" />
-    <Property Name="calles_count" Type="Int32" Nullable="false" />
-    <Property Name="is_subscribed" Type="Boolean" Nullable="false" />
-    <Property Name="discont_percentage" Type="Int32" />
-    <Property Name="is_hidden" Type="Boolean" Nullable="false" />
-    <Property Name="knowledge_id" Type="Int32" Nullable="false" />
-    <Property Name="creaation_date" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="added_By_id" Type="Int32" />
-    <Property Name="addition_type_id" Type="Int32" Nullable="false" />
-    <Property Name="is_called_by" Type="Int32" />
-    <NavigationProperty Name="AdditionLookup" Relationship="SmartGymSalesModel.FK_possibleCustomers_AdditionLookup" FromRole="possibleCustomer" ToRole="AdditionLookup" />
-    <NavigationProperty Name="knowledgeLookup" Relationship="SmartGymSalesModel.FK_possibleCustmers_knowledgeLookup" FromRole="possibleCustomer" ToRole="knowledgeLookup" />
-  </EntityType>
-  <Association Name="FK_possibleCustomers_AdditionLookup">
-    <End Type="SmartGymSalesModel.AdditionLookup" Role="AdditionLookup" Multiplicity="1" />
-    <End Type="SmartGymSalesModel.possibleCustomer" Role="possibleCustomer" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="AdditionLookup">
-        <PropertyRef Name="id" />
-      </Principal>
-      <Dependent Role="possibleCustomer">
-        <PropertyRef Name="addition_type_id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_possibleCustmers_knowledgeLookup">
-    <End Type="SmartGymSalesModel.knowledgeLookup" Role="knowledgeLookup" Multiplicity="1" />
-    <End Type="SmartGymSalesModel.possibleCustomer" Role="possibleCustomer" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="knowledgeLookup">
-        <PropertyRef Name="id" />
-      </Principal>
-      <Dependent Role="possibleCustomer">
-        <PropertyRef Name="knowledge_id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityType Name="SalesCustomer">
     <Key>
       <PropertyRef Name="id" />
@@ -185,5 +129,25 @@
     <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="is_called_by" Type="Int32" />
     <Property Name="subscription_paid_money" Type="Decimal" Precision="10" Scale="2" />
+  </EntityType>
+  <EntityType Name="possibleCustomer">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="mobile" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="customer_id" Type="Int32" />
+    <Property Name="is_called" Type="Boolean" Nullable="false" />
+    <Property Name="calles_count" Type="Int32" Nullable="false" />
+    <Property Name="is_subscribed" Type="Boolean" Nullable="false" />
+    <Property Name="discont_percentage" Type="Int32" />
+    <Property Name="is_hidden" Type="Boolean" Nullable="false" />
+    <Property Name="knowledge_id" Type="Int32" Nullable="false" />
+    <Property Name="creaation_date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="added_By_id" Type="Int32" />
+    <Property Name="addition_type_id" Type="Int32" Nullable="false" />
+    <Property Name="is_called_by" Type="Int32" />
   </EntityType>
 </Schema>

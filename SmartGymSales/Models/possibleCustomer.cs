@@ -29,8 +29,5 @@ namespace SmartGymSales.Models
         public Nullable<int> added_By_id { get; set; }
         public int addition_type_id { get; set; }
         public Nullable<int> is_called_by { get; set; }
-    
-        public virtual AdditionLookup AdditionLookup { get; set; }
-        public virtual knowledgeLookup knowledgeLookup { get; set; }
     }
 }

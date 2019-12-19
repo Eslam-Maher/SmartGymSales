@@ -103,30 +103,6 @@
     <Property Name="user_name" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
   </EntityType>
-  <Association Name="FK_possibleCustmers_knowledgeLookup">
-    <End Role="knowledgeLookup" Type="Self.knowledgeLookup" Multiplicity="1" />
-    <End Role="possibleCustomers" Type="Self.possibleCustomers" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="knowledgeLookup">
-        <PropertyRef Name="id" />
-      </Principal>
-      <Dependent Role="possibleCustomers">
-        <PropertyRef Name="knowledge_id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_possibleCustomers_AdditionLookup">
-    <End Role="AdditionLookup" Type="Self.AdditionLookup" Multiplicity="1" />
-    <End Role="possibleCustomers" Type="Self.possibleCustomers" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="AdditionLookup">
-        <PropertyRef Name="id" />
-      </Principal>
-      <Dependent Role="possibleCustomers">
-        <PropertyRef Name="addition_type_id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_UserRoles_Roles">
     <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
     <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
@@ -161,14 +137,6 @@
     <EntitySet Name="SalesCustomers" EntityType="Self.SalesCustomers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="FK_possibleCustmers_knowledgeLookup" Association="Self.FK_possibleCustmers_knowledgeLookup">
-      <End Role="knowledgeLookup" EntitySet="knowledgeLookup" />
-      <End Role="possibleCustomers" EntitySet="possibleCustomers" />
-    </AssociationSet>
-    <AssociationSet Name="FK_possibleCustomers_AdditionLookup" Association="Self.FK_possibleCustomers_AdditionLookup">
-      <End Role="AdditionLookup" EntitySet="AdditionLookup" />
-      <End Role="possibleCustomers" EntitySet="possibleCustomers" />
-    </AssociationSet>
     <AssociationSet Name="FK_UserRoles_Roles" Association="Self.FK_UserRoles_Roles">
       <End Role="Roles" EntitySet="Roles" />
       <End Role="UserRoles" EntitySet="UserRoles" />

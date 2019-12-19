@@ -113,6 +113,10 @@ export default {
     };
   },
   created:function(){
+     if (!this.isSales) {
+      this.$router.push({ name: "home" });
+      return;
+    }
     this.getKnowledgeLookup();
   },
   computed: {
