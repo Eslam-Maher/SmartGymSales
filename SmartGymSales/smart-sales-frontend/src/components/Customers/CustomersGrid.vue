@@ -20,6 +20,7 @@
             </b-input-group-append>
           </b-input-group>
         </b-form-group>
+        {{additionLookup.Sheet}}
       </b-col>
     </b-row>
     <b-table
@@ -43,6 +44,13 @@
       </template>
       <template v-slot:cell(subscription_end_date)="row">
         <label>{{ row.item.subscription_end_date ? row.item.subscription_end_date||DD_MMM_YYYY:'-' }}</label>
+      </template>
+      <template v-slot:cell(addition_type_id)=row> 
+        <label>
+        {{row.item.addition_type_id==additionLookup.Sheet?"Sheet":
+          row.item.addition_type_id==additionLookup.Sync?"Sync": 
+            row.item.addition_type_id==additionLookup.Manual?"Manual":"-" }}
+        </label>
       </template>
       <template v-slot:cell(call)="row">
         <b-button variant="success" @click="openReview(row)">Call</b-button>
@@ -81,8 +89,7 @@
       title="Call Review"
       @show="resetReviewModal"
       @hidden="resetReviewModal"
-      @ok="handleReviewOk"
-    >
+      @ok="handleReviewOk"  >
       <form ref="form" @submit.stop.prevent="handleReviewSubmit">
         <b-row>
           <b-col>
@@ -179,11 +186,13 @@
 
 <script>
 import insertPossibleCustomer from "../shared/insertPossibleCustomer";
+import {Additional_ENUM} from "../../models/enums/AdditionalLookUp.js";
 export default {
   components: { insertPossibleCustomer },
   props: ["customers"],
   data() {
     return {
+      additionLookup:Additional_ENUM,
       modalShow: false,
       // customers: [
       //   {
@@ -208,8 +217,8 @@ export default {
 
       totalRows: 0,
       currentPage: 1,
-      perPage: 5,
-      pageOptions: [5, 10, 15],
+      perPage: 10,
+      pageOptions: [ 10, 50,100,200],
       filter: null,
       fields: [
         {
@@ -231,7 +240,7 @@ export default {
           class: "text-center"
         },
         {
-          key: "additionLookup.addition_type",
+          key: "addition_type_id",
           label: "Source",
           sortable: true,
           class: "text-center"

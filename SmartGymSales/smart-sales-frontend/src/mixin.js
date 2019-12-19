@@ -58,7 +58,7 @@ export default {
   },
   filters: {
     DD_MMM_YYYY: function(date) {
-      return moment(date).format("DD-MMM-YYYY");
+      return moment(date).format("DD-MM-YYYY");
     }
   }
 }

@@ -55,11 +55,11 @@
           <b-form-group
             :state="possibleCustomerState.discont_percentage"
             label="Discont%"
-            label-for="email-input"
+            label-for="discont_percentage-input"
             invalid-feedback="Email must be valid "
           >
             <b-form-input
-              id="email-input"
+              id="discont_percentage-input"
               v-model="possibleCustomer.discont_percentage"
               :state="possibleCustomerState.discont_percentage"
               oninput="validity.valid || (value='')"
@@ -71,15 +71,23 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-col md="6">
-
-
+        <b-col md="6">  <b-form-group
+            label="Knowledge"
+            label-for="Knowledge-input"
+            :state="possibleCustomerState.knowledge_id"
+            invalid-feedback="You must select knowledge option"
+          >
+          <b-form-select v-model="possibleCustomer.knowledge_id" value-field="id" id="Knowledge-input"
+          text-field="type" :options="Knowledgeoptions"></b-form-select>
+          </b-form-group>
         </b-col>
       </b-row>
       <b-row>
         <b-col>
-          <b-button type="submit">Insert Possible Customer</b-button>
+          <b-button-group>
+          <b-button variant="primary" type="submit">Insert Possible Customer</b-button>
           <b-button @click="close">close</b-button>
+          </b-button-group>
         </b-col>
       </b-row>
     </form>
@@ -87,10 +95,12 @@
 </template>
 
 <script>
+import knowledgeLookUpService from "../../services/knowledgeLookUp";
 export default {
   props: { customer_id: Number },
   data() {
     return {
+      Knowledgeoptions:[],
       possibleCustomer: {
         name: "",
         mobile: "",
@@ -101,6 +111,9 @@ export default {
         addition_type_id: 0 //fornow
       }
     };
+  },
+  created:function(){
+    this.getKnowledgeLookup();
   },
   computed: {
     possibleCustomerState() {
@@ -129,6 +142,23 @@ export default {
         knowledge_id: null, //forNow
         addition_type_id: 0 //fornow
       };
+    },
+    getKnowledgeLookup:function(){
+
+        this.loadingCount++;
+      knowledgeLookUpService.GetknowledgeLookups()
+        .then(res => {
+          this.Knowledgeoptions = res.data;
+        })
+        .catch(error => { // eslint-disable-line no-unused-vars
+          this.$bvToast.toast(
+            "error in getting knowledge options ",
+            this.failToastConfig
+          );
+        })
+        .finally(() => {
+          this.loadingCount--;
+        });
     },
     close: function() {
       this.$emit("closePopUp");

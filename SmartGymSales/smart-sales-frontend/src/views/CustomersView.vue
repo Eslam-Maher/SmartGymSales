@@ -18,6 +18,9 @@ export default {
       CustomersServices.getAllCustomers()
         .then(res => {
           this.customers = res.data;
+          this.customers.forEach(element => {
+            element. _rowVariant= element.is_active?'success': 'danger'
+          });
         })
         .catch(error => { // eslint-disable-line no-unused-vars
           this.$bvToast.toast(

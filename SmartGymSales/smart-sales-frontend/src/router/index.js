@@ -6,6 +6,7 @@ import Login from "../views/Login.vue";
 import CustomerRefreshPage from "../views/CustomerRefreshPage.vue";
 import CustomersView from "../views/CustomersView.vue";
 import UserRoles from "../views/UserRoles.vue";
+import AddPossibleCustomers from "../components/shared/insertPossibleCustomer.vue"
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -43,6 +44,11 @@ const router = new VueRouter({
       path:"/Customers",
       name:"Customers",
       component:CustomersView
+    },
+    {
+      path:"/AddPossibleCustomers",
+      name:"AddPossibleCustomers",
+      component:AddPossibleCustomers
     },
     { path: "/UserRoles", name: "UserRoles", component: UserRoles }
   ]

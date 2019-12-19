@@ -8,6 +8,7 @@
           <!-- <b-nav-item href="/">Link</b-nav-item> -->
           <b-nav-item-dropdown v-if="isManger||isSales" text="Customers">
              <b-dropdown-item v-if="isManger||isSales" to="/Customers">View Customers</b-dropdown-item>
+             <b-dropdown-item v-if="isSales" to="/AddPossibleCustomers">Add Possible Customers</b-dropdown-item>
             <b-dropdown-item v-if="isManger" to="/CustomerRefreshPage">Refresh Customers</b-dropdown-item>
           </b-nav-item-dropdown>
           
