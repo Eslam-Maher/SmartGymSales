@@ -50,10 +50,10 @@
         </label>
       </template>
       <template v-slot:cell(call)="row">
-        <b-button variant="success" @click="openReview(row)">Call</b-button>
+        <b-button variant="success" v-if="callVisibilty(row)" @click="openReview(row)">Call</b-button>
       </template>
       <template v-slot:cell(insertPossibleCustomer)="row">
-        <b-button variant="primary" @click="openInsertPossibleCustomers(row)">Insert Referral</b-button>
+        <b-button variant="primary" @click="openInsertPossibleCustomers()">Insert Referral</b-button>
       </template>
     </b-table>
     <b-row v-if="possibleCustomers.length>0" align-h="between">
@@ -84,10 +84,11 @@
       id="modal-review"
       centered
       title="Call Review"
-      @show="resetReviewModal"
       @hidden="resetReviewModal"
       @ok="handleReviewOk"
     >
+          <!-- @show="resetReviewModal" -->
+
       <form ref="form" @submit.stop.prevent="handleReviewSubmit">
         <b-row>
           <b-col>
@@ -177,7 +178,12 @@
       hide-footer
       hide-header
     >
-      <insert-possibleCustomer :customer_id="customer_id" @closePopUp="hidePopUp()"></insert-possibleCustomer>
+      <insert-possibleCustomer
+        :customer_id="customer_id"
+        :sourcePage="PARENTMODAL_ENUM.PossibleCustomer"
+        @refreshGrid="refreshGrid()"
+        @closePopUp="hidePopUp()"
+      ></insert-possibleCustomer>
     </b-modal>
   </b-card>
 </template>
@@ -186,6 +192,8 @@
 import insertPossibleCustomer from "../PossibleCustomers/insertPossibleCustomer";
 import { Additional_ENUM } from "../../models/enums/AdditionalLookUp.js";
 import { Knowledge_ENUM } from "../../models/enums/KnowledgeLookUp";
+import { PARENTMODAL_ENUM } from "../../models/enums/ParentModalLookUp";
+import reviewService from "../../services/review";
 export default {
   props: ["possibleCustomers"],
   components: { insertPossibleCustomer },
@@ -193,6 +201,7 @@ export default {
     return {
       customer_id: null,
       modalShow: false,
+      PARENTMODAL_ENUM: PARENTMODAL_ENUM,
       additionLookup: Additional_ENUM,
       KnowledgeLookup: Knowledge_ENUM,
       components: { insertPossibleCustomer },
@@ -260,7 +269,7 @@ export default {
         reciption: 0,
         general: 0,
         comment: "",
-        parent_id: null,
+        parent_id: 0,
         parent_id_type: "PossibleCustomer"
       }
     };
@@ -288,16 +297,42 @@ export default {
       if (!this.checkReviewValidity()) {
         return;
       }
-
+      this.loadingCount++;
       //call submit review Api
-
-      this.$nextTick(() => {
-        this.$refs["modal-review"].hide();
-      });
+      reviewService
+        .insertReview(this.review)
+        .then(res => {
+          if (res.data.length > 0) {
+            res.data.forEach(element => {
+              this.$bvToast.toast(element, this.failToastConfig);
+            });
+          } else {
+            this.$bvToast.toast(
+              "call and review recorded Successfully",
+              this.sucessToastConfig
+            );
+            this.resetReviewModal();
+            this.$nextTick(() => {
+              this.$refs["modal-review"].hide();
+            });
+            this.refreshGrid();
+          }
+        })
+        .catch(error => {
+          this.$bvToast.toast(error.message, this.failToastConfig);
+        })
+        .finally(() => {
+          this.loadingCount--;
+        });
     },
     openReview: function(row) {
       this.review.parent_id = row.item.id;
       this.$refs["modal-review"].show();
+    },
+    callVisibilty: function(row) {
+      return (
+        row.item.is_called_by == null || row.item.is_called_by == this.user.id
+      );
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
@@ -314,8 +349,11 @@ export default {
         this.$refs["modal-possibleCustomers"].hide();
       });
     },
-    openInsertPossibleCustomers: function(row) {
-      this.customer_id = row.item.id;
+    refreshGrid: function() {
+      this.$emit("refreshGrid");
+      this.hidePopUp();
+    },
+    openInsertPossibleCustomers: function() {
       this.$refs["modal-possibleCustomers"].show();
     }
   },

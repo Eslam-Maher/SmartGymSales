@@ -169,12 +169,14 @@
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\knowledgeLookupsController.cs" />
     <Compile Include="Controllers\possibleCustomersController.cs" />
+    <Compile Include="Controllers\ReviewsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\UserRolesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="enums\AddtionalLookupEnm.cs" />
     <Compile Include="enums\customerSheetHeadersEnum.cs" />
     <Compile Include="enums\KnowledgeLookupEnum.cs" />
+    <Compile Include="enums\ParentModalEnum.cs" />
     <Compile Include="enums\rolesEnum.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -251,6 +253,7 @@
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Services\CustomerService.cs" />
     <Compile Include="Services\PossibleCustomersService.cs" />
+    <Compile Include="Services\ReviewService.cs" />
     <Compile Include="Services\RolesService.cs" />
     <Compile Include="Services\UserRolesService.cs" />
     <Compile Include="Services\UsersService.cs" />

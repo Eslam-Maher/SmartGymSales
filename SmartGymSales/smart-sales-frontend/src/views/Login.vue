@@ -23,6 +23,7 @@
           size="lg"
           class="login-form-signin"
           variant="light"
+          type="password"
           v-model="password"
           placeholder="Enter Password"
         ></b-input>

@@ -71,22 +71,28 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-col md="6">  <b-form-group
+        <b-col md="6">
+          <b-form-group
             label="Knowledge"
             label-for="Knowledge-input"
             :state="possibleCustomerState.knowledge_id"
             invalid-feedback="You must select knowledge option"
           >
-          <b-form-select v-model="possibleCustomer.knowledge_id" value-field="id" id="Knowledge-input"
-          text-field="type" :options="Knowledgeoptions"></b-form-select>
+            <b-form-select
+              v-model="possibleCustomer.knowledge_id"
+              value-field="id"
+              id="Knowledge-input"
+              text-field="type"
+              :options="Knowledgeoptions"
+            ></b-form-select>
           </b-form-group>
         </b-col>
       </b-row>
       <b-row>
         <b-col>
           <b-button-group>
-          <b-button variant="primary" type="submit">Insert Possible Customer</b-button>
-          <b-button @click="close">close</b-button>
+            <b-button variant="primary" type="submit">Insert Possible Customer</b-button>
+            <b-button @click="close">close</b-button>
           </b-button-group>
         </b-col>
       </b-row>
@@ -96,37 +102,43 @@
 
 <script>
 import knowledgeLookUpService from "../../services/knowledgeLookUp";
+import { PARENTMODAL_ENUM } from "../../models/enums/ParentModalLookUp";
+import possibleCustomersService from "../../services/PossibleCustomers";
 export default {
-  props: { customer_id: Number },
+  props: { customer_id: Number, sourcePage: String },
   data() {
     return {
-      Knowledgeoptions:[],
+      Knowledgeoptions: [],
       possibleCustomer: {
         name: "",
         mobile: "",
         email: "",
-        customer_id: this.customer_id,
+        customer_id: this.customer_id ? this.customer_id : null,
         discont_percentage: 0,
         knowledge_id: null, //forNow
-        addition_type_id: 0 //fornow
+        addition_type_id: 3 //fornow
       }
     };
   },
-  created:function(){
-     if (!this.isSales) {
+  created: function() {
+    if (!this.isSales) {
       this.$router.push({ name: "home" });
       return;
     }
     this.getKnowledgeLookup();
   },
+
   computed: {
     possibleCustomerState() {
       return {
         name: this.possibleCustomer.name.length > 0,
-        mobile: this.possibleCustomer.mobile.length >= 10,
+        mobile:
+          this.possibleCustomer.mobile.length == 11 &&
+          this.validateMobile(this.possibleCustomer.mobile),
         email:
           this.possibleCustomer.email.length == 0 ||
-          this.possibleCustomer.email.length > 0,
+          (this.possibleCustomer.email.length > 0 &&
+            this.validateEmail(this.possibleCustomer.email)),
         discont_percentage:
           this.possibleCustomer.discont_percentage >= 0 &&
           this.possibleCustomer.discont_percentage <= 100,
@@ -134,10 +146,50 @@ export default {
       };
     }
   },
+
   methods: {
-    handleP_CustomerSubmit: function() {},
+    validateMobile: function(mobile) {
+      let match = mobile.match(/(01)[0-9]{9}/gm);
+      return match != null && match.length > 0 && match[0] != null;
+    },
+    validateEmail: function(email) {
+      let match = email.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/gm);
+      return match != null && match.length > 0 && match[0] != null;
+    },
+    handleP_CustomerSubmit: function() {
+      this.loadingCount++;
+      possibleCustomersService
+        .insertPossibleCustomers(this.possibleCustomer)
+        .then(res => {
+          if (res.data.length > 0) {
+            res.data.forEach(element => {
+              this.$bvToast.toast(element, this.failToastConfig);
+            });
+          } else {
+            this.$bvToast.toast(
+              "Possible Customer Inserted Successfully",
+              this.sucessToastConfig
+            );
+            if (this.sourcePage == PARENTMODAL_ENUM.Customers) {
+              this.$emit("closePopUp");
+            } else if (this.sourcePage == PARENTMODAL_ENUM.PossibleCustomer) {
+              this.$emit("refreshGrid");
+            } else {
+              this.$router.push({ name: "PossibleCustomersView" });
+            }
+            this.resetP_CustomerModal();
+          }
+          // eslint-disable-line no-unused-vars
+        })
+        .catch(error => {
+          this.$bvToast.toast(error.message, this.failToastConfig);
+        })
+        .finally(() => {
+          this.loadingCount--;
+        });
+    },
     resetP_CustomerModal: function() {
-      this.possibleCustomer= {
+      this.possibleCustomer = {
         name: "",
         mobile: "",
         email: "",
@@ -147,14 +199,15 @@ export default {
         addition_type_id: 0 //fornow
       };
     },
-    getKnowledgeLookup:function(){
-
-        this.loadingCount++;
-      knowledgeLookUpService.GetknowledgeLookups()
+    getKnowledgeLookup: function() {
+      this.loadingCount++;
+      knowledgeLookUpService
+        .GetknowledgeLookups()
         .then(res => {
           this.Knowledgeoptions = res.data;
         })
-        .catch(error => { // eslint-disable-line no-unused-vars
+        .catch(() => {
+          // eslint-disable-line no-unused-vars
           this.$bvToast.toast(
             "error in getting knowledge options ",
             this.failToastConfig

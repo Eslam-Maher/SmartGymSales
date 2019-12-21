@@ -79,7 +79,7 @@ namespace SmartGymSales.Services
                             }
                         }
                     }
-                    InsertIntoPossibleCustomersFromMenDb(toBeInsertedPossibleCustomers, currentUser);
+                 errors.AddRange(InsertIntoPossibleCustomersFromMenDb(toBeInsertedPossibleCustomers, currentUser));
                 }
                 else if (sourceDbString == "Women")
                 {
@@ -316,9 +316,9 @@ namespace SmartGymSales.Services
             }
         }
 
-        private void InsertIntoPossibleCustomersFromMenDb(List<T_session_subscriber> sourceList, User currentUser) {
+        private List<String> InsertIntoPossibleCustomersFromMenDb(List<T_session_subscriber> sourceList, User currentUser) {
             var db = new SmartGymSalesEntities();
-            
+            List<String> errors = new List<String>();
                 UtilsService US = new UtilsService();
                 SmartGymMenEntities sourceDb = new SmartGymMenEntities();
                 foreach (T_session_subscriber item in sourceList)
@@ -332,21 +332,25 @@ namespace SmartGymSales.Services
                     }
                     else
                     {
+                    errors.Add("Name field is empty at id :" + item.id);
                         customerError = true;
                     }
 
                     //mobile
                     if (String.IsNullOrEmpty(item.sunmobil))
                     {
+                        errors.Add("Mobile field is empty at id :" + item.id +" with name: "+item.subname);
                         customerError = true;
                     }
                     else if (!US.checkPhoneNumberVaildaty(item.sunmobil))
                     {
-                        customerError = true;
+                    errors.Add("Mobile field is not valid at id :" + item.id + " with name: " + item.subname);
+                    customerError = true;
                     }
                     else if (US.checkPhoneNumberRedundancyforPossibleCustomers(item.sunmobil))
                     {
-                        customerError = true;
+                    errors.Add("Mobile field is found before at id :" + item.id + " with name: " + item.subname);
+                    customerError = true;
                     }
                     else
                     {
@@ -355,11 +359,13 @@ namespace SmartGymSales.Services
                     //email
                     if (!String.IsNullOrEmpty(item.subemail) && !US.checkEmailVaildaty(item.subemail))
                     {
-                        customerError = true;
+                    errors.Add("Email field is not valid at id :" + item.id + " with name: " + item.subname);
+                    customerError = true;
                     }
                     else if (!String.IsNullOrEmpty(item.subemail) && US.checkEmailRedundancyforPossibleCustomers(item.subemail))
                     {
-                        customerError = true;
+                    errors.Add("Email field is found before at id :" + item.id + " with name: " + item.subname);
+                    customerError = true;
                     }
                     else
                     {
@@ -380,6 +386,7 @@ namespace SmartGymSales.Services
                     db.SaveChanges();
                 }
             }
+            return errors;
         }
         public List<String> insertExcelToCustomers(HttpPostedFile postedFile, string user_name, string password)
         {

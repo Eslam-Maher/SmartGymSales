@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using SmartGymSales.Models;
+using SmartGymSales.enums;
 
 namespace SmartGymSales.Services
 {
@@ -31,6 +32,81 @@ namespace SmartGymSales.Services
         {
             SmartGymSalesEntities db = new SmartGymSalesEntities();
             return db.possibleCustomers.Count(e => e.id == id) > 0;
+        }
+
+        public List<String> insertPossibleCustomer(string userName, string pwd, possibleCustomer possibleCustomer)
+        {
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
+            List<String> errors = new List<string>();
+            UsersService userService = new UsersService();
+            UserRolesService userRolesService = new UserRolesService();
+
+            User currentUser = userService.GetUserbyUser_name(userName);
+            if (!userService.checkUserCred(userName, pwd))
+            {
+                errors.Add("please Login and try again");
+                return errors;
+            }
+            if (!userRolesService.isUserSales(userName))
+            {
+                errors.Add("You are not authorized");
+                return errors;
+            }
+
+
+            UtilsService US = new UtilsService();
+            bool customerError = false;
+            //name
+            if (String.IsNullOrEmpty(possibleCustomer.name))
+            {
+                errors.Add("Name field is empty");
+                customerError = true;
+            }
+
+            //mobile
+            if (String.IsNullOrEmpty(possibleCustomer.mobile))
+            {
+                errors.Add("Mobile field is empty");
+                customerError = true;
+            }
+            else if (!US.checkPhoneNumberVaildaty(possibleCustomer.mobile))
+            {
+                errors.Add("Mobile field is not valid");
+                customerError = true;
+            }
+            else if (US.checkPhoneNumberRedundancyforPossibleCustomers(possibleCustomer.mobile))
+            {
+                errors.Add("Mobile field is found before");
+                customerError = true;
+            }
+            //email
+            if (!String.IsNullOrEmpty(possibleCustomer.email) && !US.checkEmailVaildaty(possibleCustomer.email))
+            {
+                errors.Add("Email field is not valid");
+                customerError = true;
+            }
+            else if (!String.IsNullOrEmpty(possibleCustomer.email) && US.checkEmailRedundancyforPossibleCustomers(possibleCustomer.email))
+            {
+                errors.Add("Email field is found before");
+                customerError = true;
+            }
+            
+            
+            possibleCustomer.is_called = false;
+            possibleCustomer.calles_count = 0;
+            possibleCustomer.is_subscribed = false;
+            possibleCustomer.is_hidden = false;
+            possibleCustomer.addition_type_id = (int)AddtionalLookupEnum.Manual;
+            possibleCustomer.added_By_id = currentUser.id;
+            possibleCustomer.is_called_by = currentUser.id;
+            possibleCustomer.creaation_date = DateTime.Now;
+
+            if (!customerError)
+            {
+                db.possibleCustomers.Add(possibleCustomer);
+                db.SaveChanges();
+            }
+            return errors;
         }
     }
 }

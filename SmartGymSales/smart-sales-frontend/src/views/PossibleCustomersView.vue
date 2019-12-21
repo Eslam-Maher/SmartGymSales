@@ -1,5 +1,5 @@
 <template>
-    <possible-customersGrid :possibleCustomers="possibleCustomers"></possible-CustomersGrid>
+    <possible-customersGrid :possibleCustomers="possibleCustomers" @refreshGrid="refreshGrid()"></possible-CustomersGrid>
 
 </template>
 
@@ -14,9 +14,12 @@ export default {
     };
   },
   methods: {
-    GetPossibleCustomerrs: function() {
+    refreshGrid:function(){
+      this.GetPossibleCustomers();
+    },
+    GetPossibleCustomers: function() {
       this.loadingCount++;
-      possibleCustomersService.GetPossibleCustomerrs()
+      possibleCustomersService.GetPossibleCustomers()
         .then(res => {
           this.possibleCustomers = res.data;
         //   this.customers.forEach(element => {
@@ -39,7 +42,7 @@ export default {
       this.$router.push({ name: "home" });
       return;
     }
-    this.GetPossibleCustomerrs();
+    this.GetPossibleCustomers();
   }
 }
 </script>

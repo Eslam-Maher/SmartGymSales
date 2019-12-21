@@ -24,8 +24,8 @@
           </b-nav-item-dropdown>
         </b-navbar-nav>
 
-        <b-navbar-nav>
-        <b-nav-item @click="this.user=null" href="/">Sign Out</b-nav-item>
+        <b-navbar-nav class="ml-auto" right>
+        <b-nav-item v-if="user.user_name!=null" @click="user=null" href="/">Sign Out</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>

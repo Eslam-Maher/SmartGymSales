@@ -52,7 +52,7 @@
         </label>
       </template>
       <template v-slot:cell(call)="row">
-        <b-button variant="success" @click="openReview(row)">Call</b-button>
+        <b-button variant="success" v-if="callVisibilty(row)" @click="openReview(row)">Call</b-button>
       </template>
       <template v-slot:cell(insertPossibleCustomer)="row">
         <b-button variant="primary" @click="openInsertPossibleCustomers(row)">Insert Referral</b-button>
@@ -177,7 +177,7 @@
       @change="prevent"
       hide-footer
       hide-header >
-      <insert-possibleCustomer :customer_id="customer_id" @closePopUp="hidePopUp()"></insert-possibleCustomer>
+      <insert-possibleCustomer :customer_id="customer_id" :sourcePage="PARENTMODAL_ENUM.Customers" @closePopUp="hidePopUp()"></insert-possibleCustomer>
     </b-modal>
   </b-card>
 </template>
@@ -185,11 +185,14 @@
 <script>
 import insertPossibleCustomer from "../PossibleCustomers/insertPossibleCustomer";
 import {Additional_ENUM} from "../../models/enums/AdditionalLookUp.js";
+import { PARENTMODAL_ENUM} from "../../models/enums/ParentModalLookUp";
+
 export default {
   components: { insertPossibleCustomer },
   props: ["customers"],
   data() {
     return {
+      PARENTMODAL_ENUM:PARENTMODAL_ENUM,
       additionLookup:Additional_ENUM,
       modalShow: false,
       // customers: [
@@ -339,6 +342,10 @@ export default {
     openReview: function(row) {
       this.review.parent_id = row.item.id;
       this.$refs["modal-review"].show();
+    },
+    callVisibilty:function(row){
+      return (row.item.is_called_by==null ||
+      row.item.is_called_by==this.user.id)
     },
     prevent: function() {
       this.$nextTick(() => {

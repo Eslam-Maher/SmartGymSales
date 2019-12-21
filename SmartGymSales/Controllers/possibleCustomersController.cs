@@ -17,7 +17,7 @@ namespace SmartGymSales.Controllers
     public class possibleCustomersController : ApiController
     {
         [HttpGet]
-        [ActionName("GetPossibleCustomerrs")]
+        [ActionName("GetPossibleCustomers")]
         // GET: api/possibleCustomers
         public List<possibleCustomer> GetpossibleCustomers()
         {
@@ -89,6 +89,8 @@ namespace SmartGymSales.Controllers
         }
 
         // POST: api/possibleCustomers
+        [HttpPost]
+        [ActionName("InsertPossibleCustomer")]
         [ResponseType(typeof(possibleCustomer))]
         public IHttpActionResult PostpossibleCustomer(possibleCustomer possibleCustomer)
         {
@@ -97,11 +99,21 @@ namespace SmartGymSales.Controllers
             {
                 return BadRequest(ModelState);
             }
+            PossibleCustomersService PS_Service = new PossibleCustomersService();
+            HttpRequestHeaders headers = this.Request.Headers;
+            string userName = string.Empty;
+            string pwd = string.Empty;
+            if (headers.Contains("userName"))
+            {
+                userName = headers.GetValues("userName").First();
+            }
+            if (headers.Contains("Password"))
+            {
+                pwd = headers.GetValues("Password").First();
+            }
 
-            db.possibleCustomers.Add(possibleCustomer);
-            db.SaveChanges();
+            return Ok(PS_Service.insertPossibleCustomer(userName, pwd, possibleCustomer));
 
-            return CreatedAtRoute("DefaultApi", new { id = possibleCustomer.id }, possibleCustomer);
         }
 
         // DELETE: api/possibleCustomers/5
