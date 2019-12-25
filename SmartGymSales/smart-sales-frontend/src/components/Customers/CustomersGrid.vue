@@ -186,6 +186,7 @@
 import insertPossibleCustomer from "../PossibleCustomers/insertPossibleCustomer";
 import {Additional_ENUM} from "../../models/enums/AdditionalLookUp.js";
 import { PARENTMODAL_ENUM} from "../../models/enums/ParentModalLookUp";
+import reviewService from "../../services/review";
 
 export default {
   components: { insertPossibleCustomer },
@@ -333,11 +334,33 @@ export default {
         return;
       }
 
+      this.loadingCount++;
       //call submit review Api
-
-      this.$nextTick(() => {
-        this.$refs["modal-review"].hide();
-      });
+      reviewService
+        .insertReview(this.review)
+        .then(res => {
+          if (res.data.length > 0) {
+            res.data.forEach(element => {
+              this.$bvToast.toast(element, this.failToastConfig);
+            });
+          } else {
+            this.$bvToast.toast(
+              "call and review recorded Successfully",
+              this.sucessToastConfig
+            );
+            this.resetReviewModal();
+            this.$nextTick(() => {
+              this.$refs["modal-review"].hide();
+            });
+            this.refreshGrid();
+          }
+        })
+        .catch(error => {
+          this.$bvToast.toast(error.message, this.failToastConfig);
+        })
+        .finally(() => {
+          this.loadingCount--;
+        });
     },
     openReview: function(row) {
       this.review.parent_id = row.item.id;
