@@ -127,5 +127,60 @@ namespace SmartGymSales.Services
             return errors;
 
         }
+
+        public List<OutputReview> getAllReviews(string user_name, string password)
+        {
+            List<OutputReview> result = new List<OutputReview>();
+
+            using (var db = new SmartGymSalesEntities())
+            {
+                UsersService userService = new UsersService();
+                UserRolesService userRolesService = new UserRolesService();
+                User currentUser = userService.GetUserbyUser_name(user_name);
+                if (!userService.checkUserCred(user_name, password))
+                {
+                    return new List<OutputReview>();
+                }
+                if (!userRolesService.isUserSales(user_name))
+                {
+                    return new List<OutputReview>();
+                }
+                List<review> reviews = db.reviews.ToList();
+                foreach (review item in reviews)
+                {
+                    OutputReview outputResult = new OutputReview();
+                    outputResult.id = item.id;
+                    outputResult.comment = item.comment;
+                    outputResult.general = item.general;
+                    outputResult.training = item.training;
+                    outputResult.reciption = item.reciption;
+                    outputResult.creation_date = item.creation_date;
+                    outputResult.parent_id = item.parent_id;
+                    outputResult.parent_type = item.parent_id_type;
+                    if (item.parent_id_type == ParentModalEnum.PossibleCustomer.ToDescriptionString())
+                    {
+                        PossibleCustomersService pcService = new PossibleCustomersService();
+                        possibleCustomer PC = pcService.getPossibleCustomerById(item.parent_id);
+                        if (PC != null)
+                        {
+                            outputResult.parent_name = PC.name;
+                            result.Add(outputResult);
+                        }
+                    }
+                    else if (item.parent_id_type == ParentModalEnum.Customers.ToDescriptionString())
+                    {
+                        CustomerService customerService = new CustomerService();
+                        SalesCustomer sc = customerService.getSalesCustomers(item.parent_id);
+                        if (sc != null)
+                        {
+                            outputResult.parent_name = sc.name;
+                            result.Add(outputResult);
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
     }
 }

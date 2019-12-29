@@ -18,24 +18,26 @@ namespace SmartGymSales.Controllers
     {
 
         // GET: api/Reviews
-        public IQueryable<review> Getreviews()
+        [HttpGet]
+        [ActionName("GetReviews")]
+        public List<OutputReview> Getreviews()
         {
-            SmartGymSalesEntities db = new SmartGymSalesEntities();
-            return db.reviews;
-        }
-
-        // GET: api/Reviews/5
-        [ResponseType(typeof(review))]
-        public IHttpActionResult Getreview(int id)
-        {
-            SmartGymSalesEntities db = new SmartGymSalesEntities();
-            review review = db.reviews.Find(id);
-            if (review == null)
+            HttpRequestHeaders headers = this.Request.Headers;
+            string userName = string.Empty;
+            string pwd = string.Empty;
+            if (headers.Contains("userName"))
             {
-                return NotFound();
+                userName = headers.GetValues("userName").First();
             }
+            if (headers.Contains("Password"))
+            {
+                pwd = headers.GetValues("Password").First();
+            }
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
 
-            return Ok(review);
+            ReviewService reviewService = new ReviewService();
+
+            return reviewService.getAllReviews(userName, pwd);
         }
 
 
@@ -64,22 +66,6 @@ namespace SmartGymSales.Controllers
 
         }
 
-        // DELETE: api/Reviews/5
-        [ResponseType(typeof(review))]
-        public IHttpActionResult Deletereview(int id)
-        {
-            SmartGymSalesEntities db = new SmartGymSalesEntities();
-            review review = db.reviews.Find(id);
-            if (review == null)
-            {
-                return NotFound();
-            }
-
-            db.reviews.Remove(review);
-            db.SaveChanges();
-
-            return Ok(review);
-        }
 
         protected override void Dispose(bool disposing)
         {

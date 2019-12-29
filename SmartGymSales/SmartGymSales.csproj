@@ -199,6 +199,7 @@
     <Compile Include="Models\Membership.cs">
       <DependentUpon>SmartGymMen.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\OutputReview.cs" />
     <Compile Include="Models\possibleCustomer.cs">
       <DependentUpon>SmartGymSales.tt</DependentUpon>
     </Compile>

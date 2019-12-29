@@ -44,6 +44,14 @@ namespace SmartGymSales.Services
             SmartGymSalesEntities db = new SmartGymSalesEntities();
             return db.possibleCustomers.Count(e => e.id == id) > 0;
         }
+        public possibleCustomer getPossibleCustomerById(int id) {
+            if (possibleCustomerExists(id)) {
+                SmartGymSalesEntities db = new SmartGymSalesEntities();
+
+                return db.possibleCustomers.Where(x => x.id == id).FirstOrDefault();
+            }
+            return null;
+        }
 
         public List<String> insertPossibleCustomer(string userName, string pwd, possibleCustomer possibleCustomer)
         {

@@ -209,6 +209,21 @@ namespace SmartGymSales.Services
                 db.SaveChanges();
             }
         }
+
+        public SalesCustomer getSalesCustomers(int id)
+        {
+            if (CustomerExists(id))
+            {
+                SmartGymSalesEntities db = new SmartGymSalesEntities();
+                return db.SalesCustomers.Where(x => x.id == id).FirstOrDefault();
+            }
+            return null;
+        }
+        public bool CustomerExists(int id)
+        {
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
+            return db.SalesCustomers.Count(e => e.id == id) > 0;
+        }
         private List<String> InsertIntoCustomersFromMenDb(List<Customer> sourceList, User currentUser)
         {
             using (var db = new SmartGymSalesEntities())
