@@ -42,7 +42,21 @@ namespace SmartGymSales.Services
             return tbl;
         }
 
-        public List<String> UpdatePossibleCustomerFromdb(string user_name, string password, string sourceDbString) {
+        public void UpdateCustomersCalledByUser(User user)
+        {
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
+
+            List<SalesCustomer> SCList = db.SalesCustomers.Where(x => x.is_called_by == user.id).ToList();
+            foreach (SalesCustomer element in SCList)
+            {
+                element.is_called_by = null;
+                db.SalesCustomers.AddOrUpdate(element);
+            }
+            db.SaveChanges();
+        }
+
+        public List<String> UpdatePossibleCustomerFromdb(string user_name, string password, string sourceDbString)
+        {
 
             using (var db = new SmartGymSalesEntities())
             {
@@ -79,7 +93,7 @@ namespace SmartGymSales.Services
                             }
                         }
                     }
-                 errors.AddRange(InsertIntoPossibleCustomersFromMenDb(toBeInsertedPossibleCustomers, currentUser));
+                    errors.AddRange(InsertIntoPossibleCustomersFromMenDb(toBeInsertedPossibleCustomers, currentUser));
                 }
                 else if (sourceDbString == "Women")
                 {
@@ -195,7 +209,7 @@ namespace SmartGymSales.Services
                 db.SaveChanges();
             }
         }
-        private List<String> InsertIntoCustomersFromMenDb(List<Customer> sourceList,User currentUser)
+        private List<String> InsertIntoCustomersFromMenDb(List<Customer> sourceList, User currentUser)
         {
             using (var db = new SmartGymSalesEntities())
             {
@@ -316,73 +330,74 @@ namespace SmartGymSales.Services
             }
         }
 
-        private List<String> InsertIntoPossibleCustomersFromMenDb(List<T_session_subscriber> sourceList, User currentUser) {
+        private List<String> InsertIntoPossibleCustomersFromMenDb(List<T_session_subscriber> sourceList, User currentUser)
+        {
             var db = new SmartGymSalesEntities();
             List<String> errors = new List<String>();
-                UtilsService US = new UtilsService();
-                SmartGymMenEntities sourceDb = new SmartGymMenEntities();
-                foreach (T_session_subscriber item in sourceList)
+            UtilsService US = new UtilsService();
+            SmartGymMenEntities sourceDb = new SmartGymMenEntities();
+            foreach (T_session_subscriber item in sourceList)
+            {
+                possibleCustomer possibleCustomerItem = new possibleCustomer();
+                bool customerError = false;
+                //name
+                if (!String.IsNullOrEmpty(item.subname))
                 {
-                    possibleCustomer possibleCustomerItem = new possibleCustomer();
-                    bool customerError = false;
-                    //name
-                    if (!String.IsNullOrEmpty(item.subname))
-                    {
-                        possibleCustomerItem.name = item.subname;
-                    }
-                    else
-                    {
+                    possibleCustomerItem.name = item.subname;
+                }
+                else
+                {
                     errors.Add("Name field is empty at id :" + item.id);
-                        customerError = true;
-                    }
+                    customerError = true;
+                }
 
-                    //mobile
-                    if (String.IsNullOrEmpty(item.sunmobil))
-                    {
-                        errors.Add("Mobile field is empty at id :" + item.id +" with name: "+item.subname);
-                        customerError = true;
-                    }
-                    else if (!US.checkPhoneNumberVaildaty(item.sunmobil))
-                    {
+                //mobile
+                if (String.IsNullOrEmpty(item.sunmobil))
+                {
+                    errors.Add("Mobile field is empty at id :" + item.id + " with name: " + item.subname);
+                    customerError = true;
+                }
+                else if (!US.checkPhoneNumberVaildaty(item.sunmobil))
+                {
                     errors.Add("Mobile field is not valid at id :" + item.id + " with name: " + item.subname);
                     customerError = true;
-                    }
-                    else if (US.checkPhoneNumberRedundancyforPossibleCustomers(item.sunmobil))
-                    {
+                }
+                else if (US.checkPhoneNumberRedundancyforPossibleCustomers(item.sunmobil))
+                {
                     errors.Add("Mobile field is found before at id :" + item.id + " with name: " + item.subname);
                     customerError = true;
-                    }
-                    else
-                    {
-                        possibleCustomerItem.mobile = item.sunmobil;
-                    }
-                    //email
-                    if (!String.IsNullOrEmpty(item.subemail) && !US.checkEmailVaildaty(item.subemail))
-                    {
+                }
+                else
+                {
+                    possibleCustomerItem.mobile = item.sunmobil;
+                }
+                //email
+                if (!String.IsNullOrEmpty(item.subemail) && !US.checkEmailVaildaty(item.subemail))
+                {
                     errors.Add("Email field is not valid at id :" + item.id + " with name: " + item.subname);
                     customerError = true;
-                    }
-                    else if (!String.IsNullOrEmpty(item.subemail) && US.checkEmailRedundancyforPossibleCustomers(item.subemail))
-                    {
+                }
+                else if (!String.IsNullOrEmpty(item.subemail) && US.checkEmailRedundancyforPossibleCustomers(item.subemail))
+                {
                     errors.Add("Email field is found before at id :" + item.id + " with name: " + item.subname);
                     customerError = true;
-                    }
-                    else
-                    {
-                        possibleCustomerItem.email = item.subemail;
-                    }
-                    possibleCustomerItem.knowledge_id = (int)KnowledgeLookupEnum.Sync;
-                    possibleCustomerItem.is_called = false;
-                    possibleCustomerItem.calles_count = 0;
-                    possibleCustomerItem.is_subscribed = false;
-                    possibleCustomerItem.is_hidden = false;
-                    possibleCustomerItem.addition_type_id = (int)AddtionalLookupEnum.Sync;
-                    possibleCustomerItem.added_By_id = currentUser.id;
-                    possibleCustomerItem.creaation_date = DateTime.Now;
+                }
+                else
+                {
+                    possibleCustomerItem.email = item.subemail;
+                }
+                possibleCustomerItem.knowledge_id = (int)KnowledgeLookupEnum.Sync;
+                possibleCustomerItem.is_called = false;
+                possibleCustomerItem.calles_count = 0;
+                possibleCustomerItem.is_subscribed = false;
+                possibleCustomerItem.is_hidden = false;
+                possibleCustomerItem.addition_type_id = (int)AddtionalLookupEnum.Sync;
+                possibleCustomerItem.added_By_id = currentUser.id;
+                possibleCustomerItem.creaation_date = DateTime.Now;
 
                 if (!customerError)
-                    {
-                        db.possibleCustomers.Add(possibleCustomerItem);
+                {
+                    db.possibleCustomers.Add(possibleCustomerItem);
                     db.SaveChanges();
                 }
             }
@@ -572,24 +587,48 @@ namespace SmartGymSales.Services
             }
         }
 
-        public List<SalesCustomer> getAllCustomers(string user_name, string password)
+        public List<SalesCustomer> getAllCustomers(string user_name, string password, string name, string mobile, string email, int? source, bool? isCalled, bool? isSubscriped)
         {
 
             var db = new SmartGymSalesEntities();
-                UsersService userService = new UsersService();
-                UserRolesService userRolesService = new UserRolesService();
+            UsersService userService = new UsersService();
+            UserRolesService userRolesService = new UserRolesService();
+            User currentUser = userService.GetUserbyUser_name(user_name);
+            if (!userService.checkUserCred(user_name, password))
+            {
+                return null;
+            }
+            if (!userRolesService.isUserManger(user_name) && !userRolesService.isUserSales(user_name))
+            {
+                return null;
+            }
+            List<SalesCustomer> result = db.SalesCustomers.ToList();
 
-
-                User currentUser = userService.GetUserbyUser_name(user_name);
-                if (!userService.checkUserCred(user_name, password))
-                {
-                    return null;
-                }
-                if (!userRolesService.isUserManger(user_name) && !userRolesService.isUserSales(user_name))
-                {
-                    return null;
-                }
-                return db.SalesCustomers.ToList();
+            if (!string.IsNullOrEmpty(name))
+            {
+                result = result.Where(x => x.name.ToLower().Contains(name.ToLower())).ToList();
+            }
+            if (!string.IsNullOrEmpty(mobile))
+            {
+                result = result.Where(x => x.mobile.ToLower().Contains(mobile.ToLower())).ToList();
+            }
+            if (!string.IsNullOrEmpty(email))
+            {
+                result = result.Where(x => x.email.ToLower().Contains(email.ToLower())).ToList();
+            }
+            if (source.HasValue)
+            {
+                result = result.Where(x => x.addition_type_id == source.Value).ToList();
+            }
+            if (isCalled.HasValue)
+            {
+                result = result.Where(x => x.is_called == isCalled.Value).ToList();
+            }
+            if (isSubscriped.HasValue)
+            {
+                result = result.Where(x => x.is_active == isSubscriped.Value).ToList();
+            }
+            return result;
 
         }
     }

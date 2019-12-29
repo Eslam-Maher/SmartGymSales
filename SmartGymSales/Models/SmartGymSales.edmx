@@ -21,6 +21,7 @@
           <Property Name="old_customer_percentatge" Type="float" Nullable="false" />
           <Property Name="target" Type="int" />
           <Property Name="is_hidden" Type="bit" />
+          <Property Name="creation_date" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="knowledgeLookup">
           <Key>
@@ -162,16 +163,6 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="addition_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
-        <EntityType Name="commission">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="new_customer_percentatge" Type="Double" Nullable="false" />
-          <Property Name="old_customer_percentatge" Type="Double" Nullable="false" />
-          <Property Name="target" Type="Int32" />
-          <Property Name="is_hidden" Type="Boolean" />
-        </EntityType>
         <EntityType Name="knowledgeLookup">
           <Key>
             <PropertyRef Name="id" />
@@ -212,7 +203,6 @@
           </EntityType>
         <EntityContainer Name="SmartGymSalesEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AdditionLookups" EntityType="Self.AdditionLookup" />
-          <EntitySet Name="commissions" EntityType="Self.commission" />
           <EntitySet Name="knowledgeLookups" EntityType="Self.knowledgeLookup" />
           <EntitySet Name="reviews" EntityType="Self.review" />
           <EntitySet Name="Roles" EntityType="Self.Role" />
@@ -228,6 +218,7 @@
           </AssociationSet>
           <EntitySet Name="SalesCustomers" EntityType="SmartGymSalesModel.SalesCustomer" />
           <EntitySet Name="possibleCustomers" EntityType="SmartGymSalesModel.possibleCustomer" />
+          <EntitySet Name="commissions" EntityType="SmartGymSalesModel.commission" />
           </EntityContainer>
         <EntityType Name="UserRole">
           <Key>
@@ -305,6 +296,17 @@
           <Property Name="addition_type_id" Type="Int32" Nullable="false" />
           <Property Name="is_called_by" Type="Int32" />
         </EntityType>
+        <EntityType Name="commission">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="new_customer_percentatge" Type="Double" Nullable="false" />
+          <Property Name="old_customer_percentatge" Type="Double" Nullable="false" />
+          <Property Name="target" Type="Int32" />
+          <Property Name="is_hidden" Type="Boolean" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -316,17 +318,6 @@
               <MappingFragment StoreEntitySet="AdditionLookup">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="addition_type" ColumnName="addition_type" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="commissions">
-            <EntityTypeMapping TypeName="SmartGymSalesModel.commission">
-              <MappingFragment StoreEntitySet="commission">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="new_customer_percentatge" ColumnName="new_customer_percentatge" />
-                <ScalarProperty Name="old_customer_percentatge" ColumnName="old_customer_percentatge" />
-                <ScalarProperty Name="target" ColumnName="target" />
-                <ScalarProperty Name="is_hidden" ColumnName="is_hidden" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -419,6 +410,18 @@
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="mobile" ColumnName="mobile" />
                 <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="commissions">
+            <EntityTypeMapping TypeName="SmartGymSalesModel.commission">
+              <MappingFragment StoreEntitySet="commission">
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+                <ScalarProperty Name="is_hidden" ColumnName="is_hidden" />
+                <ScalarProperty Name="target" ColumnName="target" />
+                <ScalarProperty Name="old_customer_percentatge" ColumnName="old_customer_percentatge" />
+                <ScalarProperty Name="new_customer_percentatge" ColumnName="new_customer_percentatge" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

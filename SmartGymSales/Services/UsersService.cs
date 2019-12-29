@@ -37,6 +37,11 @@ namespace SmartGymSales.Services
                 {
                     return false;
                 }
+
+                PossibleCustomersService pcService = new PossibleCustomersService();
+                CustomerService scService = new CustomerService();
+                pcService.UpdatePossibleCustomersCalledByUser(user);
+                scService.UpdateCustomersCalledByUser(user);
                 db.Users.Remove(user);
                 db.SaveChanges();
                 return true;

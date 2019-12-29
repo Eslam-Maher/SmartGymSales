@@ -14,14 +14,14 @@ using System.Net.Http.Headers;
 
 namespace SmartGymSales.Controllers
 {
-    public class possibleCustomersController : ApiController
+    public class CommissionsController : ApiController
     {
+
+        // GET: api/Commissions
         [HttpGet]
-        [ActionName("GetPossibleCustomers")]
-        // GET: api/possibleCustomers
-        public List<possibleCustomer> GetpossibleCustomers()
+        [ActionName("getAllCommissions")]
+        public List<commission> Getcommissions()
         {
-            PossibleCustomersService PS_Service = new PossibleCustomersService();
             HttpRequestHeaders headers = this.Request.Headers;
             string userName = string.Empty;
             string pwd = string.Empty;
@@ -33,34 +33,20 @@ namespace SmartGymSales.Controllers
             {
                 pwd = headers.GetValues("Password").First();
             }
-            return PS_Service.getAllCustomerService(userName, pwd).ToList();
-        }
-
-        // GET: api/possibleCustomers/5
-        [ResponseType(typeof(possibleCustomer))]
-        public IHttpActionResult GetpossibleCustomer(int id)
-        {
-            SmartGymSalesEntities db = new SmartGymSalesEntities();
-            possibleCustomer possibleCustomer = db.possibleCustomers.Find(id);
-            if (possibleCustomer == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(possibleCustomer);
+            CommissionService commService = new CommissionService();
+            return commService.getAllCommissions(userName,pwd);
         }
 
         // POST: api/possibleCustomers
         [HttpPost]
-        [ActionName("InsertPossibleCustomer")]
-        public IHttpActionResult PostpossibleCustomer(possibleCustomer possibleCustomer)
+        [ActionName("insertCommission")]
+        public IHttpActionResult Postcommission(commission commission)
         {
             SmartGymSalesEntities db = new SmartGymSalesEntities();
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            PossibleCustomersService PS_Service = new PossibleCustomersService();
             HttpRequestHeaders headers = this.Request.Headers;
             string userName = string.Empty;
             string pwd = string.Empty;
@@ -72,31 +58,34 @@ namespace SmartGymSales.Controllers
             {
                 pwd = headers.GetValues("Password").First();
             }
-
-            return Ok(PS_Service.insertPossibleCustomer(userName, pwd, possibleCustomer));
-
+            CommissionService commService = new CommissionService();
+            return Ok(commService.insertCommission(userName, pwd,commission));
         }
 
-        // DELETE: api/possibleCustomers/5
-        [ResponseType(typeof(possibleCustomer))]
-        public IHttpActionResult DeletepossibleCustomer(int id)
+        // DELETE: api/Commissions/5
+        [HttpDelete]
+        [ActionName("deleteCommission")]
+        public IHttpActionResult Deletecommission(int id)
         {
-            SmartGymSalesEntities db = new SmartGymSalesEntities();
-            possibleCustomer possibleCustomer = db.possibleCustomers.Find(id);
-            if (possibleCustomer == null)
+            HttpRequestHeaders headers = this.Request.Headers;
+            string userName = string.Empty;
+            string pwd = string.Empty;
+            if (headers.Contains("userName"))
             {
-                return NotFound();
+                userName = headers.GetValues("userName").First();
             }
-
-            db.possibleCustomers.Remove(possibleCustomer);
-            db.SaveChanges();
-
-            return Ok(possibleCustomer);
+            if (headers.Contains("Password"))
+            {
+                pwd = headers.GetValues("Password").First();
+            }
+            CommissionService commService = new CommissionService();
+            return Ok(commService.deleteCommission(userName, pwd, id));
         }
 
         protected override void Dispose(bool disposing)
         {
-            SmartGymSalesEntities db = new SmartGymSalesEntities();
+           SmartGymSalesEntities db = new SmartGymSalesEntities();
+
             if (disposing)
             {
                 db.Dispose();
@@ -104,5 +93,10 @@ namespace SmartGymSales.Controllers
             base.Dispose(disposing);
         }
 
+        private bool commissionExists(int id)
+        {
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
+            return db.commissions.Count(e => e.id == id) > 0;
+        }
     }
 }

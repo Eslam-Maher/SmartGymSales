@@ -16,6 +16,7 @@
     <Property Name="old_customer_percentatge" Type="float" Nullable="false" />
     <Property Name="target" Type="int" />
     <Property Name="is_hidden" Type="bit" />
+    <Property Name="creation_date" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="knowledgeLookup">
     <Key>

@@ -10,12 +10,10 @@
             <multiselect v-model="roleUser.role" :options="rolesOptions" label="name" track-by="id"></multiselect>
           </b-col>
           <b-col>
-            <b-col>
               <div class="button-group actions-buttons">
                 <b-button type="submit" variant="primary">Submit</b-button>
                 <b-button type="reset" variant="secondary">Reset</b-button>
               </div>
-            </b-col>
           </b-col>
         </b-row>
       </b-form>

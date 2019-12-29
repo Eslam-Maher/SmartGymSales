@@ -7,16 +7,6 @@
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="addition_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
   </EntityType>
-  <EntityType Name="commission">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="new_customer_percentatge" Type="Double" Nullable="false" />
-    <Property Name="old_customer_percentatge" Type="Double" Nullable="false" />
-    <Property Name="target" Type="Int32" />
-    <Property Name="is_hidden" Type="Boolean" />
-  </EntityType>
   <EntityType Name="knowledgeLookup">
     <Key>
       <PropertyRef Name="id" />
@@ -57,7 +47,6 @@
   </EntityType>
   <EntityContainer Name="SmartGymSalesEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="AdditionLookups" EntityType="Self.AdditionLookup" />
-    <EntitySet Name="commissions" EntityType="Self.commission" />
     <EntitySet Name="knowledgeLookups" EntityType="Self.knowledgeLookup" />
     <EntitySet Name="reviews" EntityType="Self.review" />
     <EntitySet Name="Roles" EntityType="Self.Role" />
@@ -73,6 +62,7 @@
     </AssociationSet>
     <EntitySet Name="SalesCustomers" EntityType="SmartGymSalesModel.SalesCustomer" />
     <EntitySet Name="possibleCustomers" EntityType="SmartGymSalesModel.possibleCustomer" />
+    <EntitySet Name="commissions" EntityType="SmartGymSalesModel.commission" />
   </EntityContainer>
   <EntityType Name="UserRole">
     <Key>
@@ -149,5 +139,16 @@
     <Property Name="added_By_id" Type="Int32" />
     <Property Name="addition_type_id" Type="Int32" Nullable="false" />
     <Property Name="is_called_by" Type="Int32" />
+  </EntityType>
+  <EntityType Name="commission">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="new_customer_percentatge" Type="Double" Nullable="false" />
+    <Property Name="old_customer_percentatge" Type="Double" Nullable="false" />
+    <Property Name="target" Type="Int32" />
+    <Property Name="is_hidden" Type="Boolean" />
+    <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
   </EntityType>
 </Schema>

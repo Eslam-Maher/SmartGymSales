@@ -14,19 +14,21 @@
              <b-dropdown-item v-if="isSales" to="/PossibleCustomersView">View Possible Customers</b-dropdown-item>
              <b-dropdown-item v-if="isSales" to="/AddPossibleCustomers">Add Possible Customers</b-dropdown-item>
           </b-nav-item-dropdown>
+          <b-nav-item v-if="isManger" to="/CommissionView">Commission Setup</b-nav-item>
         </b-navbar-nav>
-
+    <div class="ml-auto" style="display: inline-flex" right>
         <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto" v-if="isAdmin">
-          <b-nav-item-dropdown text="Setup" right>
+        <b-navbar-nav  v-if="isAdmin">
+          <b-nav-item-dropdown text="Setup" >
             <b-dropdown-item to="/Users">Users</b-dropdown-item>
             <b-dropdown-item to="/UserRoles">Roles</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
 
-        <b-navbar-nav class="ml-auto" right>
+        <b-navbar-nav  >
         <b-nav-item v-if="user.user_name!=null" @click="user=null" href="/">Sign Out</b-nav-item>
         </b-navbar-nav>
+        </div>
       </b-collapse>
     </b-navbar>
   </div>

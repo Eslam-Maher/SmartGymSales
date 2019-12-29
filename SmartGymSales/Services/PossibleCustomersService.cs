@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using SmartGymSales.Models;
 using SmartGymSales.enums;
+using System.Data.Entity.Migrations;
 
 namespace SmartGymSales.Services
 {
@@ -26,6 +27,16 @@ namespace SmartGymSales.Services
                 return null;
             }
             return  db.possibleCustomers.Where(x=>x.is_hidden==false).ToList();
+        }
+        public void UpdatePossibleCustomersCalledByUser(User user) {
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
+
+            List<possibleCustomer> PCList= db.possibleCustomers.Where(x => x.is_called_by ==user.id).ToList();
+            foreach (possibleCustomer element in PCList) {
+                element.is_called_by = null;
+                db.possibleCustomers.AddOrUpdate(element);
+            }
+            db.SaveChanges();
         }
 
         public bool possibleCustomerExists(int id)

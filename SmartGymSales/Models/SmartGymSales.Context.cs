@@ -26,7 +26,6 @@ namespace SmartGymSales.Models
         }
     
         public virtual DbSet<AdditionLookup> AdditionLookups { get; set; }
-        public virtual DbSet<commission> commissions { get; set; }
         public virtual DbSet<knowledgeLookup> knowledgeLookups { get; set; }
         public virtual DbSet<review> reviews { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
@@ -34,5 +33,6 @@ namespace SmartGymSales.Models
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<SalesCustomer> SalesCustomers { get; set; }
         public virtual DbSet<possibleCustomer> possibleCustomers { get; set; }
+        public virtual DbSet<commission> commissions { get; set; }
     }
 }

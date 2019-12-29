@@ -27,13 +27,14 @@ export default {
           return downloadCustomersExcelSheet.getExcel(headers);
 
       },
-      getAllCustomers() {
+      getAllCustomers(params) {
         const getAllCustomers = new API("Customers/getAllCustomers");
         const requestBody = {
           headers: {
             userName: store.getters.getUser.user_name,
             Password: store.getters.getUser.password
           },
+          params
         };
         return getAllCustomers.get(requestBody);
       },

@@ -87,7 +87,6 @@
       @hidden="resetReviewModal"
       @ok="handleReviewOk"
     >
-          <!-- @show="resetReviewModal" -->
 
       <form ref="form" @submit.stop.prevent="handleReviewSubmit">
         <b-row>
@@ -270,7 +269,7 @@ export default {
         general: 0,
         comment: "",
         parent_id: 0,
-        parent_id_type: "PossibleCustomer"
+        parent_id_type: PARENTMODAL_ENUM.PossibleCustomer
       }
     };
   },
@@ -285,8 +284,8 @@ export default {
         reciption: 0,
         general: 0,
         comment: "",
-        parent_id: null,
-        parent_id_type: "PossibleCustomer"
+        parent_id: 0,
+        parent_id_type: PARENTMODAL_ENUM.PossibleCustomer
       };
     },
     checkReviewValidity() {

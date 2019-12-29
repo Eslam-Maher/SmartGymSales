@@ -9,17 +9,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="commissions">
-      <EntityTypeMapping TypeName="SmartGymSalesModel.commission">
-        <MappingFragment StoreEntitySet="commission">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="new_customer_percentatge" ColumnName="new_customer_percentatge" />
-          <ScalarProperty Name="old_customer_percentatge" ColumnName="old_customer_percentatge" />
-          <ScalarProperty Name="target" ColumnName="target" />
-          <ScalarProperty Name="is_hidden" ColumnName="is_hidden" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="knowledgeLookups">
       <EntityTypeMapping TypeName="SmartGymSalesModel.knowledgeLookup">
         <MappingFragment StoreEntitySet="knowledgeLookup">
@@ -109,6 +98,18 @@
           <ScalarProperty Name="email" ColumnName="email" />
           <ScalarProperty Name="mobile" ColumnName="mobile" />
           <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="commissions">
+      <EntityTypeMapping TypeName="SmartGymSalesModel.commission">
+        <MappingFragment StoreEntitySet="commission">
+          <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+          <ScalarProperty Name="is_hidden" ColumnName="is_hidden" />
+          <ScalarProperty Name="target" ColumnName="target" />
+          <ScalarProperty Name="old_customer_percentatge" ColumnName="old_customer_percentatge" />
+          <ScalarProperty Name="new_customer_percentatge" ColumnName="new_customer_percentatge" />
           <ScalarProperty Name="id" ColumnName="id" />
         </MappingFragment>
       </EntityTypeMapping>

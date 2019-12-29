@@ -39,10 +39,10 @@
         <label>{{ row.item.is_active ? "Yes" : "No" }}</label>
       </template>
       <template v-slot:cell(subscription_start_date)="row">
-        <label>{{row.item.subscription_start_date? row.item.subscription_start_date||DD_MMM_YYYY :'-'}}</label>
+        {{row.item.subscription_start_date | DD_MMM_YYYY}}
       </template>
       <template v-slot:cell(subscription_end_date)="row">
-        <label>{{ row.item.subscription_end_date ? row.item.subscription_end_date||DD_MMM_YYYY:'-' }}</label>
+        {{row.item.subscription_end_date | DD_MMM_YYYY}}
       </template>
       <template v-slot:cell(addition_type_id)=row> 
         <label>
@@ -86,7 +86,6 @@
       id="modal-review"
       centered
       title="Call Review"
-      @show="resetReviewModal"
       @hidden="resetReviewModal"
       @ok="handleReviewOk"  >
       <form ref="form" @submit.stop.prevent="handleReviewSubmit">
@@ -177,7 +176,9 @@
       @change="prevent"
       hide-footer
       hide-header >
-      <insert-possibleCustomer :customer_id="customer_id" :sourcePage="PARENTMODAL_ENUM.Customers" @closePopUp="hidePopUp()"></insert-possibleCustomer>
+      <insert-possibleCustomer :customer_id="customer_id" :sourcePage="PARENTMODAL_ENUM.Customers" 
+           @refreshGrid="refreshGrid()"
+           @closePopUp="hidePopUp()"></insert-possibleCustomer>
     </b-modal>
   </b-card>
 </template>
@@ -213,8 +214,8 @@ export default {
         reciption: 0,
         general: 0,
         comment: "",
-        parent_id: null,
-        parent_id_type: "Customer"
+        parent_id: 0,
+        parent_id_type: PARENTMODAL_ENUM.Customers
       },
 
       totalRows: 0,
@@ -321,8 +322,8 @@ export default {
         reciption: 0,
         general: 0,
         comment: "",
-        parent_id: null,
-        parent_id_type: "Customer"
+        parent_id: 0,
+        parent_id_type: PARENTMODAL_ENUM.Customers
       };
     },
     checkReviewValidity() {
@@ -361,6 +362,10 @@ export default {
         .finally(() => {
           this.loadingCount--;
         });
+    },
+    refreshGrid: function() {
+      this.$emit("refreshGrid");
+      this.hidePopUp();
     },
     openReview: function(row) {
       this.review.parent_id = row.item.id;

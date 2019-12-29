@@ -58,7 +58,12 @@ export default {
   },
   filters: {
     DD_MMM_YYYY: function(date) {
+      if (date){
       return moment(date).format("DD-MM-YYYY");
+    }
+    else{
+      return '-';
+    }
     }
   }
 }

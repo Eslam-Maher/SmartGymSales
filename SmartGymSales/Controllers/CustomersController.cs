@@ -24,7 +24,7 @@ namespace SmartGymSales.Controllers
         // GET: api/Customers
         [HttpGet]
         [ActionName("getAllCustomers")]
-        public List<SalesCustomer> Getcustomers()
+        public List<SalesCustomer> Getcustomers(string name, string mobile, string email,int? source=null,bool? isCalled=null, bool? isSubscriped=null)
         {
             HttpRequestHeaders headers = this.Request.Headers;
             string userName = string.Empty;
@@ -38,7 +38,7 @@ namespace SmartGymSales.Controllers
                 pwd = headers.GetValues("Password").First();
             }
             CustomerService cs = new CustomerService();
-            List< SalesCustomer> tmep = cs.getAllCustomers(userName, pwd);
+            List< SalesCustomer> tmep = cs.getAllCustomers(userName, pwd, name,  mobile,  email,  source ,   isCalled , isSubscriped);
             return tmep;
         }
 

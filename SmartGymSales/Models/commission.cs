@@ -19,5 +19,6 @@ namespace SmartGymSales.Models
         public double old_customer_percentatge { get; set; }
         public Nullable<int> target { get; set; }
         public Nullable<bool> is_hidden { get; set; }
+        public System.DateTime creation_date { get; set; }
     }
 }
