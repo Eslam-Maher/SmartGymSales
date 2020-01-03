@@ -14,4 +14,14 @@ export default {
     
         return insertReview.post(requestBody,review);
       },
+      GetReviews(){
+        const GetReviews= new API("Reviews/GetReviews");
+        const requestBody = {
+          headers: {
+            userName: store.getters.getUser.user_name,
+            Password: store.getters.getUser.password
+          },
+        };
+        return GetReviews.get(requestBody);
+      }
 }

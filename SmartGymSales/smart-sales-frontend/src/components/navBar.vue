@@ -15,6 +15,7 @@
              <b-dropdown-item v-if="isSales" to="/AddPossibleCustomers">Add Possible Customers</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item v-if="isManger" to="/CommissionView">Commission Setup</b-nav-item>
+                 <b-nav-item v-if="isManger" to="/ReviewsView">Reviews</b-nav-item>
         </b-navbar-nav>
     <div class="ml-auto" style="display: inline-flex" right>
         <!-- Right aligned nav items -->
