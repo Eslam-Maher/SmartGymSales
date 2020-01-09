@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div  :class="{darkMood: blackMode}">
     <div class="login-header">
     </div>
     <div class="login-container">
@@ -37,24 +37,44 @@
         >
           <span>Sign in</span>
         </b-button>
+        <b-button
+          pill
+          block
+          size="lg"
+          class="login-form-signin"
+          variant="light"
+          @click="blackMode=!blackMode"
+        >
+          <span>Switch Mode</span>
+        </b-button>
         <label v-if="error" style="color:red">
           please double check your user name and password
         </label>
       </div>
-      <img class="login-background" alt="smart gym image" src="./../assets/smart body gym.png" />
+      <!-- :src="blackMode?blackMoodImg:whiteMoodImg" -->
+      <!-- :src="'./../assets/'+blackMode?blackMoodImg:whiteMoodImg" -->
+      <!-- :src="blackMoodFullImg" -->
+      <img class="login-background" alt="smart gym image" :src="blackMode?blackMoodFullImg:whiteMoodFullImg" />
+      <!-- {{imagePath}} -->
     </div>
   </div>
 </template>
 
 <script>
 import UsersService from "../services/Users";
+import whiteMoodFullImg from "../assets/smart body gym.png"
+import blackMoodFullImg from "../assets/smart body gymBlack.png"
 export default {
   name: "login",
   data() {
     return {
       error: false,
       user_name: null,
-      password: null
+      password: null,
+      blackMode:false,
+            whiteMoodFullImg:whiteMoodFullImg,
+            blackMoodFullImg:blackMoodFullImg
+
     };
   },
   methods: {
@@ -89,6 +109,12 @@ export default {
 </script>
 
 <style scoped>
+
+.darkMood{
+background-color: black;
+    color: white;
+}
+
 .login-container {
   display: flex;
   flex-flow: row nowrap;
