@@ -190,13 +190,13 @@
     <Compile Include="Models\commission.cs">
       <DependentUpon>SmartGymSales.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Customer.cs">
+    <Compile Include="Models\SmartGymMen\Customer.cs">
       <DependentUpon>SmartGymMen.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\knowledgeLookup.cs">
       <DependentUpon>SmartGymSales.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Membership.cs">
+    <Compile Include="Models\SmartGymMen\Membership.cs">
       <DependentUpon>SmartGymMen.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\OutputReview.cs" />
@@ -212,17 +212,17 @@
     <Compile Include="Models\SalesCustomer.cs">
       <DependentUpon>SmartGymSales.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SmartGymMen.Context.cs">
+    <Compile Include="Models\SmartGymMen\SmartGymMen.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SmartGymMen.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SmartGymMen.cs">
+    <Compile Include="Models\SmartGymMen\SmartGymMen.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SmartGymMen.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SmartGymMen.Designer.cs">
+    <Compile Include="Models\SmartGymMen\SmartGymMen.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SmartGymMen.edmx</DependentUpon>
@@ -242,7 +242,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SmartGymSales.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\T_session_subscriber.cs">
+    <Compile Include="Models\SmartGymMen\T_session_subscriber.cs">
       <DependentUpon>SmartGymMen.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
@@ -270,12 +270,12 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SmartGymSales.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\SmartGymMen.Context.tt">
+    <Content Include="Models\SmartGymMen\SmartGymMen.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SmartGymMen.edmx</DependentUpon>
       <LastGenOutput>SmartGymMen.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\SmartGymMen.tt">
+    <Content Include="Models\SmartGymMen\SmartGymMen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SmartGymMen.edmx</DependentUpon>
       <LastGenOutput>SmartGymMen.cs</LastGenOutput>
@@ -283,11 +283,11 @@
     <Content Include="Models\SmartGymSales.edmx.diagram">
       <DependentUpon>SmartGymSales.edmx</DependentUpon>
     </Content>
-    <EntityDeploy Include="Models\SmartGymMen.edmx">
+    <EntityDeploy Include="Models\SmartGymMen\SmartGymMen.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SmartGymMen.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\SmartGymMen.edmx.diagram">
+    <Content Include="Models\SmartGymMen\SmartGymMen.edmx.diagram">
       <DependentUpon>SmartGymMen.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

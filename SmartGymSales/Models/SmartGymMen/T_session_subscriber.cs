@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SmartGymSales.Models
+namespace SmartGymSales.Models.SmartGymMen
 {
     using System;
     using System.Collections.Generic;

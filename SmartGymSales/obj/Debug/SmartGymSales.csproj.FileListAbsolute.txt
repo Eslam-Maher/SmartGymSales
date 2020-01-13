@@ -59,7 +59,6 @@ C:\Users\Eslam\documents\visual studio 2015\Projects\SmartGymSales\SmartGymSales
 C:\Users\Eslam\documents\visual studio 2015\Projects\SmartGymSales\SmartGymSales\bin\Microsoft.AspNet.Identity.EntityFramework.xml
 C:\Users\Eslam\documents\visual studio 2015\Projects\SmartGymSales\SmartGymSales\obj\Debug\SmartGymSales.dll
 C:\Users\Eslam\documents\visual studio 2015\Projects\SmartGymSales\SmartGymSales\obj\Debug\SmartGymSales.pdb
-C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\obj\Debug\SmartGymSales.csprojResolveAssemblyReference.cache
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\roslyn\csc.exe
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll

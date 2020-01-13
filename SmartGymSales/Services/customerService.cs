@@ -1,6 +1,7 @@
 ﻿using OfficeOpenXml;
 using SmartGymSales.enums;
 using SmartGymSales.Models;
+using SmartGymSales.Models.SmartGymMen;
 using System;
 using System.Collections.Generic;
 using System.Data;
