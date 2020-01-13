@@ -1,4 +1,19 @@
  update  [smartgym].[dbo].[Customer] set Phone_mobile= '0'+Phone_mobile where Phone_mobile not like '0%'
+ update  [smartgym].[dbo].[Customer] set phone_home= '0'+phone_home where phone_home not like '0%'
+
 
 
 update  [smartgym].[dbo].[T_session_subscriber] set sunmobil= '0'+sunmobil where sunmobil not like '0%' and sunmobil !=''
+
+
+
+
+ update  [smartgym1].[dbo].[Customer] set Phone_mobile= '0'+Phone_mobile where Phone_mobile not like '0%'
+ update  [smartgym1].[dbo].[Customer] set phone_home= '0'+phone_home where phone_home not like '0%'
+
+
+
+update  [smartgym1].[dbo].[T_session_subscriber] set sunmobil= '0'+sunmobil where sunmobil not like '0%' and sunmobil !=''
+
+
+
