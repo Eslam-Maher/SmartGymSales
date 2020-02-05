@@ -77,6 +77,28 @@ namespace SmartGymSales.Controllers
 
         }
 
+
+        [HttpPost]
+        [ActionName("updatePossibleCustomersFromDb")]
+        public IHttpActionResult updatePossibleCustomerTable(HttpRequestMessage request, [FromBody] String dbType)
+        {
+            HttpRequestHeaders headers = request.Headers;
+            string userName = string.Empty;
+            string pwd = string.Empty;
+            if (headers.Contains("userName"))
+            {
+                userName = headers.GetValues("userName").First();
+            }
+            if (headers.Contains("Password"))
+            {
+                pwd = headers.GetValues("Password").First();
+            }
+            PossibleCustomersService pcs = new PossibleCustomersService();
+            List<String> errors = pcs.UpdatePossibleCustomerFromdb(userName, pwd, dbType);
+            return Ok(errors);
+
+        }
+
         // DELETE: api/possibleCustomers/5
         [ResponseType(typeof(possibleCustomer))]
         public IHttpActionResult DeletepossibleCustomer(int id)

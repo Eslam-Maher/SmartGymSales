@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="smartgymModelStoreContainer" CdmEntityContainer="smartgymEntities">
+    <EntitySetMapping Name="Customers">
+      <EntityTypeMapping TypeName="smartgymModel.Customer">
+        <MappingFragment StoreEntitySet="Customer">
+          <ScalarProperty Name="Customer_ID" ColumnName="Customer_ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="Gendar" ColumnName="Gendar" />
+          <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+          <ScalarProperty Name="Phone_mobile" ColumnName="Phone_mobile" />
+          <ScalarProperty Name="phone_home" ColumnName="phone_home" />
+          <ScalarProperty Name="id_type" ColumnName="id_type" />
+          <ScalarProperty Name="id_number" ColumnName="id_number" />
+          <ScalarProperty Name="cardid" ColumnName="cardid" />
+          <ScalarProperty Name="hieght" ColumnName="hieght" />
+          <ScalarProperty Name="wieght" ColumnName="wieght" />
+          <ScalarProperty Name="notes" ColumnName="notes" />
+          <ScalarProperty Name="pic_path" ColumnName="pic_path" />
+          <ScalarProperty Name="block" ColumnName="block" />
+          <ScalarProperty Name="userstuffid" ColumnName="userstuffid" />
+          <ScalarProperty Name="recordstatus" ColumnName="recordstatus" />
+          <ScalarProperty Name="recorddate" ColumnName="recorddate" />
+          <ScalarProperty Name="recordtime" ColumnName="recordtime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Memberships">
+      <EntityTypeMapping TypeName="smartgymModel.Membership">
+        <MappingFragment StoreEntitySet="Membership">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Customer_ID" ColumnName="Customer_ID" />
+          <ScalarProperty Name="Category_ID" ColumnName="Category_ID" />
+          <ScalarProperty Name="offer_id" ColumnName="offer_id" />
+          <ScalarProperty Name="Cardid" ColumnName="Cardid" />
+          <ScalarProperty Name="Subscripcost" ColumnName="Subscripcost" />
+          <ScalarProperty Name="moneypaied" ColumnName="moneypaied" />
+          <ScalarProperty Name="moneyremind" ColumnName="moneyremind" />
+          <ScalarProperty Name="deduct" ColumnName="deduct" />
+          <ScalarProperty Name="subscriptype" ColumnName="subscriptype" />
+          <ScalarProperty Name="subscrippariod" ColumnName="subscrippariod" />
+          <ScalarProperty Name="pariodofoffer" ColumnName="pariodofoffer" />
+          <ScalarProperty Name="S_Date" ColumnName="S_Date" />
+          <ScalarProperty Name="E_Date" ColumnName="E_Date" />
+          <ScalarProperty Name="userstuffid" ColumnName="userstuffid" />
+          <ScalarProperty Name="recordstatus" ColumnName="recordstatus" />
+          <ScalarProperty Name="recorddate" ColumnName="recorddate" />
+          <ScalarProperty Name="recordtime" ColumnName="recordtime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="T_session_subscriber">
+      <EntityTypeMapping TypeName="smartgymModel.T_session_subscriber">
+        <MappingFragment StoreEntitySet="T_session_subscriber">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="subname" ColumnName="subname" />
+          <ScalarProperty Name="subemail" ColumnName="subemail" />
+          <ScalarProperty Name="sunmobil" ColumnName="sunmobil" />
+          <ScalarProperty Name="subidentity" ColumnName="subidentity" />
+          <ScalarProperty Name="sessiondate" ColumnName="sessiondate" />
+          <ScalarProperty Name="sessionactivity" ColumnName="sessionactivity" />
+          <ScalarProperty Name="sessioncust" ColumnName="sessioncust" />
+          <ScalarProperty Name="userstuffid" ColumnName="userstuffid" />
+          <ScalarProperty Name="recordstatus" ColumnName="recordstatus" />
+          <ScalarProperty Name="recorddate" ColumnName="recorddate" />
+          <ScalarProperty Name="recordtime" ColumnName="recordtime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="smartgymModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="Customer_ID" />
+    </Key>
+    <Property Name="Customer_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="100" />
+    <Property Name="email" Type="nvarchar" MaxLength="100" />
+    <Property Name="address" Type="nvarchar" MaxLength="200" />
+    <Property Name="Gendar" Type="nvarchar" MaxLength="50" />
+    <Property Name="DateOfBirth" Type="date" Nullable="false" />
+    <Property Name="Phone_mobile" Type="nvarchar" MaxLength="20" />
+    <Property Name="phone_home" Type="nvarchar" MaxLength="20" />
+    <Property Name="id_type" Type="nvarchar" MaxLength="50" />
+    <Property Name="id_number" Type="nvarchar" MaxLength="50" />
+    <Property Name="cardid" Type="nvarchar" MaxLength="50" />
+    <Property Name="hieght" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="wieght" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="notes" Type="nvarchar(max)" />
+    <Property Name="pic_path" Type="nvarchar" MaxLength="300" />
+    <Property Name="block" Type="int" />
+    <Property Name="userstuffid" Type="int" />
+    <Property Name="recordstatus" Type="int" />
+    <Property Name="recorddate" Type="date" />
+    <Property Name="recordtime" Type="time" Precision="7" />
+  </EntityType>
+  <EntityType Name="Membership">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Customer_ID" Type="int" />
+    <Property Name="Category_ID" Type="int" />
+    <Property Name="offer_id" Type="int" />
+    <Property Name="Cardid" Type="nvarchar" MaxLength="50" />
+    <Property Name="Subscripcost" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="moneypaied" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="moneyremind" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="deduct" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="subscriptype" Type="int" />
+    <Property Name="subscrippariod" Type="int" />
+    <Property Name="pariodofoffer" Type="int" />
+    <Property Name="S_Date" Type="date" />
+    <Property Name="E_Date" Type="date" />
+    <Property Name="userstuffid" Type="int" />
+    <Property Name="recordstatus" Type="int" />
+    <Property Name="recorddate" Type="date" />
+    <Property Name="recordtime" Type="time" Precision="7" />
+  </EntityType>
+  <EntityType Name="T_session_subscriber">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="subname" Type="nvarchar" MaxLength="50" />
+    <Property Name="subemail" Type="nvarchar" MaxLength="150" />
+    <Property Name="sunmobil" Type="nvarchar" MaxLength="50" />
+    <Property Name="subidentity" Type="nvarchar" MaxLength="50" />
+    <Property Name="sessiondate" Type="date" />
+    <Property Name="sessionactivity" Type="int" />
+    <Property Name="sessioncust" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="userstuffid" Type="int" />
+    <Property Name="recordstatus" Type="int" />
+    <Property Name="recorddate" Type="date" />
+    <Property Name="recordtime" Type="time" Precision="7" />
+  </EntityType>
+  <EntityContainer Name="smartgymModelStoreContainer">
+    <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Membership" EntityType="Self.Membership" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="T_session_subscriber" EntityType="Self.T_session_subscriber" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

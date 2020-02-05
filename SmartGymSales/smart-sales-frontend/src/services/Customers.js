@@ -51,18 +51,6 @@ export default {
     
         return updateCustomersFromDb.post(config,body);
       },
-      updatePossibleCustomersFromDb(dbType){
-        const updatePossibleCustomersFromDb= new API("Customers/updatePossibleCustomersFromDb");
-        const config = {
-          headers: {
-            'Content-Type': 'application/json',
-            userName: store.getters.getUser.user_name,
-            Password: store.getters.getUser.password
-          },
-        };
-        const body=JSON.stringify(dbType)
 
-        return updatePossibleCustomersFromDb.post(config,body);
-      }
 
 }

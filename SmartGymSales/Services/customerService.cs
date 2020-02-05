@@ -1,4 +1,6 @@
-﻿using OfficeOpenXml;
+﻿using AutoMapper;
+using OfficeOpenXml;
+using SmartGymSales.BLL;
 using SmartGymSales.enums;
 using SmartGymSales.Models;
 using SmartGymSales.Models.SmartGymMen;
@@ -10,6 +12,9 @@ using System.Data.Entity.Migrations;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using SmartGymWomenRetrival.Models;
+using SmartGymWomenRetrival.Services;
+
 namespace SmartGymSales.Services
 {
     public class CustomerService
@@ -56,61 +61,7 @@ namespace SmartGymSales.Services
             db.SaveChanges();
         }
 
-        public List<String> UpdatePossibleCustomerFromdb(string user_name, string password, string sourceDbString)
-        {
-
-            using (var db = new SmartGymSalesEntities())
-            {
-                UtilsService US = new UtilsService();
-                UsersService userService = new UsersService();
-                UserRolesService userRolesService = new UserRolesService();
-
-
-                User currentUser = userService.GetUserbyUser_name(user_name);
-                List<String> errors = new List<string>();
-                if (!userService.checkUserCred(user_name, password))
-                {
-                    errors.Add("please Login and try again");
-                    return errors;
-                }
-                if (!userRolesService.isUserManger(user_name))
-                {
-                    errors.Add("You are not authorized");
-                    return errors;
-                }
-                if (sourceDbString == "Men")
-                {
-                    SmartGymMenEntities sourceDb = new SmartGymMenEntities();
-                    List<T_session_subscriber> sourceCustomers = sourceDb.T_session_subscriber.Where(x => !String.IsNullOrEmpty(x.sunmobil)).ToList();
-
-                    List<T_session_subscriber> toBeInsertedPossibleCustomers = new List<T_session_subscriber>();
-                    foreach (T_session_subscriber element in sourceCustomers)
-                    {
-                        if (US.checkPhoneNumberVaildaty(element.sunmobil))
-                        {
-                            if (db.possibleCustomers.Where(possibleCusElement => possibleCusElement.mobile.ToString() == element.sunmobil).Count() == 0)
-                            {
-                                toBeInsertedPossibleCustomers.Add(element);
-                            }
-                        }
-                    }
-                    errors.AddRange(InsertIntoPossibleCustomersFromMenDb(toBeInsertedPossibleCustomers, currentUser));
-                }
-                else if (sourceDbString == "Women")
-                {
-                    SmartGymMenEntities sourceDb = new SmartGymMenEntities();
-                }
-                else
-                {
-                    errors.Add("Failed to identify source to update from");
-                    return errors;
-                }
-
-
-                return errors;
-
-            }
-        }
+        
         public List<String> UpdateSalesCustomerFromdb(string user_name, string password, string sourceDbString)
         {
             using (var db = new SmartGymSalesEntities())
@@ -132,14 +83,20 @@ namespace SmartGymSales.Services
                     errors.Add("You are not authorized");
                     return errors;
                 }
+
                 if (sourceDbString == "Men")
                 {
                     SmartGymMenEntities sourceDb = new SmartGymMenEntities();
-                    List<Customer> sourceCustomers = sourceDb.Customers.Where(x => !String.IsNullOrEmpty(x.Phone_mobile)).ToList();
+                    List<InputCustomer> sourceCustomers = new List<InputCustomer>();
+                    var config = new MapperConfiguration(cfg => {
+                        cfg.CreateMap<Models.SmartGymMen.Customer, InputCustomer>();
+                    });
+                    IMapper iMapper = config.CreateMapper();
+                    iMapper.Map(sourceDb.Customers.Where(x => !String.IsNullOrEmpty(x.Phone_mobile)).ToList(), sourceCustomers);
 
-                    List<Customer> toBeUpdatedCustomers = new List<Customer>();
-                    List<Customer> toBeInsertedCustomers = new List<Customer>();
-                    foreach (Customer element in sourceCustomers)
+                    List <InputCustomer> toBeUpdatedCustomers = new List<InputCustomer>();
+                    List<InputCustomer> toBeInsertedCustomers = new List<InputCustomer>();
+                    foreach (InputCustomer element in sourceCustomers)
                     {
                         if (US.checkPhoneNumberVaildaty(element.Phone_mobile))
                         {
@@ -153,35 +110,93 @@ namespace SmartGymSales.Services
                             }
                         }
                     }
-                    updateCustomersFromMenDb(toBeUpdatedCustomers, currentUser);
-                    List<String> insertResult = InsertIntoCustomersFromMenDb(toBeInsertedCustomers, currentUser);
+                    updateCustomersFromMenDb(toBeUpdatedCustomers, currentUser, sourceDbString);
+                    List<String> insertResult = InsertIntoCustomersFromMenDb(toBeInsertedCustomers, currentUser, sourceDbString);
                     errors.AddRange(insertResult);
+
+                    return errors;
                 }
                 else if (sourceDbString == "Women")
                 {
-                    SmartGymMenEntities sourceDb = new SmartGymMenEntities();
+                    var config = new MapperConfiguration(cfg => {
+                        cfg.CreateMap<SmartGymWomenRetrival.Models.Customer, InputCustomer>();
+                    });
+                    IMapper iMapper = config.CreateMapper();
+
+                    //List<Models.SmartGymWomen.Customer> sourceCustomers = sourceDb.Customers.Where(x => !String.IsNullOrEmpty(x.Phone_mobile)).ToList();
+                    List<InputCustomer> sourceCustomers = new List<InputCustomer>();
+                    DbService WomenDb= new DbService();
+                    iMapper.Map(WomenDb.GetAllWomenCustomers().Where(x => !String.IsNullOrEmpty(x.Phone_mobile)).ToList(), sourceCustomers);
+
+
+
+                    List<InputCustomer> toBeUpdatedCustomers = new List<InputCustomer>();
+                    List<InputCustomer> toBeInsertedCustomers = new List<InputCustomer>();
+                    foreach (InputCustomer element in sourceCustomers)
+                    {
+                        if (US.checkPhoneNumberVaildaty(element.Phone_mobile))
+                        {
+                            if (db.SalesCustomers.Where(salesCusElement => salesCusElement.women_forign_key == element.Customer_ID).Count() > 1)
+                            {
+                                toBeUpdatedCustomers.Add(element);
+                            }
+                            else
+                            {
+                                toBeInsertedCustomers.Add(element);
+                            }
+                        }
+                    }
+                    updateCustomersFromMenDb(toBeUpdatedCustomers, currentUser, sourceDbString);
+                    List<String> insertResult = InsertIntoCustomersFromMenDb(toBeInsertedCustomers, currentUser, sourceDbString);
+                    errors.AddRange(insertResult);
+                    return errors;
+
+
                 }
                 else
                 {
                     errors.Add("Failed to identify source to update from");
                     return errors;
                 }
-
-
-                return errors;
+               
             }
 
         }
-        private void updateCustomersFromMenDb(List<Customer> sourceList, User currentUser)
+        private void updateCustomersFromMenDb(List<InputCustomer> sourceList, User currentUser, string sourceDbString)
         {
             using (var db = new SmartGymSalesEntities())
             {
-                SmartGymMenEntities sourceDb = new SmartGymMenEntities();
-                foreach (Customer srcCustomer in sourceList)
+                foreach (InputCustomer srcCustomer in sourceList)
                 {
-                    SalesCustomer salesCustomer = db.SalesCustomers.Where(x => x.men_forign_Key == srcCustomer.Customer_ID).FirstOrDefault();
+                    SalesCustomer salesCustomer;
+                    InputMembership srcCustomerMembership=new InputMembership();
+                    if (sourceDbString == "Men") {
+                        SmartGymMenEntities sourceDb = new SmartGymMenEntities();
+                        Models.SmartGymMen.Membership CustomerMembership = sourceDb.Memberships.Where(x => x.Customer_ID == srcCustomer.Customer_ID).FirstOrDefault();
+                        var config = new MapperConfiguration(cfg => {
+                            cfg.CreateMap<Models.SmartGymMen.Membership, InputMembership>();
+                        });
+                        IMapper iMapper = config.CreateMapper();
+                        iMapper.Map(CustomerMembership, srcCustomerMembership);
+                        
+                        salesCustomer = db.SalesCustomers.Where(x => x.men_forign_Key == srcCustomer.Customer_ID).FirstOrDefault();
+                    }
+                    else if (sourceDbString == "Women") {
+                        salesCustomer = db.SalesCustomers.Where(x => x.women_forign_key == srcCustomer.Customer_ID).FirstOrDefault();
+                        DbService WomenDb = new DbService();
+                        SmartGymWomenRetrival.Models.Membership CustomerMembership = WomenDb.GetAllWomenMembership().Where(x => x.Customer_ID == srcCustomer.Customer_ID).FirstOrDefault();
+                        var config = new MapperConfiguration(cfg => {
+                            cfg.CreateMap<SmartGymWomenRetrival.Models.Membership, InputMembership>();
+                        });
+                        IMapper iMapper = config.CreateMapper();
+                        iMapper.Map(CustomerMembership, srcCustomerMembership);
+                    }
+                    
+                    else
+                    {
+                        return ;
+                    }
 
-                    Membership srcCustomerMembership = sourceDb.Memberships.Where(x => x.Customer_ID == srcCustomer.Customer_ID).FirstOrDefault();
                     //isActive and SubscribtionDate
                     if (srcCustomerMembership == null)
                     {
@@ -210,22 +225,8 @@ namespace SmartGymSales.Services
                 db.SaveChanges();
             }
         }
-
-        public SalesCustomer getSalesCustomers(int id)
-        {
-            if (CustomerExists(id))
-            {
-                SmartGymSalesEntities db = new SmartGymSalesEntities();
-                return db.SalesCustomers.Where(x => x.id == id).FirstOrDefault();
-            }
-            return null;
-        }
-        public bool CustomerExists(int id)
-        {
-            SmartGymSalesEntities db = new SmartGymSalesEntities();
-            return db.SalesCustomers.Count(e => e.id == id) > 0;
-        }
-        private List<String> InsertIntoCustomersFromMenDb(List<Customer> sourceList, User currentUser)
+       
+        private List<String> InsertIntoCustomersFromMenDb(List<InputCustomer> sourceList, User currentUser,String sourceDbString)
         {
             using (var db = new SmartGymSalesEntities())
             {
@@ -234,7 +235,7 @@ namespace SmartGymSales.Services
 
                 List<String> errors = new List<String>();
                 int rowError = 0;
-                foreach (Customer srcCustomer in sourceList)
+                foreach (InputCustomer srcCustomer in sourceList)
                 {
 
                     SalesCustomer newCustomer = new SalesCustomer();
@@ -280,8 +281,31 @@ namespace SmartGymSales.Services
                         newCustomer.email = srcCustomer.email;
                     }
 
+                    InputMembership srcCustomerMembership = new InputMembership();
+                    if (sourceDbString == "Men")
+                    {
 
-                    Membership srcCustomerMembership = sourceDb.Memberships.Where(x => x.Customer_ID == srcCustomer.Customer_ID).OrderByDescending(x => x.recorddate).FirstOrDefault();
+
+                        Models.SmartGymMen.Membership CustomerMembership = sourceDb.Memberships.Where(x => x.Customer_ID == srcCustomer.Customer_ID).OrderByDescending(x => x.recorddate).FirstOrDefault();
+                        var config = new MapperConfiguration(cfg => {
+                            cfg.CreateMap<Models.SmartGymMen.Membership, InputMembership>();
+                        });
+                        IMapper iMapper = config.CreateMapper();
+                        iMapper.Map(CustomerMembership, srcCustomerMembership);
+                        newCustomer.men_forign_Key = srcCustomer.Customer_ID;
+                    }
+                    else if (sourceDbString == "Women")
+                    {
+                        DbService WomenDb = new DbService();
+                        SmartGymWomenRetrival.Models.Membership CustomerMembership = WomenDb.GetAllWomenMembership().Where(x => x.Customer_ID == srcCustomer.Customer_ID).OrderByDescending(x => x.recorddate).FirstOrDefault();
+                        var config = new MapperConfiguration(cfg => {
+                            cfg.CreateMap<SmartGymWomenRetrival.Models.Membership, InputMembership>();
+                        });
+                        IMapper iMapper = config.CreateMapper();
+                        iMapper.Map(CustomerMembership, srcCustomerMembership);
+                        newCustomer.women_forign_key = srcCustomer.Customer_ID;
+
+                    }
                     //isActive and SubscribtionDate
                     if (srcCustomerMembership == null)
                     {
@@ -310,8 +334,7 @@ namespace SmartGymSales.Services
                     newCustomer.addition_type_id = (int)enums.AddtionalLookupEnum.Sync;
                     newCustomer.is_called = false;
                     newCustomer.calles_count = 0;
-                    newCustomer.men_forign_Key = srcCustomer.Customer_ID;
-                    newCustomer.women_forign_key = null;
+                    
                     newCustomer.creation_date = DateTime.Now;
                     if (newCustomer.subscription_start_date < DateTime.Now &&
                         DateTime.Now < newCustomer.subscription_end_date)
@@ -346,78 +369,19 @@ namespace SmartGymSales.Services
             }
         }
 
-        private List<String> InsertIntoPossibleCustomersFromMenDb(List<T_session_subscriber> sourceList, User currentUser)
+        public SalesCustomer getSalesCustomers(int id)
         {
-            var db = new SmartGymSalesEntities();
-            List<String> errors = new List<String>();
-            UtilsService US = new UtilsService();
-            SmartGymMenEntities sourceDb = new SmartGymMenEntities();
-            foreach (T_session_subscriber item in sourceList)
+            if (CustomerExists(id))
             {
-                possibleCustomer possibleCustomerItem = new possibleCustomer();
-                bool customerError = false;
-                //name
-                if (!String.IsNullOrEmpty(item.subname))
-                {
-                    possibleCustomerItem.name = item.subname;
-                }
-                else
-                {
-                    errors.Add("Name field is empty at id :" + item.id);
-                    customerError = true;
-                }
-
-                //mobile
-                if (String.IsNullOrEmpty(item.sunmobil))
-                {
-                    errors.Add("Mobile field is empty at id :" + item.id + " with name: " + item.subname);
-                    customerError = true;
-                }
-                else if (!US.checkPhoneNumberVaildaty(item.sunmobil))
-                {
-                    errors.Add("Mobile field is not valid at id :" + item.id + " with name: " + item.subname);
-                    customerError = true;
-                }
-                else if (US.checkPhoneNumberRedundancyforPossibleCustomers(item.sunmobil))
-                {
-                    errors.Add("Mobile field is found before at id :" + item.id + " with name: " + item.subname);
-                    customerError = true;
-                }
-                else
-                {
-                    possibleCustomerItem.mobile = item.sunmobil;
-                }
-                //email
-                if (!String.IsNullOrEmpty(item.subemail) && !US.checkEmailVaildaty(item.subemail))
-                {
-                    errors.Add("Email field is not valid at id :" + item.id + " with name: " + item.subname);
-                    customerError = true;
-                }
-                else if (!String.IsNullOrEmpty(item.subemail) && US.checkEmailRedundancyforPossibleCustomers(item.subemail))
-                {
-                    errors.Add("Email field is found before at id :" + item.id + " with name: " + item.subname);
-                    customerError = true;
-                }
-                else
-                {
-                    possibleCustomerItem.email = item.subemail;
-                }
-                possibleCustomerItem.knowledge_id = (int)KnowledgeLookupEnum.Sync;
-                possibleCustomerItem.is_called = false;
-                possibleCustomerItem.calles_count = 0;
-                possibleCustomerItem.is_subscribed = false;
-                possibleCustomerItem.is_hidden = false;
-                possibleCustomerItem.addition_type_id = (int)AddtionalLookupEnum.Sync;
-                possibleCustomerItem.added_By_id = currentUser.id;
-                possibleCustomerItem.creaation_date = DateTime.Now;
-
-                if (!customerError)
-                {
-                    db.possibleCustomers.Add(possibleCustomerItem);
-                    db.SaveChanges();
-                }
+                SmartGymSalesEntities db = new SmartGymSalesEntities();
+                return db.SalesCustomers.Where(x => x.id == id).FirstOrDefault();
             }
-            return errors;
+            return null;
+        }
+        public bool CustomerExists(int id)
+        {
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
+            return db.SalesCustomers.Count(e => e.id == id) > 0;
         }
         public List<String> insertExcelToCustomers(HttpPostedFile postedFile, string user_name, string password)
         {

@@ -25,6 +25,7 @@
 
 <script>
 import CustomersServices from "../../services/Customers";
+import PossibleCustomerServices from "../../services/PossibleCustomers"
 export default {
   name: "updateCustomersFromDb",
   methods: {
@@ -55,7 +56,7 @@ export default {
     },
     updatePossibleCustomers: function(dbType) {
       this.loadingCount++;
-      CustomersServices.updatePossibleCustomersFromDb(dbType)
+      PossibleCustomerServices.updatePossibleCustomersFromDb(dbType)
         .then(res => {
           if (res.data.length > 0) {
             res.data.forEach(element => {
