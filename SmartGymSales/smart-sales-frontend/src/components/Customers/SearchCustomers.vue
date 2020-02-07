@@ -55,7 +55,7 @@
     <b-row>
           <b-col>
             <div class="button-group actions-buttons">
-              <b-button @click="search" variant="primary">Submit</b-button>
+              <b-button @click="search" variant="primary">Search</b-button>
               <b-button @click="reset" variant="secondary">Reset</b-button>
             </div>
           </b-col>

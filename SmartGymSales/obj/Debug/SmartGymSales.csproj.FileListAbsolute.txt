@@ -126,3 +126,8 @@ C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\obj\Debug\SmartGymSa
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\AutoMapper.dll
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\AutoMapper.pdb
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\AutoMapper.xml
+C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\SmartGymWomenRetrival.dll
+C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\Microsoft.Owin.dll
+C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\Owin.dll
+C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\SmartGymWomenRetrival.pdb
+C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymSales\bin\Microsoft.Owin.xml

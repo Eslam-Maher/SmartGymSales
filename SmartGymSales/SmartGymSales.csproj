@@ -87,7 +87,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
-    <Reference Include="SmartGymWomenRetrival">
+    <Reference Include="SmartGymWomenRetrival, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SmartGymWomenRetrival\bin\SmartGymWomenRetrival.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -177,6 +178,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BLL\InputCustomer.cs" />
     <Compile Include="BLL\InputMembership.cs" />
+    <Compile Include="BLL\InputPossibleCustomer.cs" />
     <Compile Include="Controllers\CommissionsController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\knowledgeLookupsController.cs" />

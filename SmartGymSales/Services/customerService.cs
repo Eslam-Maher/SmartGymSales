@@ -100,7 +100,7 @@ namespace SmartGymSales.Services
                     {
                         if (US.checkPhoneNumberVaildaty(element.Phone_mobile))
                         {
-                            if (db.SalesCustomers.Where(salesCusElement => salesCusElement.men_forign_Key == element.Customer_ID).Count() > 1)
+                            if (db.SalesCustomers.Where(salesCusElement => salesCusElement.men_forign_Key == element.Customer_ID).Count() >= 1)
                             {
                                 toBeUpdatedCustomers.Add(element);
                             }
@@ -136,7 +136,7 @@ namespace SmartGymSales.Services
                     {
                         if (US.checkPhoneNumberVaildaty(element.Phone_mobile))
                         {
-                            if (db.SalesCustomers.Where(salesCusElement => salesCusElement.women_forign_key == element.Customer_ID).Count() > 1)
+                            if (db.SalesCustomers.Where(salesCusElement => salesCusElement.women_forign_key == element.Customer_ID).Count() >= 1)
                             {
                                 toBeUpdatedCustomers.Add(element);
                             }
@@ -198,7 +198,8 @@ namespace SmartGymSales.Services
                     }
 
                     //isActive and SubscribtionDate
-                    if (srcCustomerMembership == null)
+                    if (srcCustomerMembership == null | srcCustomerMembership.S_Date == DateTime.MinValue || srcCustomerMembership.S_Date == DateTime.MaxValue
+                        || srcCustomerMembership.E_Date == DateTime.MinValue || srcCustomerMembership.E_Date == DateTime.MaxValue)
                     {
                         salesCustomer.subscription_end_date = salesCustomer.subscription_start_date = null;
                         salesCustomer.is_active = false;
@@ -307,7 +308,8 @@ namespace SmartGymSales.Services
 
                     }
                     //isActive and SubscribtionDate
-                    if (srcCustomerMembership == null)
+                    if (srcCustomerMembership == null || srcCustomerMembership.S_Date==DateTime.MinValue || srcCustomerMembership.S_Date == DateTime.MaxValue
+                        || srcCustomerMembership.E_Date == DateTime.MinValue || srcCustomerMembership.E_Date == DateTime.MaxValue)
                     {
                         newCustomer.subscription_end_date = newCustomer.subscription_start_date = null;
                         newCustomer.is_active = false;
@@ -336,20 +338,21 @@ namespace SmartGymSales.Services
                     newCustomer.calles_count = 0;
                     
                     newCustomer.creation_date = DateTime.Now;
-                    if (newCustomer.subscription_start_date < DateTime.Now &&
-                        DateTime.Now < newCustomer.subscription_end_date)
-                    {
-                        newCustomer.is_active = true;
-                    }
-                    else
-                    {
-                        newCustomer.is_active = false;
-                    }
+              
 
 
                     if (!customerError)
                     {
                         db.SalesCustomers.Add(newCustomer);
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (Exception e)
+                        {
+                            rowError++;
+                            Console.Out.WriteLine(e.InnerException);
+                        }
 
                     }
                     else
@@ -363,7 +366,7 @@ namespace SmartGymSales.Services
                 {
                     errors.Add("Couldn't Sync " + rowError + " customers due to wrong data");
                 }
-                db.SaveChanges();
+           
 
                 return errors;
             }

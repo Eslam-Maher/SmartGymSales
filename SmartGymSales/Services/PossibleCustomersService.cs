@@ -6,6 +6,9 @@ using SmartGymSales.Models;
 using SmartGymSales.enums;
 using System.Data.Entity.Migrations;
 using SmartGymSales.Models.SmartGymMen;
+using AutoMapper;
+using SmartGymSales.BLL;
+using SmartGymWomenRetrival.Services;
 
 namespace SmartGymSales.Services
 {
@@ -78,10 +81,21 @@ namespace SmartGymSales.Services
                 if (sourceDbString == "Men")
                 {
                     SmartGymMenEntities sourceDb = new SmartGymMenEntities();
-                    List<T_session_subscriber> sourceCustomers = sourceDb.T_session_subscriber.Where(x => !String.IsNullOrEmpty(x.sunmobil)).ToList();
+                    List<InputPossibleCustomer> sourceCustomers = new List<InputPossibleCustomer>();
 
-                    List<Object> toBeInsertedPossibleCustomers = new List<Object>();
-                    foreach (T_session_subscriber element in sourceCustomers)
+
+                    var config = new MapperConfiguration(cfg => {
+                        cfg.CreateMap<Models.SmartGymMen.T_session_subscriber, InputPossibleCustomer>();
+                    });
+                    IMapper iMapper = config.CreateMapper();
+                    iMapper.Map(sourceDb.T_session_subscriber.Where(x => !String.IsNullOrEmpty(x.sunmobil)).ToList(), sourceCustomers);
+
+
+
+
+
+                    List<InputPossibleCustomer> toBeInsertedPossibleCustomers = new List<InputPossibleCustomer>();
+                    foreach (InputPossibleCustomer element in sourceCustomers)
                     {
                         if (US.checkPhoneNumberVaildaty(element.sunmobil))
                         {
@@ -95,11 +109,21 @@ namespace SmartGymSales.Services
                 }
                 else if (sourceDbString == "Women")
                 {
-                    Models.SmartGymWomen.SmatGymWomenEntities sourceDb = new Models.SmartGymWomen.SmatGymWomenEntities();
-                    List<Models.SmartGymWomen.T_session_subscriber> sourceCustomers = sourceDb.T_session_subscriber.Where(x => !String.IsNullOrEmpty(x.sunmobil)).ToList();
 
-                    List<Object> toBeInsertedPossibleCustomers = new List<Object>();
-                    foreach (Models.SmartGymWomen.T_session_subscriber element in sourceCustomers)
+                    var config = new MapperConfiguration(cfg => {
+                        cfg.CreateMap<SmartGymWomenRetrival.Models.T_session_subscriber, InputPossibleCustomer>();
+                    });
+                    IMapper iMapper = config.CreateMapper();
+
+                    List<InputPossibleCustomer> sourceCustomers = new List<InputPossibleCustomer>();
+                    DbService WomenDb = new DbService();
+
+                    iMapper.Map(WomenDb.GetAllWomenT_session_subscriber().Where(x => !String.IsNullOrEmpty(x.sunmobil)).ToList(), sourceCustomers);
+
+                    
+
+                    List<InputPossibleCustomer> toBeInsertedPossibleCustomers = new List<InputPossibleCustomer>();
+                    foreach (InputPossibleCustomer element in sourceCustomers)
                     {
                         if (US.checkPhoneNumberVaildaty(element.sunmobil))
                         {
@@ -124,13 +148,12 @@ namespace SmartGymSales.Services
         }
 
 
-        private List<String> InsertIntoPossibleCustomersFromMenDb(List<Object> sourceList, User currentUser)
+        private List<String> InsertIntoPossibleCustomersFromMenDb(List<InputPossibleCustomer> sourceList, User currentUser)
         {
             var db = new SmartGymSalesEntities();
             List<String> errors = new List<String>();
             UtilsService US = new UtilsService();
-            SmartGymMenEntities sourceDb = new SmartGymMenEntities();
-            foreach (T_session_subscriber item in sourceList)
+            foreach (InputPossibleCustomer item in sourceList)
             {
                 possibleCustomer possibleCustomerItem = new possibleCustomer();
                 bool customerError = false;
@@ -192,7 +215,14 @@ namespace SmartGymSales.Services
                 if (!customerError)
                 {
                     db.possibleCustomers.Add(possibleCustomerItem);
-                    db.SaveChanges();
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.Out.WriteLine(e.InnerException);
+                    }
                 }
             }
             return errors;

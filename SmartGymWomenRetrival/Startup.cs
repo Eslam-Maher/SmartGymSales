@@ -12,7 +12,6 @@ namespace SmartGymWomenRetrival
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
         }
     }
 }

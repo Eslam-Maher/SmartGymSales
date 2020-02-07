@@ -13,10 +13,10 @@ namespace SmartGymWomenRetrival.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class smartgymEntities : DbContext
+    public partial class SmatGymWomenEntities : DbContext
     {
-        public smartgymEntities()
-            : base("name=smartgymEntities")
+        public SmatGymWomenEntities()
+            : base("name=SmatGymWomenEntities")
         {
         }
     
