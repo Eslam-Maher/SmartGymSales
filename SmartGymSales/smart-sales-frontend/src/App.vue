@@ -15,6 +15,7 @@ export default {
   components: { navBar,loader }
 };
 </script>
+
 <style>
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;

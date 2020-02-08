@@ -10,6 +10,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using SmartGymSales.Models;
 using SmartGymSales.Services;
+using System.Net.Http.Headers;
+
 
 namespace SmartGymSales.Controllers
 {
@@ -23,6 +25,25 @@ namespace SmartGymSales.Controllers
         {
             UsersService UsersService = new UsersService();
             return UsersService.getAllUsers();
+        }
+
+        [HttpGet]
+        [ActionName("getSalesUsers")]
+        public List<User> getSalesUsers()
+        {
+            HttpRequestHeaders headers = this.Request.Headers;
+            string userName = string.Empty;
+            string pwd = string.Empty;
+            if (headers.Contains("userName"))
+            {
+                userName = headers.GetValues("userName").First();
+            }
+            if (headers.Contains("Password"))
+            {
+                pwd = headers.GetValues("Password").First();
+            }
+            UsersService UsersService = new UsersService();
+            return UsersService.getAllSalesUsers(userName, pwd);
         }
 
         [HttpPost]

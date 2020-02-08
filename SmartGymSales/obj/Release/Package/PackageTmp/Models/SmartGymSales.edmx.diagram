@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9289e8a05f654fdfb7df686b9701662f" Name="Diagram1" ZoomLevel="80">
+        <EntityTypeShape EntityType="SmartGymSalesModel.AdditionLookup" Width="1.5" PointX="7.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartGymSalesModel.knowledgeLookup" Width="1.5" PointX="2.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartGymSalesModel.review" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartGymSalesModel.Role" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartGymSalesModel.User" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartGymSalesModel.UserRole" Width="1.5" PointX="3" PointY="2.25" />
+        <AssociationConnector Association="SmartGymSalesModel.FK_UserRoles_Roles" />
+        <AssociationConnector Association="SmartGymSalesModel.FK_UserRoles_Users" />
+        <EntityTypeShape EntityType="SmartGymSalesModel.SalesCustomer" Width="1.5" PointX="5.5" PointY="6.625" />
+        <EntityTypeShape EntityType="SmartGymSalesModel.possibleCustomer" Width="1.5" PointX="8.375" PointY="9.75" />
+        <EntityTypeShape EntityType="SmartGymSalesModel.commission" Width="1.5" PointX="8.375" PointY="4.75" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

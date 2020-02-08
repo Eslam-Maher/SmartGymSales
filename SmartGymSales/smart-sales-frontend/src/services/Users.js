@@ -12,6 +12,17 @@ export default {
   
       return getAllUsers.get(requestBody);
     },
+    getSalesUsers() {
+      const getSalesUsers = new API("Users/getSalesUsers");
+      const requestBody = {
+        headers: {
+          userName: store.getters.getUser.user_name,
+          Password: store.getters.getUser.password
+        },
+      };
+  
+      return getSalesUsers.get(requestBody);
+    },
     insertUser(User){
       const insertUser= new API("Users/insertUsers");
       const requestBody = {

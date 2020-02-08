@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using SmartGymSales.Models;
-
+using SmartGymSales.enums;
 
 namespace SmartGymSales.Services
 {
@@ -16,6 +16,23 @@ namespace SmartGymSales.Services
             SmartGymSalesEntities db = new SmartGymSalesEntities();
 
             return db.Users.ToList();
+
+        }
+        public List<User> getAllSalesUsers(string user_name, string password)
+        {
+            if (!checkUserCred(user_name, password))
+            {
+                return null;
+            }
+            UserRolesService userRolesService = new UserRolesService();
+            if (!userRolesService.isUserManger(user_name))
+            {
+                return null;
+            }
+
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
+
+            return db.Users.Where(x=>x.UserRoles.Where(y=>y.role_id==(int)rolesEnum.sales).Any()).ToList();
 
         }
         public User GetUserbyId(int id)

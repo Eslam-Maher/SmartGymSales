@@ -35,6 +35,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>AllFilesInProjectFolder</FilesToIncludeForPublish>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -303,6 +304,7 @@
     <Content Include="Models\SmartGymMen\SmartGymMen.edmx.diagram">
       <DependentUpon>SmartGymMen.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\Eslam Maher.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Models\SmartGymSales.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

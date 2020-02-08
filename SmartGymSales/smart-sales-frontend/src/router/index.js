@@ -9,6 +9,7 @@ import UserRoles from "../views/UserRoles.vue";
 import AddPossibleCustomers from "../components/PossibleCustomers/insertPossibleCustomer.vue"
 import PossibleCustomersView from "../views/PossibleCustomersView.vue";
 import CommissionView from "../views/CommissionView";
+import CommissionCalculation from "../views/CommisionCalculation";
 import ReviewsView from "../views/ReviewsView";
 Vue.use(VueRouter);
 
@@ -61,6 +62,11 @@ const router = new VueRouter({
       path:"/CommissionView",
       name:"CommissionView",
       component:CommissionView
+    },
+    {
+      path:"/commissionCalculation",
+      name:"commissionCalculation",
+      component:CommissionCalculation
     },
     {
       path:"/ReviewsView",

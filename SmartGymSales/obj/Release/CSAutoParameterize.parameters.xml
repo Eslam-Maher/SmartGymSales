@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="SmartGymSalesEntities-Web.config Connection String" description="SmartGymSalesEntities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/Models.SmartGymSales.csdl|res://*/Models.SmartGymSales.ssdl|res://*/Models.SmartGymSales.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=ESLAMPC\SQLEXPRESS;initial catalog=SmartGymSales;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Eslam\\Documents\\GitHub\\SmartGymSales\\SmartGymSales\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='SmartGymSalesEntities']/@connectionString" />
+  </parameter>
+  <parameter name="SmartGymMenEntities-Web.config Connection String" description="SmartGymMenEntities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/Models.SmartGymMen.SmartGymMen.csdl|res://*/Models.SmartGymMen.SmartGymMen.ssdl|res://*/Models.SmartGymMen.SmartGymMen.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=ESLAMPC\SQLEXPRESS;initial catalog=smartgym;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Eslam\\Documents\\GitHub\\SmartGymSales\\SmartGymSales\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='SmartGymMenEntities']/@connectionString" />
+  </parameter>
+  <parameter name="SmatGymWomenEntities-Web.config Connection String" description="SmatGymWomenEntities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/Models.WomenDb.csdl|res://*/Models.WomenDb.ssdl|res://*/Models.WomenDb.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=ESLAMPC\SQLEXPRESS;initial catalog=smartgym1;integrated security=True;multipleactiveresultsets=True;application name=EntityFramework&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Eslam\\Documents\\GitHub\\SmartGymSales\\SmartGymSales\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='SmatGymWomenEntities']/@connectionString" />
+  </parameter>
+</parameters>
