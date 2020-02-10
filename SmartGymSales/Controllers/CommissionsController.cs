@@ -62,6 +62,32 @@ namespace SmartGymSales.Controllers
             return Ok(commService.insertCommission(userName, pwd,commission));
         }
 
+
+        [HttpPost]
+        [ActionName("calcCommission")]
+        public IHttpActionResult calcCommission(HttpRequestMessage request, [FromBody]DateTime dateFrom, [FromBody]DateTime dateTo, [FromBody]User user)
+        {
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            HttpRequestHeaders headers = this.Request.Headers;
+            string userName = string.Empty;
+            string pwd = string.Empty;
+            if (headers.Contains("userName"))
+            {
+                userName = headers.GetValues("userName").First();
+            }
+            if (headers.Contains("Password"))
+            {
+                pwd = headers.GetValues("Password").First();
+            }
+            CommissionService commService = new CommissionService();
+            return Ok(commService.calcCommission(userName, pwd, dateFrom,dateTo, user));
+        }
+
+
         // DELETE: api/Commissions/5
         [HttpDelete]
         [ActionName("deleteCommission")]

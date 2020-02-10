@@ -4,15 +4,8 @@
       <b-form>
         <b-row>
           <b-col>
-            <b-form-group label="From" label-for="fromDate-input">
-               <date-pick v-model="fromDate"  id="fromDate-input" ></date-pick>
-            </b-form-group>
-          </b-col>
-<!-- class="form-control" -->
-          <b-col>
-            <b-form-group label="To" label-for="toDate-input">
-            <date-pick v-model="toDate" id="toDate-input" ></date-pick>
-
+            <b-form-group label="Date Range" label-for="Date-input">
+              <date-picker id="Date-input" v-model="dates" range></date-picker>
             </b-form-group>
           </b-col>
 
@@ -27,34 +20,28 @@
               ></multiselect>
             </b-form-group>
           </b-col>
-         
-        </b-row>  
-         <b-row>
+        </b-row>
+        <b-row>
           <b-col>
-            <div class="button-group actions-buttons pull-right"> 
-                   <b-button @click="getCommission" variant="primary">Get Commission</b-button>
+            <div class="button-group actions-buttons pull-right">
+              <b-button @click="calcCommission" :disabled="salesEmployee==null||dates.length<2" variant="primary">Get Commission</b-button>
             </div>
           </b-col>
-         </b-row>     
+        </b-row>
       </b-form>
-      <b-row>
-
-      </b-row>
+      <b-row></b-row>
     </div>
   </b-card>
 </template>
 
 <script>
 import UsersService from "../../services/Users";
-
-// import "vue-date-pick/dist/vueDatePick.css";
-
+import CommissionService from "../../services/Commission";
 export default {
   data() {
     return {
       salesEmployee: null,
-      toDate: null,
-      fromDate: null,
+      dates: [],
       salesEmployeeOptions: []
     };
   },
@@ -65,14 +52,41 @@ export default {
         .then(res => {
           this.salesEmployeeOptions = res.data;
         })
-        .catch(error => {// eslint-disable-line no-unused-vars
+        .catch(error => {  // eslint-disable-line no-unused-vars
           this.$bvToast.toast("error in getting users ", this.failToastConfig);
         })
         .finally(() => {
           this.loadingCount--;
         });
     },
-    getCommission:function(){}
+    calcCommission: function() {
+      this.loadingCount++;
+      CommissionService.calcCommission(
+        this.dates[0],
+        this.dates[1],
+        this.salesEmployee
+      )
+        .then(res => {
+          if (res.data.length > 0) {
+            res.data.forEach(element => {
+              this.$bvToast.toast(element, this.failToastConfig);
+            });
+          } else {
+            this.onReset();
+          }
+          // eslint-disable-line no-unused-vars
+        })
+        .catch(error => {
+          this.$bvToast.toast("Commission addtion Failed", error.message);
+        })
+        .finally(() => {
+          this.loadingCount--;
+        });
+    },
+    onReset: function() {
+      this.dates = [];
+      this.salesEmployee = null;
+    }
   },
   created: function() {
     console.log(
@@ -82,23 +96,5 @@ export default {
   }
 };
 </script>
-
 <style scoped>
-
-.vdp-datepicker__calendar {
-  width: 100% !important;
-  border-radius: 1rem !important;
-}
-
-.vdp-datepicker__calendar > header {
-  font-size: 0.9rem;
-}
-
-.vdp-datepicker__calendar .cell {
-  font-size: 0.8rem;
-  height: 2rem;
-}
-.vdp-datepicker .input-group .form-control[readonly] {
-  background-color: white !important;
-}
 </style>

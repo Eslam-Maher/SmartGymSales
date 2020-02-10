@@ -87,7 +87,7 @@ export default {
             });
           } else {
             this.$bvToast.toast(
-              "Commission Deleted Successfully",
+              "Commission added Successfully",
               this.sucessToastConfig
             );
             this.$emit("refreshGrid");

@@ -204,6 +204,7 @@
     <Compile Include="Models\commission.cs">
       <DependentUpon>SmartGymSales.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\OutputCommission.cs" />
     <Compile Include="Models\SmartGymMen\Customer.cs">
       <DependentUpon>SmartGymMen.tt</DependentUpon>
     </Compile>

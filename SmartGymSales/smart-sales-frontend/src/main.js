@@ -8,8 +8,8 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import Multiselect from "vue-multiselect";
-import DatePick from 'vue-date-pick';
-// import 'vue-date-pick/dist/vueDatePick.css';
+import DatePicker from 'vue2-datepicker';
+  import 'vue2-datepicker/index.css';
 import mixin from "./mixin.js";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -26,7 +26,7 @@ Vue.use(BootstrapVue);
 Vue.use(VueAxios, axios);
 Vue.use(require("vue-moment"));
 Vue.component("multiselect", Multiselect);
-Vue.component("DatePick", DatePick);
+Vue.component("DatePicker", DatePicker);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 new Vue({
