@@ -48,3 +48,4 @@ export default {
   color: #42b983;
 }
 </style>
+<style src="vue-date-pick/dist/vueDatePick.css"></style>

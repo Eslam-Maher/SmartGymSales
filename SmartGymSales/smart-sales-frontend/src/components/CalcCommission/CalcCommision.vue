@@ -11,7 +11,7 @@
 <!-- class="form-control" -->
           <b-col>
             <b-form-group label="To" label-for="toDate-input">
-            <date-pick v-model="toDate" id="toDate-input" input-class="form-control" ></date-pick>
+            <date-pick v-model="toDate" id="toDate-input" ></date-pick>
 
             </b-form-group>
           </b-col>
@@ -46,6 +46,9 @@
 
 <script>
 import UsersService from "../../services/Users";
+
+// import "vue-date-pick/dist/vueDatePick.css";
+
 export default {
   data() {
     return {
@@ -82,4 +85,20 @@ export default {
 
 <style scoped>
 
+.vdp-datepicker__calendar {
+  width: 100% !important;
+  border-radius: 1rem !important;
+}
+
+.vdp-datepicker__calendar > header {
+  font-size: 0.9rem;
+}
+
+.vdp-datepicker__calendar .cell {
+  font-size: 0.8rem;
+  height: 2rem;
+}
+.vdp-datepicker .input-group .form-control[readonly] {
+  background-color: white !important;
+}
 </style>

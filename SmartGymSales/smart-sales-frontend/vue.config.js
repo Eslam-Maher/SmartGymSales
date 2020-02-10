@@ -1,9 +1,18 @@
 // vue.config.js
 module.exports = {
     // options...
-    publicPath: process.env.NODE_ENV === 'production'
-    ? '/SmartGymSales/'
-    : '/',
-
-    // outputDir :"../../../../"
+    publicPath: './',
+    devServer: {
+      proxy: {
+        '/api': {
+          target: 'http://localhost:8095', // this configuration needs to correspond to the Spring Boot backends' application.properties server.port
+          ws: true,
+          changeOrigin: true
+        }
+      }
+    },
+    // Change build paths to make them Maven compatible
+    // see https://cli.vuejs.org/config/
+    outputDir: 'target/dist',
+    assetsDir: 'static'
   }
