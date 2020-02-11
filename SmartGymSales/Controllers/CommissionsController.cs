@@ -65,7 +65,7 @@ namespace SmartGymSales.Controllers
 
         [HttpPost]
         [ActionName("calcCommission")]
-        public IHttpActionResult calcCommission(HttpRequestMessage request, [FromBody]DateTime dateFrom, [FromBody]DateTime dateTo, [FromBody]User user)
+        public IHttpActionResult calcCommission(HttpRequestMessage request, [FromBody]InputCommission data)
         {
             SmartGymSalesEntities db = new SmartGymSalesEntities();
             if (!ModelState.IsValid)
@@ -84,7 +84,7 @@ namespace SmartGymSales.Controllers
                 pwd = headers.GetValues("Password").First();
             }
             CommissionService commService = new CommissionService();
-            return Ok(commService.calcCommission(userName, pwd, dateFrom,dateTo, user));
+            return Ok(commService.calcCommission(userName, pwd, data.dateFrom, data.dateTo, data.user));
         }
 
 
