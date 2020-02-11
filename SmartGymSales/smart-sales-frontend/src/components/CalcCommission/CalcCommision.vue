@@ -5,7 +5,7 @@
         <b-row>
           <b-col>
             <b-form-group label="Date Range" label-for="Date-input">
-              <date-picker id="Date-input" v-model="dates" range></date-picker>
+              <date-picker id="Date-input" type="date" v-model="dates" range></date-picker>
             </b-form-group>
           </b-col>
 
@@ -37,6 +37,8 @@
 <script>
 import UsersService from "../../services/Users";
 import CommissionService from "../../services/Commission";
+import moment from "moment";
+
 export default {
   data() {
     return {
@@ -62,8 +64,8 @@ export default {
     calcCommission: function() {
       this.loadingCount++;
       CommissionService.calcCommission(
-        this.dates[0],
-        this.dates[1],
+        moment(this.dates[0]),
+        moment(this.dates[1]),
         this.salesEmployee
       )
         .then(res => {

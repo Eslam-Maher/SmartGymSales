@@ -32,6 +32,37 @@ namespace SmartGymSales.Services
             }
             return  db.possibleCustomers.Where(x=>x.is_hidden==false).ToList();
         }
+        public List<possibleCustomer> getAllPossibleCustomerByCallesUser(User user)
+        {
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
+            return db.possibleCustomers.Where(x => x.is_hidden == false&& x.is_called_by==user.id).ToList();
+        }
+        public List<SalesCustomer> UpdateAllPossibleCustomerByCalledUser(User user) {
+            SmartGymSalesEntities db = new SmartGymSalesEntities();
+
+            List<possibleCustomer> PC_CalledByUser = getAllPossibleCustomerByCallesUser(user);
+            CustomerService cs = new CustomerService();
+            List<SalesCustomer> allSalesCustomer= cs.getAllCustomers();
+            List<SalesCustomer> result = new List<SalesCustomer>();
+            foreach (possibleCustomer pc in PC_CalledByUser)
+            {
+                if (allSalesCustomer.Where(x => x.mobile == pc.mobile).Any()) {
+
+                    SalesCustomer newCustomer = allSalesCustomer.Find(x => x.mobile == pc.mobile);
+                    newCustomer.is_called = pc.is_called;
+                    newCustomer.is_called_by = pc.is_called_by;
+                    newCustomer.calles_count = pc.calles_count;
+                    pc.customer_id = newCustomer.id;
+                    pc.is_subscribed = true;
+                    pc.is_hidden = true;
+                    db.SalesCustomers.AddOrUpdate(newCustomer);
+                    db.possibleCustomers.AddOrUpdate(pc);
+                    result.Add(newCustomer);
+                }
+            }
+
+            return result;
+        }
         public void UpdatePossibleCustomersCalledByUser(User user) {
             SmartGymSalesEntities db = new SmartGymSalesEntities();
 

@@ -570,6 +570,16 @@ namespace SmartGymSales.Services
             }
         }
 
+        public List<SalesCustomer> getAllCustomers() {
+
+            var db = new SmartGymSalesEntities();
+            return db.SalesCustomers.ToList();
+        }
+        public List<SalesCustomer> getAllCustomersCalledByUser(User user)
+        {
+            var db = new SmartGymSalesEntities();
+            return db.SalesCustomers.Where(x=>x.is_called_by==user.id).ToList();
+        }
         public List<SalesCustomer> getAllCustomers(string user_name, string password, string name, string mobile, string email, int? source, bool? isCalled, bool? isSubscriped)
         {
 

@@ -79,6 +79,7 @@ namespace SmartGymSales.Services
             var db = new SmartGymSalesEntities();
             UsersService userService = new UsersService();
             UserRolesService userRolesService = new UserRolesService();
+            List<String> errors =new List<String>();
             User currentUser = userService.GetUserbyUser_name(user_name);
             if (!userService.checkUserCred(user_name, password))
             {
@@ -88,12 +89,26 @@ namespace SmartGymSales.Services
             {
                 return null;
             }
-            return null;
+            CustomerService cs = new CustomerService();
+            PossibleCustomersService pcs = new PossibleCustomersService();
             //update customer man & women db 
+
+            errors.AddRange(cs.UpdateSalesCustomerFromdb(user_name, password, "Men"));
+            errors.AddRange(cs.UpdateSalesCustomerFromdb(user_name, password, "Women"));
+            if (errors.Count > 0) {
+                return null;
+            }
+            List<SalesCustomer> subscripedCustomers = new List<SalesCustomer>();
+
+            // check for the customers who subscriped for this employee and add them to the list 
+            subscripedCustomers.AddRange(cs.getAllCustomersCalledByUser(user));
+
+
             // check if any of the possiblecustomers for this employee in them and add them to new list of sbscriped 
             //update those possibleCustomer and hide them and mark the new cstomers
-            // check for the customers who subscriped for this employee and add them to the list 
-            // filter the list with the dates 
+            subscripedCustomers.AddRange(pcs.UpdateAllPossibleCustomerByCalledUser(user));
+
+            // filter the list with membership the dates 
             //create the outputCommission and return it
 
 

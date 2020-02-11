@@ -84,7 +84,7 @@ namespace SmartGymSales.Controllers
                 pwd = headers.GetValues("Password").First();
             }
             CommissionService commService = new CommissionService();
-            return Ok(commService.calcCommission(userName, pwd, data.dateFrom, data.dateTo, data.user));
+            return Ok(commService.calcCommission(userName, pwd, data.dateFrom.AddDays(1), data.dateTo.AddDays(1), data.user));
         }
 
 
