@@ -49,6 +49,7 @@
           <Property Name="added_By_id" Type="int" />
           <Property Name="addition_type_id" Type="int" Nullable="false" />
           <Property Name="is_called_by" Type="int" />
+          <Property Name="last_call_date" Type="datetime" />
         </EntityType>
         <EntityType Name="reviews">
           <Key>
@@ -91,6 +92,7 @@
           <Property Name="creation_date" Type="datetime" Nullable="false" />
           <Property Name="is_called_by" Type="int" />
           <Property Name="subscription_paid_money" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="last_call_date" Type="datetime" />
         </EntityType>
         <EntityType Name="UserRoles">
           <Key>
@@ -216,9 +218,9 @@
             <End Role="User" EntitySet="Users" />
             <End Role="UserRole" EntitySet="UserRoles" />
           </AssociationSet>
-          <EntitySet Name="SalesCustomers" EntityType="SmartGymSalesModel.SalesCustomer" />
-          <EntitySet Name="possibleCustomers" EntityType="SmartGymSalesModel.possibleCustomer" />
           <EntitySet Name="commissions" EntityType="SmartGymSalesModel.commission" />
+          <EntitySet Name="possibleCustomers" EntityType="SmartGymSalesModel.possibleCustomer" />
+          <EntitySet Name="SalesCustomers" EntityType="SmartGymSalesModel.SalesCustomer" />
           </EntityContainer>
         <EntityType Name="UserRole">
           <Key>
@@ -254,6 +256,38 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="commission">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="new_customer_percentatge" Type="Double" Nullable="false" />
+          <Property Name="old_customer_percentatge" Type="Double" Nullable="false" />
+          <Property Name="target" Type="Int32" />
+          <Property Name="is_hidden" Type="Boolean" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="possibleCustomer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="mobile" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="customer_id" Type="Int32" />
+          <Property Name="is_called" Type="Boolean" Nullable="false" />
+          <Property Name="calles_count" Type="Int32" Nullable="false" />
+          <Property Name="is_subscribed" Type="Boolean" Nullable="false" />
+          <Property Name="discont_percentage" Type="Int32" />
+          <Property Name="is_hidden" Type="Boolean" Nullable="false" />
+          <Property Name="knowledge_id" Type="Int32" Nullable="false" />
+          <Property Name="creaation_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="added_By_id" Type="Int32" />
+          <Property Name="addition_type_id" Type="Int32" Nullable="false" />
+          <Property Name="is_called_by" Type="Int32" />
+          <Property Name="last_call_date" Type="DateTime" Precision="3" />
+        </EntityType>
         <EntityType Name="SalesCustomer">
           <Key>
             <PropertyRef Name="id" />
@@ -275,37 +309,7 @@
           <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="is_called_by" Type="Int32" />
           <Property Name="subscription_paid_money" Type="Decimal" Precision="10" Scale="2" />
-        </EntityType>
-        <EntityType Name="possibleCustomer">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="mobile" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="customer_id" Type="Int32" />
-          <Property Name="is_called" Type="Boolean" Nullable="false" />
-          <Property Name="calles_count" Type="Int32" Nullable="false" />
-          <Property Name="is_subscribed" Type="Boolean" Nullable="false" />
-          <Property Name="discont_percentage" Type="Int32" />
-          <Property Name="is_hidden" Type="Boolean" Nullable="false" />
-          <Property Name="knowledge_id" Type="Int32" Nullable="false" />
-          <Property Name="creaation_date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="added_By_id" Type="Int32" />
-          <Property Name="addition_type_id" Type="Int32" Nullable="false" />
-          <Property Name="is_called_by" Type="Int32" />
-        </EntityType>
-        <EntityType Name="commission">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="new_customer_percentatge" Type="Double" Nullable="false" />
-          <Property Name="old_customer_percentatge" Type="Double" Nullable="false" />
-          <Property Name="target" Type="Int32" />
-          <Property Name="is_hidden" Type="Boolean" />
-          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="last_call_date" Type="DateTime" Precision="3" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -370,25 +374,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SalesCustomers">
-            <EntityTypeMapping TypeName="SmartGymSalesModel.SalesCustomer">
-              <MappingFragment StoreEntitySet="SalesCustomers">
-                <ScalarProperty Name="subscription_paid_money" ColumnName="subscription_paid_money" />
-                <ScalarProperty Name="is_called_by" ColumnName="is_called_by" />
+          <EntitySetMapping Name="commissions">
+            <EntityTypeMapping TypeName="SmartGymSalesModel.commission">
+              <MappingFragment StoreEntitySet="commission">
                 <ScalarProperty Name="creation_date" ColumnName="creation_date" />
-                <ScalarProperty Name="women_forign_key" ColumnName="women_forign_key" />
-                <ScalarProperty Name="men_forign_Key" ColumnName="men_forign_Key" />
-                <ScalarProperty Name="subscription_end_date" ColumnName="subscription_end_date" />
-                <ScalarProperty Name="subscription_start_date" ColumnName="subscription_start_date" />
-                <ScalarProperty Name="is_active" ColumnName="is_active" />
-                <ScalarProperty Name="calles_count" ColumnName="calles_count" />
-                <ScalarProperty Name="is_called" ColumnName="is_called" />
-                <ScalarProperty Name="discont_percentage" ColumnName="discont_percentage" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="mobile" ColumnName="mobile" />
-                <ScalarProperty Name="addition_type_id" ColumnName="addition_type_id" />
-                <ScalarProperty Name="added_By_id" ColumnName="added_By_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="is_hidden" ColumnName="is_hidden" />
+                <ScalarProperty Name="target" ColumnName="target" />
+                <ScalarProperty Name="old_customer_percentatge" ColumnName="old_customer_percentatge" />
+                <ScalarProperty Name="new_customer_percentatge" ColumnName="new_customer_percentatge" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -396,6 +389,7 @@
           <EntitySetMapping Name="possibleCustomers">
             <EntityTypeMapping TypeName="SmartGymSalesModel.possibleCustomer">
               <MappingFragment StoreEntitySet="possibleCustomers">
+                <ScalarProperty Name="last_call_date" ColumnName="last_call_date" />
                 <ScalarProperty Name="is_called_by" ColumnName="is_called_by" />
                 <ScalarProperty Name="addition_type_id" ColumnName="addition_type_id" />
                 <ScalarProperty Name="added_By_id" ColumnName="added_By_id" />
@@ -414,14 +408,26 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="commissions">
-            <EntityTypeMapping TypeName="SmartGymSalesModel.commission">
-              <MappingFragment StoreEntitySet="commission">
+          <EntitySetMapping Name="SalesCustomers">
+            <EntityTypeMapping TypeName="SmartGymSalesModel.SalesCustomer">
+              <MappingFragment StoreEntitySet="SalesCustomers">
+                <ScalarProperty Name="last_call_date" ColumnName="last_call_date" />
+                <ScalarProperty Name="subscription_paid_money" ColumnName="subscription_paid_money" />
+                <ScalarProperty Name="is_called_by" ColumnName="is_called_by" />
                 <ScalarProperty Name="creation_date" ColumnName="creation_date" />
-                <ScalarProperty Name="is_hidden" ColumnName="is_hidden" />
-                <ScalarProperty Name="target" ColumnName="target" />
-                <ScalarProperty Name="old_customer_percentatge" ColumnName="old_customer_percentatge" />
-                <ScalarProperty Name="new_customer_percentatge" ColumnName="new_customer_percentatge" />
+                <ScalarProperty Name="women_forign_key" ColumnName="women_forign_key" />
+                <ScalarProperty Name="men_forign_Key" ColumnName="men_forign_Key" />
+                <ScalarProperty Name="subscription_end_date" ColumnName="subscription_end_date" />
+                <ScalarProperty Name="subscription_start_date" ColumnName="subscription_start_date" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="calles_count" ColumnName="calles_count" />
+                <ScalarProperty Name="is_called" ColumnName="is_called" />
+                <ScalarProperty Name="discont_percentage" ColumnName="discont_percentage" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="addition_type_id" ColumnName="addition_type_id" />
+                <ScalarProperty Name="added_By_id" ColumnName="added_By_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

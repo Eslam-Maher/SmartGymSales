@@ -26,7 +26,12 @@ namespace SmartGymSales.Services
             }
             return  db.commissions.Where(x=>x.is_hidden==false).ToList();
         }
-     
+
+        private commission getActiveCommission() {
+            var db = new SmartGymSalesEntities();
+          return  db.commissions.Where(x => x.is_hidden == false).FirstOrDefault();
+        }
+
         internal List<String> insertCommission(string user_name, string password, commission commission)
         {
             var db = new SmartGymSalesEntities();
@@ -107,8 +112,33 @@ namespace SmartGymSales.Services
             // check if any of the possiblecustomers for this employee in them and add them to new list of sbscriped 
             //update those possibleCustomer and hide them and mark the new cstomers
             subscripedCustomers.AddRange(pcs.UpdateAllPossibleCustomerByCalledUser(user));
+            OutputCommission result = new OutputCommission();
+            result.totalCountCustomersCalled = subscripedCustomers.Where(element=>element.last_call_date>=dateFrom && element.last_call_date<=dateTo).Count();
 
-            // filter the list with membership the dates 
+
+            // filter the list with membership & the dates 
+            List<SalesCustomer> newlySubscribedCustomers= subscripedCustomers.Where(el =>
+             el.subscription_start_date >= dateFrom &&el.subscription_start_date<=dateTo).ToList();
+
+            List<SalesCustomer> oldSubscribedCustomers = subscripedCustomers.Where(el =>
+            !(el.subscription_start_date >= dateFrom && el.subscription_start_date <= dateTo)
+             &&(el.subscription_end_date>=dateFrom && el.subscription_end_date<=dateTo)
+             ).ToList();
+            result.totalCountCustomerSubscriped = newlySubscribedCustomers.Count + oldSubscribedCustomers.Count;
+
+            commission activeCommission = getActiveCommission();
+            result.totalRequiredIncome = activeCommission.target.Value;
+            result.inputIncome += oldSubscribedCustomers.Sum(x => x.subscription_paid_money.Value);
+            result.inputIncome += newlySubscribedCustomers.Sum(x => x.subscription_paid_money.Value);
+            if (((double)result.inputIncome) >= (result.totalRequiredIncome * 0.8))
+            {
+                result.commission += ((double)(oldSubscribedCustomers.Sum(x => x.subscription_paid_money.Value)) * (activeCommission.old_customer_percentatge / 100));
+                result.commission += ((double)(newlySubscribedCustomers.Sum(x => x.subscription_paid_money.Value)) * (activeCommission.new_customer_percentatge / 100));
+            }
+            else {
+                result.commission = 0;
+            }
+            return result;
             //create the outputCommission and return it
 
 

@@ -76,6 +76,7 @@ namespace SmartGymSales.Services
                             if (ps.is_called_by == null)
                             { ps.is_called_by = currentUser.id; }
                             ps.is_called = true;
+                            ps.last_call_date = DateTime.Now;
                             ps.calles_count = ps.calles_count + 1;
                             db.possibleCustomers.AddOrUpdate(ps);
                             db.SaveChanges();
@@ -105,6 +106,7 @@ namespace SmartGymSales.Services
                             if (customer.is_called_by == null)
                             { customer.is_called_by = currentUser.id; }
                             customer.is_called = true;
+                            customer.last_call_date = DateTime.Now;
                             customer.calles_count = customer.calles_count + 1;
                             db.SalesCustomers.AddOrUpdate(customer);
                             db.SaveChanges();
