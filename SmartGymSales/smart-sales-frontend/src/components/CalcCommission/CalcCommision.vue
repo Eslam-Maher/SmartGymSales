@@ -24,7 +24,11 @@
         <b-row>
           <b-col>
             <div class="button-group actions-buttons pull-right">
-              <b-button @click="calcCommission" :disabled="salesEmployee==null||dates.length<2" variant="primary">Get Commission</b-button>
+              <b-button
+                @click="calcCommission"
+                :disabled="salesEmployee==null||dates.length<2"
+                variant="primary"
+              >Get Commission</b-button>
             </div>
           </b-col>
         </b-row>
@@ -36,9 +40,6 @@
 
 <script>
 import UsersService from "../../services/Users";
-import CommissionService from "../../services/Commission";
-import moment from "moment";
-
 export default {
   data() {
     return {
@@ -54,7 +55,7 @@ export default {
         .then(res => {
           this.salesEmployeeOptions = res.data;
         })
-        .catch(error => {  // eslint-disable-line no-unused-vars
+        .catch(error => { // eslint-disable-line no-unused-vars
           this.$bvToast.toast("error in getting users ", this.failToastConfig);
         })
         .finally(() => {
@@ -62,28 +63,13 @@ export default {
         });
     },
     calcCommission: function() {
-      this.loadingCount++;
-      CommissionService.calcCommission(
-        moment(this.dates[0]),
-        moment(this.dates[1]),
-        this.salesEmployee
-      )
-        .then(res => {
-          if (res.data.length > 0) {
-            res.data.forEach(element => {
-              this.$bvToast.toast(element, this.failToastConfig);
-            });
-          } else {
-            this.onReset();
-          }
-          // eslint-disable-line no-unused-vars
-        })
-        .catch(error => {
-          this.$bvToast.toast("Commission addtion Failed", error.message);
-        })
-        .finally(() => {
-          this.loadingCount--;
-        });
+      let data = {
+        from: this.dates[0],
+        to: this.dates[1],
+        employee: this.salesEmployee
+      };
+      this.$emit("calcCommission", data);
+      this.onReset();
     },
     onReset: function() {
       this.dates = [];

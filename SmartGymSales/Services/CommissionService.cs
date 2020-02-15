@@ -103,37 +103,36 @@ namespace SmartGymSales.Services
             if (errors.Count > 0) {
                 return null;
             }
-            List<SalesCustomer> subscripedCustomers = new List<SalesCustomer>();
 
+
+            OutputCommission result = new OutputCommission();
+            result.totalCountCustomersCalled += pcs.getAllPossibleCustomerByCallesUser(user).Where(element => element.last_call_date.HasValue && element.last_call_date.Value.Date >= dateFrom.Date && element.last_call_date.Value.Date <= dateTo.Date).Count();
+            result.totalCountCustomersCalled += cs.getAllCustomersCalledByUser(user).Where(element => element.last_call_date.HasValue && element.last_call_date.Value.Date >= dateFrom.Date && element.last_call_date.Value.Date <= dateTo.Date).Count();
+
+
+
+            List<SalesCustomer> oldSubscribedCustomers = cs.getAllCustomersCalledByUser(user);
             // check for the customers who subscriped for this employee and add them to the list 
-            subscripedCustomers.AddRange(cs.getAllCustomersCalledByUser(user));
-
+            oldSubscribedCustomers = oldSubscribedCustomers.Where(el =>
+             el.subscription_start_date.Value.Date >= dateFrom.Date &&el.subscription_start_date.Value.Date<=dateTo.Date).ToList();
 
             // check if any of the possiblecustomers for this employee in them and add them to new list of sbscriped 
             //update those possibleCustomer and hide them and mark the new cstomers
-            subscripedCustomers.AddRange(pcs.UpdateAllPossibleCustomerByCalledUser(user));
-            OutputCommission result = new OutputCommission();
-            result.totalCountCustomersCalled = subscripedCustomers.Where(element=>element.last_call_date>=dateFrom && element.last_call_date<=dateTo).Count();
-
-
-            // filter the list with membership & the dates 
-            List<SalesCustomer> newlySubscribedCustomers= subscripedCustomers.Where(el =>
-             el.subscription_start_date >= dateFrom &&el.subscription_start_date<=dateTo).ToList();
-
-            List<SalesCustomer> oldSubscribedCustomers = subscripedCustomers.Where(el =>
-            !(el.subscription_start_date >= dateFrom && el.subscription_start_date <= dateTo)
-             &&(el.subscription_end_date>=dateFrom && el.subscription_end_date<=dateTo)
-             ).ToList();
+            List<SalesCustomer> newlySubscribedCustomers= pcs.UpdateAllPossibleCustomerByCalledUser(user).Where(el =>
+             el.subscription_start_date.Value.Date >= dateFrom.Date && el.subscription_start_date.Value.Date <= dateTo.Date).ToList();
+            oldSubscribedCustomers = oldSubscribedCustomers.Where(x => !newlySubscribedCustomers.Exists(y => y.mobile == x.mobile)).ToList();
             result.totalCountCustomerSubscriped = newlySubscribedCustomers.Count + oldSubscribedCustomers.Count;
 
             commission activeCommission = getActiveCommission();
             result.totalRequiredIncome = activeCommission.target.Value;
-            result.inputIncome += oldSubscribedCustomers.Sum(x => x.subscription_paid_money.Value);
-            result.inputIncome += newlySubscribedCustomers.Sum(x => x.subscription_paid_money.Value);
+            double moneyComingFromOldCustomers =(double) oldSubscribedCustomers.Sum(x => x.subscription_paid_money.Value);
+            double moneyComingFromNewCustomers = (double)newlySubscribedCustomers.Sum(x => x.subscription_paid_money.Value);
+            result.inputIncome += moneyComingFromOldCustomers;
+            result.inputIncome += moneyComingFromNewCustomers;
             if (((double)result.inputIncome) >= (result.totalRequiredIncome * 0.8))
             {
-                result.commission += ((double)(oldSubscribedCustomers.Sum(x => x.subscription_paid_money.Value)) * (activeCommission.old_customer_percentatge / 100));
-                result.commission += ((double)(newlySubscribedCustomers.Sum(x => x.subscription_paid_money.Value)) * (activeCommission.new_customer_percentatge / 100));
+                result.commission += ((double)moneyComingFromOldCustomers * (activeCommission.old_customer_percentatge / 100));
+                result.commission += ((double)moneyComingFromNewCustomers * (activeCommission.new_customer_percentatge / 100));
             }
             else {
                 result.commission = 0;

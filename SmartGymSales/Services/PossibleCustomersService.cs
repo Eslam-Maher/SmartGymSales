@@ -35,7 +35,7 @@ namespace SmartGymSales.Services
         public List<possibleCustomer> getAllPossibleCustomerByCallesUser(User user)
         {
             SmartGymSalesEntities db = new SmartGymSalesEntities();
-            return db.possibleCustomers.Where(x => x.is_hidden == false&& x.is_called_by==user.id).ToList();
+            return db.possibleCustomers.Where(x => x.is_hidden==false &&x.is_called_by==user.id).ToList();
         }
         public List<SalesCustomer> UpdateAllPossibleCustomerByCalledUser(User user) {
             SmartGymSalesEntities db = new SmartGymSalesEntities();
@@ -51,6 +51,7 @@ namespace SmartGymSales.Services
                     SalesCustomer newCustomer = allSalesCustomer.Find(x => x.mobile == pc.mobile);
                     newCustomer.is_called = pc.is_called;
                     newCustomer.is_called_by = pc.is_called_by;
+                    newCustomer.last_call_date = pc.last_call_date;
                     newCustomer.calles_count = pc.calles_count;
                     pc.customer_id = newCustomer.id;
                     pc.is_subscribed = true;
@@ -58,6 +59,7 @@ namespace SmartGymSales.Services
                     db.SalesCustomers.AddOrUpdate(newCustomer);
                     db.possibleCustomers.AddOrUpdate(pc);
                     result.Add(newCustomer);
+                    db.SaveChanges();
                 }
             }
 

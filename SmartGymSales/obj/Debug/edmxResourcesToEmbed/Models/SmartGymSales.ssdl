@@ -44,6 +44,7 @@
     <Property Name="added_By_id" Type="int" />
     <Property Name="addition_type_id" Type="int" Nullable="false" />
     <Property Name="is_called_by" Type="int" />
+    <Property Name="last_call_date" Type="datetime" />
   </EntityType>
   <EntityType Name="reviews">
     <Key>
@@ -86,6 +87,7 @@
     <Property Name="creation_date" Type="datetime" Nullable="false" />
     <Property Name="is_called_by" Type="int" />
     <Property Name="subscription_paid_money" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="last_call_date" Type="datetime" />
   </EntityType>
   <EntityType Name="UserRoles">
     <Key>

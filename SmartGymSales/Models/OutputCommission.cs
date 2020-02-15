@@ -7,7 +7,7 @@ namespace SmartGymSales.Models
 {
     public class OutputCommission
     {
-       public decimal inputIncome { get; set; }
+       public double inputIncome { get; set; }
         public int totalRequiredIncome { get; set; }
         public int totalCountCustomersCalled { get; set; }
         public int totalCountCustomerSubscriped { get; set; }
