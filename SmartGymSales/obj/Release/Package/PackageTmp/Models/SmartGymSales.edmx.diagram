@@ -13,9 +13,9 @@
         <EntityTypeShape EntityType="SmartGymSalesModel.UserRole" Width="1.5" PointX="3" PointY="2.25" />
         <AssociationConnector Association="SmartGymSalesModel.FK_UserRoles_Roles" />
         <AssociationConnector Association="SmartGymSalesModel.FK_UserRoles_Users" />
-        <EntityTypeShape EntityType="SmartGymSalesModel.SalesCustomer" Width="1.5" PointX="5.5" PointY="6.625" />
-        <EntityTypeShape EntityType="SmartGymSalesModel.possibleCustomer" Width="1.5" PointX="8.375" PointY="9.75" />
         <EntityTypeShape EntityType="SmartGymSalesModel.commission" Width="1.5" PointX="8.375" PointY="4.75" />
+        <EntityTypeShape EntityType="SmartGymSalesModel.possibleCustomer" Width="1.5" PointX="5.375" PointY="4.75" />
+        <EntityTypeShape EntityType="SmartGymSalesModel.SalesCustomer" Width="1.5" PointX="7.375" PointY="7.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

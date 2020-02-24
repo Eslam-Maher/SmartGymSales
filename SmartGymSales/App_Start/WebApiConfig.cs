@@ -19,8 +19,10 @@ namespace SmartGymSales
             //config.SuppressDefaultHostAuthentication();
 
             // Enable CORS for the Vue App
-            var cors = new EnableCorsAttribute("http://localhost:8080", "*", "*");
-            config.EnableCors(cors);
+            var cors3 = new EnableCorsAttribute("http://192.168.1.2,http://localhost:8082,http://localhost:8081", "*", "*");
+            //var cors3 = new EnableCorsAttribute("http://192.168.1.2", "*", "*");
+
+            config.EnableCors(cors3);
 
             // Web API routes
             config.MapHttpAttributeRoutes();

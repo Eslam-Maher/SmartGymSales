@@ -62,7 +62,7 @@ namespace SmartGymSales.Services
         }
 
         
-        public List<String> UpdateSalesCustomerFromdb(string user_name, string password, string sourceDbString)
+        public List<String> UpdateSalesCustomerFromdb(string user_name, string password, string sourceDbString,DateTime? from,DateTime? to )
         {
             using (var db = new SmartGymSalesEntities())
             {
@@ -91,8 +91,21 @@ namespace SmartGymSales.Services
                     var config = new MapperConfiguration(cfg => {
                         cfg.CreateMap<Models.SmartGymMen.Customer, InputCustomer>();
                     });
+
+                    List<Models.SmartGymMen.Customer> source_List = new List<Models.SmartGymMen.Customer>();
+                    List<Models.SmartGymMen.Membership> membershipList = new List<Models.SmartGymMen.Membership>();
+                    if (from.HasValue && to.HasValue) {
+                        membershipList = sourceDb.Memberships.Where(x => x.S_Date > from && x.S_Date < to).ToList();
+                        source_List = sourceDb.Customers.Where(x => !String.IsNullOrEmpty(x.Phone_mobile)
+                        && membershipList.Where(y => y.Customer_ID == x.Customer_ID).Any()).ToList();
+                    }
+                    else
+                    {
+                        source_List = sourceDb.Customers.Where(x => !String.IsNullOrEmpty(x.Phone_mobile)).ToList();
+                    }
+
                     IMapper iMapper = config.CreateMapper();
-                    iMapper.Map(sourceDb.Customers.Where(x => !String.IsNullOrEmpty(x.Phone_mobile)).ToList(), sourceCustomers);
+                    iMapper.Map(source_List, sourceCustomers);
 
                     List <InputCustomer> toBeUpdatedCustomers = new List<InputCustomer>();
                     List<InputCustomer> toBeInsertedCustomers = new List<InputCustomer>();
@@ -126,10 +139,17 @@ namespace SmartGymSales.Services
                     //List<Models.SmartGymWomen.Customer> sourceCustomers = sourceDb.Customers.Where(x => !String.IsNullOrEmpty(x.Phone_mobile)).ToList();
                     List<InputCustomer> sourceCustomers = new List<InputCustomer>();
                     DbService WomenDb= new DbService();
-                    iMapper.Map(WomenDb.GetAllWomenCustomers().Where(x => !String.IsNullOrEmpty(x.Phone_mobile)).ToList(), sourceCustomers);
-
-
-
+                    List<SmartGymWomenRetrival.Models.Customer> source_List = new List<SmartGymWomenRetrival.Models.Customer>();
+                    List<Models.SmartGymMen.Membership> membershipList = new List<Models.SmartGymMen.Membership>();
+                    if (from.HasValue && to.HasValue)
+                    {
+                        source_List = WomenDb.getAllActiveWomenCustomers(from,to);
+                    }
+                    else
+                    {
+                        source_List = WomenDb.GetAllWomenCustomers().Where(x => !String.IsNullOrEmpty(x.Phone_mobile)).ToList();
+                    }
+                    iMapper.Map(source_List, sourceCustomers);
                     List<InputCustomer> toBeUpdatedCustomers = new List<InputCustomer>();
                     List<InputCustomer> toBeInsertedCustomers = new List<InputCustomer>();
                     foreach (InputCustomer element in sourceCustomers)

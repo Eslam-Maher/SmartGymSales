@@ -16,16 +16,21 @@ export class API {
     var apiPath = null;
     const servers = {
       localhost: "http://localhost:3131/api/",
-      test: "https://cai1-sv00035.vnet.valeo.com:8443/medicaltool/api/",
+      test: "http://localhost:8080/api/",
+      preProd:"http://192.168.1.2:81/api/",
       prod: "https://cai1-sv00008.vnet.valeo.com:8443/medicaltool/api/"
     };
 
-    if (window.location.host.includes("localhost")) {
-      apiPath = servers["localhost"];
-    }
-    if (window.location.host.includes("cai1-sv00035")) {
+    if (window.location.host.includes("localhost:8081")) {
       apiPath = servers["test"];
     }
+    if (window.location.host.includes("localhost:8082")) {
+      apiPath = servers["localhost"];
+    }
+    if (window.location.host.includes("192.168.1.2")) {
+      apiPath = servers["preProd"];
+    }
+
     //  else if (window.location.host.includes("cai1-sv00035")) {
     //   apiPath =
     //     "https://cai1-sv00035.vnet.valeo.com:8095" +

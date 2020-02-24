@@ -81,66 +81,75 @@ namespace SmartGymSales.Services
 
         public OutputCommission calcCommission(string user_name, string password, DateTime dateFrom, DateTime dateTo, User user)
         {
-            var db = new SmartGymSalesEntities();
-            UsersService userService = new UsersService();
-            UserRolesService userRolesService = new UserRolesService();
-            List<String> errors =new List<String>();
-            User currentUser = userService.GetUserbyUser_name(user_name);
-            if (!userService.checkUserCred(user_name, password))
+            try
             {
+                var db = new SmartGymSalesEntities();
+                UsersService userService = new UsersService();
+                UserRolesService userRolesService = new UserRolesService();
+                List<String> errors = new List<String>();
+                User currentUser = userService.GetUserbyUser_name(user_name);
+                if (!userService.checkUserCred(user_name, password))
+                {
+                    return null;
+                }
+                if (!userRolesService.isUserManger(user_name))
+                {
+                    return null;
+                }
+                CustomerService cs = new CustomerService();
+                PossibleCustomersService pcs = new PossibleCustomersService();
+                //update customer man & women db 
+
+                errors.AddRange(cs.UpdateSalesCustomerFromdb(user_name, password, "Men", dateFrom, dateTo));
+                errors.AddRange(cs.UpdateSalesCustomerFromdb(user_name, password, "Women", dateFrom, dateTo));
+                if (errors.Count > 0)
+                {
+                    return null;
+                }
+
+
+                OutputCommission result = new OutputCommission();
+                result.totalCountCustomersCalled += pcs.getAllPossibleCustomerByCallesUser(user).Where(element => element.last_call_date.HasValue && element.last_call_date.Value.Date >= dateFrom.Date && element.last_call_date.Value.Date <= dateTo.Date).Count();
+                result.totalCountCustomersCalled += cs.getAllCustomersCalledByUser(user).Where(element => element.last_call_date.HasValue && element.last_call_date.Value.Date >= dateFrom.Date && element.last_call_date.Value.Date <= dateTo.Date).Count();
+
+
+
+                List<SalesCustomer> oldSubscribedCustomers = cs.getAllCustomersCalledByUser(user);
+                // check for the customers who subscriped for this employee and add them to the list 
+                oldSubscribedCustomers = oldSubscribedCustomers.Where(el => el.subscription_start_date.HasValue &&el.subscription_end_date.HasValue&&
+                 el.subscription_start_date.Value.Date >= dateFrom.Date && el.subscription_start_date.Value.Date <= dateTo.Date).ToList();
+
+                // check if any of the possiblecustomers for this employee in them and add them to new list of sbscriped 
+                //update those possibleCustomer and hide them and mark the new cstomers
+                List<SalesCustomer> newlySubscribedCustomers = pcs.UpdateAllPossibleCustomerByCalledUser(user).Where(el =>
+                el.subscription_start_date.HasValue && el.subscription_end_date.HasValue &&
+                  el.subscription_start_date.Value.Date >= dateFrom.Date && el.subscription_start_date.Value.Date <= dateTo.Date).ToList();
+
+                oldSubscribedCustomers = oldSubscribedCustomers.Where(x => !newlySubscribedCustomers.Exists(y => y.mobile == x.mobile)).ToList();
+                result.totalCountCustomerSubscriped = newlySubscribedCustomers.Count + oldSubscribedCustomers.Count;
+
+                commission activeCommission = getActiveCommission();
+                result.totalRequiredIncome = activeCommission.target.Value;
+                double moneyComingFromOldCustomers = (double)oldSubscribedCustomers.Sum(x => x.subscription_paid_money.Value);
+                double moneyComingFromNewCustomers = (double)newlySubscribedCustomers.Sum(x => x.subscription_paid_money.Value);
+                result.inputIncome += moneyComingFromOldCustomers;
+                result.inputIncome += moneyComingFromNewCustomers;
+                if (((double)result.inputIncome) >= (result.totalRequiredIncome * 0.8))
+                {
+                    result.commission += ((double)moneyComingFromOldCustomers * (activeCommission.old_customer_percentatge / 100));
+                    result.commission += ((double)moneyComingFromNewCustomers * (activeCommission.new_customer_percentatge / 100));
+                }
+                else
+                {
+                    result.commission = 0;
+                }
+                return result;
+                //create the outputCommission and return it
+
+            }
+            catch (Exception e) {
                 return null;
             }
-            if (!userRolesService.isUserManger(user_name))
-            {
-                return null;
-            }
-            CustomerService cs = new CustomerService();
-            PossibleCustomersService pcs = new PossibleCustomersService();
-            //update customer man & women db 
-
-            errors.AddRange(cs.UpdateSalesCustomerFromdb(user_name, password, "Men"));
-            errors.AddRange(cs.UpdateSalesCustomerFromdb(user_name, password, "Women"));
-            if (errors.Count > 0) {
-                return null;
-            }
-
-
-            OutputCommission result = new OutputCommission();
-            result.totalCountCustomersCalled += pcs.getAllPossibleCustomerByCallesUser(user).Where(element => element.last_call_date.HasValue && element.last_call_date.Value.Date >= dateFrom.Date && element.last_call_date.Value.Date <= dateTo.Date).Count();
-            result.totalCountCustomersCalled += cs.getAllCustomersCalledByUser(user).Where(element => element.last_call_date.HasValue && element.last_call_date.Value.Date >= dateFrom.Date && element.last_call_date.Value.Date <= dateTo.Date).Count();
-
-
-
-            List<SalesCustomer> oldSubscribedCustomers = cs.getAllCustomersCalledByUser(user);
-            // check for the customers who subscriped for this employee and add them to the list 
-            oldSubscribedCustomers = oldSubscribedCustomers.Where(el =>
-             el.subscription_start_date.Value.Date >= dateFrom.Date &&el.subscription_start_date.Value.Date<=dateTo.Date).ToList();
-
-            // check if any of the possiblecustomers for this employee in them and add them to new list of sbscriped 
-            //update those possibleCustomer and hide them and mark the new cstomers
-            List<SalesCustomer> newlySubscribedCustomers= pcs.UpdateAllPossibleCustomerByCalledUser(user).Where(el =>
-             el.subscription_start_date.Value.Date >= dateFrom.Date && el.subscription_start_date.Value.Date <= dateTo.Date).ToList();
-            oldSubscribedCustomers = oldSubscribedCustomers.Where(x => !newlySubscribedCustomers.Exists(y => y.mobile == x.mobile)).ToList();
-            result.totalCountCustomerSubscriped = newlySubscribedCustomers.Count + oldSubscribedCustomers.Count;
-
-            commission activeCommission = getActiveCommission();
-            result.totalRequiredIncome = activeCommission.target.Value;
-            double moneyComingFromOldCustomers =(double) oldSubscribedCustomers.Sum(x => x.subscription_paid_money.Value);
-            double moneyComingFromNewCustomers = (double)newlySubscribedCustomers.Sum(x => x.subscription_paid_money.Value);
-            result.inputIncome += moneyComingFromOldCustomers;
-            result.inputIncome += moneyComingFromNewCustomers;
-            if (((double)result.inputIncome) >= (result.totalRequiredIncome * 0.8))
-            {
-                result.commission += ((double)moneyComingFromOldCustomers * (activeCommission.old_customer_percentatge / 100));
-                result.commission += ((double)moneyComingFromNewCustomers * (activeCommission.new_customer_percentatge / 100));
-            }
-            else {
-                result.commission = 0;
-            }
-            return result;
-            //create the outputCommission and return it
-
-
         }
 
         internal List<string> deleteCommission(string user_name, string password, int id)

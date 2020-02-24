@@ -60,9 +60,9 @@
       <End Role="User" EntitySet="Users" />
       <End Role="UserRole" EntitySet="UserRoles" />
     </AssociationSet>
-    <EntitySet Name="SalesCustomers" EntityType="SmartGymSalesModel.SalesCustomer" />
-    <EntitySet Name="possibleCustomers" EntityType="SmartGymSalesModel.possibleCustomer" />
     <EntitySet Name="commissions" EntityType="SmartGymSalesModel.commission" />
+    <EntitySet Name="possibleCustomers" EntityType="SmartGymSalesModel.possibleCustomer" />
+    <EntitySet Name="SalesCustomers" EntityType="SmartGymSalesModel.SalesCustomer" />
   </EntityContainer>
   <EntityType Name="UserRole">
     <Key>
@@ -98,6 +98,38 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="commission">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="new_customer_percentatge" Type="Double" Nullable="false" />
+    <Property Name="old_customer_percentatge" Type="Double" Nullable="false" />
+    <Property Name="target" Type="Int32" />
+    <Property Name="is_hidden" Type="Boolean" />
+    <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="possibleCustomer">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="mobile" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="customer_id" Type="Int32" />
+    <Property Name="is_called" Type="Boolean" Nullable="false" />
+    <Property Name="calles_count" Type="Int32" Nullable="false" />
+    <Property Name="is_subscribed" Type="Boolean" Nullable="false" />
+    <Property Name="discont_percentage" Type="Int32" />
+    <Property Name="is_hidden" Type="Boolean" Nullable="false" />
+    <Property Name="knowledge_id" Type="Int32" Nullable="false" />
+    <Property Name="creaation_date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="added_By_id" Type="Int32" />
+    <Property Name="addition_type_id" Type="Int32" Nullable="false" />
+    <Property Name="is_called_by" Type="Int32" />
+    <Property Name="last_call_date" Type="DateTime" Precision="3" />
+  </EntityType>
   <EntityType Name="SalesCustomer">
     <Key>
       <PropertyRef Name="id" />
@@ -119,36 +151,6 @@
     <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="is_called_by" Type="Int32" />
     <Property Name="subscription_paid_money" Type="Decimal" Precision="10" Scale="2" />
-  </EntityType>
-  <EntityType Name="possibleCustomer">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="mobile" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="customer_id" Type="Int32" />
-    <Property Name="is_called" Type="Boolean" Nullable="false" />
-    <Property Name="calles_count" Type="Int32" Nullable="false" />
-    <Property Name="is_subscribed" Type="Boolean" Nullable="false" />
-    <Property Name="discont_percentage" Type="Int32" />
-    <Property Name="is_hidden" Type="Boolean" Nullable="false" />
-    <Property Name="knowledge_id" Type="Int32" Nullable="false" />
-    <Property Name="creaation_date" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="added_By_id" Type="Int32" />
-    <Property Name="addition_type_id" Type="Int32" Nullable="false" />
-    <Property Name="is_called_by" Type="Int32" />
-  </EntityType>
-  <EntityType Name="commission">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="new_customer_percentatge" Type="Double" Nullable="false" />
-    <Property Name="old_customer_percentatge" Type="Double" Nullable="false" />
-    <Property Name="target" Type="Int32" />
-    <Property Name="is_hidden" Type="Boolean" />
-    <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="last_call_date" Type="DateTime" Precision="3" />
   </EntityType>
 </Schema>

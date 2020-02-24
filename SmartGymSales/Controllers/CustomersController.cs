@@ -143,7 +143,7 @@ namespace SmartGymSales.Controllers
                 pwd = headers.GetValues("Password").First();
             }
             CustomerService cs = new CustomerService();
-            List<String> errors = cs.UpdateSalesCustomerFromdb(userName, pwd, dbType);
+            List<String> errors = cs.UpdateSalesCustomerFromdb(userName, pwd, dbType,null,null);
             return Ok(errors);
         }
 

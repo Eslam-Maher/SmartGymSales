@@ -87,3 +87,4 @@ C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymWomenRetrival\bin\Microsof
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymWomenRetrival\bin\System.Web.Http.Owin.xml
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymWomenRetrival\obj\Debug\SmartGymWomenRetrival.dll
 C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymWomenRetrival\obj\Debug\SmartGymWomenRetrival.pdb
+C:\Users\Eslam\Documents\GitHub\SmartGymSales\SmartGymWomenRetrival\obj\Debug\SmartGymWomenRetrival.csprojResolveAssemblyReference.cache
