@@ -9,11 +9,18 @@
 
 namespace SmartGymSales.Models
 {
+    using Services;
     using System;
     using System.Collections.Generic;
-    
+
     public partial class possibleCustomer
     {
+        UsersService us;
+        public possibleCustomer()
+        {
+            us = new UsersService();
+
+        }
         public int id { get; set; }
         public string name { get; set; }
         public string mobile { get; set; }
@@ -29,6 +36,13 @@ namespace SmartGymSales.Models
         public Nullable<int> added_By_id { get; set; }
         public int addition_type_id { get; set; }
         public Nullable<int> is_called_by { get; set; }
+        public string is_called_by_name
+        {
+            get
+            {
+                return is_called_by.HasValue ? us.GetUserbyId(is_called_by.Value).name : string.Empty;
+            }
+        }
         public Nullable<System.DateTime> last_call_date { get; set; }
     }
 }

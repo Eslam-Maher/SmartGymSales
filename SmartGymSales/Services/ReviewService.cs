@@ -166,6 +166,8 @@ namespace SmartGymSales.Services
                         if (PC != null)
                         {
                             outputResult.parent_name = PC.name;
+                            outputResult.called_by = PC.is_called_by_name;
+                            outputResult.calles_Count = PC.calles_count;
                             result.Add(outputResult);
                         }
                     }
@@ -176,6 +178,8 @@ namespace SmartGymSales.Services
                         if (sc != null)
                         {
                             outputResult.parent_name = sc.name;
+                            outputResult.called_by = sc.is_called_by_name;
+                            outputResult.calles_Count = sc.calles_count;
                             result.Add(outputResult);
                         }
                     }

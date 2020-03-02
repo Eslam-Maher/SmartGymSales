@@ -16,6 +16,7 @@ namespace SmartGymSales.Models
         public int parent_id { get; set; }
         public string parent_type { get; set; }
         public string parent_name { get; set; }
-
+        public string called_by { get; set; }
+        public int calles_Count { get; set; }
     }
 }

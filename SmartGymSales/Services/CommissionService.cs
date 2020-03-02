@@ -132,9 +132,14 @@ namespace SmartGymSales.Services
                 result.totalRequiredIncome = activeCommission.target.Value;
                 double moneyComingFromOldCustomers = (double)oldSubscribedCustomers.Sum(x => x.subscription_paid_money.Value);
                 double moneyComingFromNewCustomers = (double)newlySubscribedCustomers.Sum(x => x.subscription_paid_money.Value);
+                result.newCustomerSubscripedCount = newlySubscribedCustomers.Count;
+                result.newlySubscribedCustomers = newlySubscribedCustomers;
+                result.oldSubscribedCustomers = oldSubscribedCustomers;
+                result.oldCustomerSubscripedCount = oldSubscribedCustomers.Count;
+
                 result.inputIncome += moneyComingFromOldCustomers;
                 result.inputIncome += moneyComingFromNewCustomers;
-                if (((double)result.inputIncome) >= (result.totalRequiredIncome * 0.8))
+                if ((result.inputIncome) >= (result.totalRequiredIncome * 0.8))
                 {
                     result.commission += ((double)moneyComingFromOldCustomers * (activeCommission.old_customer_percentatge / 100));
                     result.commission += ((double)moneyComingFromNewCustomers * (activeCommission.new_customer_percentatge / 100));

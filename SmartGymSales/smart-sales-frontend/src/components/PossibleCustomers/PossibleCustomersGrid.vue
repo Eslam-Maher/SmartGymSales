@@ -234,6 +234,12 @@ export default {
           sortable: true,
           class: "text-center"
         },
+         {
+          key: "is_called_by_name",
+          label: "Called by",
+          sortable: true,
+          class: "text-center"
+        },
         {
           key: "calles_count",
           label: "Calles Count",

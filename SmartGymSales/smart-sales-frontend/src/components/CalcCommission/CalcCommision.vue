@@ -33,7 +33,6 @@
           </b-col>
         </b-row>
       </b-form>
-      <b-row></b-row>
     </div>
   </b-card>
 </template>

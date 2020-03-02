@@ -1,43 +1,21 @@
 <template>
-  <b-card header="Commissions Grid" header-tag="h4">
-   
-   <b-row>
-      <b-col md="6">
-        <b-form-group
-          label="Filter"
-          label-cols-sm="1"
-          label-align-sm="left"
-          label-for="filterInput"
-        >
-          <b-input-group>
-            <b-form-input
-              v-model="filter"
-              type="search"
-              id="filterInput"
-              placeholder="Type to Search"
-            ></b-form-input>
-            <b-input-group-append>
-              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
-            </b-input-group-append>
-          </b-input-group>
-        </b-form-group>
-      </b-col>
-    </b-row>
-   
+  <b-card :header="title" header-tag="h4">
     <b-table
       striped
       hover
-      :items="reviews"
+      :items="sourceData"
       :fields="fields"
       :current-page="currentPage"
       :per-page="perPage"
       :filter="filter"
       @filtered="onFiltered"
     >
-       <template v-slot:cell(creation_date)="row">
-        {{row.item.creation_date | DD_MMM_YYYY}}
-      </template>
-      
+      <template
+        v-slot:cell(subscription_start_date)="row"
+      >{{row.item.subscription_start_date | DD_MMM_YYYY}}</template>
+      <template
+        v-slot:cell(subscription_end_date)="row"
+      >{{row.item.subscription_end_date | DD_MMM_YYYY}}</template>
     </b-table>
     <b-row align-h="between">
       <b-col cols="3">
@@ -67,7 +45,7 @@
 
 <script>
 export default {
-props: ["reviews"],
+  props: ["sourceData", "title"],
   data() {
     return {
       totalRows: 0,
@@ -77,57 +55,40 @@ props: ["reviews"],
       filter: null,
       fields: [
         {
-          key: "parent_name",
-          label: "Customer Name",
+          key: "name",
+          label: "Name",
           class: "text-center"
         },
         {
-          key: "parent_type",
-          label: "Customer Type",
+          key: "mobile",
+          label: "Mobile",
           class: "text-center"
         },
         {
-          key: "training",
-          label: "Training Rate",
-          sortable: true,
-          class: "text-center"
-        },
-         {
-          key: "reciption",
-          label: "Reciption Rate",
-          sortable: true,
-          class: "text-center"
-        },
-         {
-          key: "general",
-          label: "General Rate",
-          sortable: true,
-          class: "text-center"
-        },
-             {
-          key: "comment",
-          label: "Comment",
-          sortable: true,
-          class: "text-center"
-        },
-            {
-          key: "creation_date",
-          label: "Creation Date",
-          sortable: true,
-          class: "text-center"
-        },
-         {
-          key: "called_by",
-          label: "Called by",
+          key: "calles_count",
+          label: "calles Count",
           sortable: true,
           class: "text-center"
         },
         {
-          key: "calles_Count",
-          label: "Calles Count",
+          key: "subscription_start_date",
+          label: "Subscription Start Date",
           sortable: true,
           class: "text-center"
         },
+        {
+          key: "subscription_end_date",
+          label: "Subscription End Date",
+          sortable: true,
+          class: "text-center"
+        },
+        {
+          key: "subscription_paid_money",
+          label: "Money Paid",
+          sortable: true,
+          class: "text-center"
+        },
+        { key: "is_called_by_name", label: "Called By" }
       ]
     };
   },
@@ -136,18 +97,17 @@ props: ["reviews"],
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
-    },
+    }
   },
   watch: {
-    reviews: function(newVal) {
+    commissions: function(newVal) {
       if (newVal) {
         this.totalRows = newVal.length;
       }
     }
   }
-}
+};
 </script>
 
 <style>
-
 </style>

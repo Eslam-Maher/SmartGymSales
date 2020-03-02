@@ -9,27 +9,41 @@
 
 namespace SmartGymSales.Models
 {
+    using Services;
     using System;
     using System.Collections.Generic;
-    
+
     public partial class SalesCustomer
     {
+        UsersService us;
+        public SalesCustomer()
+        {
+            us = new UsersService();
+
+        }
         public int id { get; set; }
         public string name { get; set; }
-        public Nullable<int> added_By_id { get; set; }
+        public int? added_By_id { get; set; }
         public int addition_type_id { get; set; }
         public string mobile { get; set; }
         public string email { get; set; }
-        public Nullable<int> discont_percentage { get; set; }
+        public int? discont_percentage { get; set; }
         public bool is_called { get; set; }
         public int calles_count { get; set; }
         public bool is_active { get; set; }
-        public Nullable<System.DateTime> subscription_start_date { get; set; }
-        public Nullable<System.DateTime> subscription_end_date { get; set; }
-        public Nullable<int> men_forign_Key { get; set; }
-        public Nullable<int> women_forign_key { get; set; }
+        public DateTime? subscription_start_date { get; set; }
+        public DateTime? subscription_end_date { get; set; }
+        public int? men_forign_Key { get; set; }
+        public int? women_forign_key { get; set; }
         public System.DateTime creation_date { get; set; }
-        public Nullable<int> is_called_by { get; set; }
+        public int? is_called_by { get; set; }
+        public string is_called_by_name
+        {
+            get
+            {
+                return is_called_by.HasValue ? us.GetUserbyId(is_called_by.Value).name : string.Empty;
+            }
+        }
         public Nullable<decimal> subscription_paid_money { get; set; }
         public Nullable<System.DateTime> last_call_date { get; set; }
     }
